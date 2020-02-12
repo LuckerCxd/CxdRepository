@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+<!--一、属性注入方式-->
+    <!--1.constructor-arg name vaule/ref  不需要提供get/set方法，就是使用构造器而已，需要构造器
+        如果是ref,那么需要提前设置好bean class id引用-->
+    <bean id="manager" class="cn.cxd.beans.ManagerImpl">
+        <constructor-arg name="age" value="12"></constructor-arg>
+        <constructor-arg name="name" value="Kobe"></constructor-arg>
+    </bean>
+
+
+    <!--2.constructor-arg index type (+name) value/ref ,可以添加name帮助识别,
+            如果是ref,那么需要提前设置好bean class id引用-->
+    <bean id="manager2" class="cn.cxd.beans.ManagerImpl">
+        <constructor-arg index="0" name = "name" type="java.lang.String" value="Medy"></constructor-arg>
+        <constructor-arg index="1" type="double" value="220.2"></constructor-arg>
+    </bean>
+
+    <bean id="manager3" class="cn.cxd.beans.ManagerImpl">
+        <constructor-arg name="car" ref="car"></constructor-arg>
+        <constructor-arg name="name" value="Kobe"></constructor-arg>
+    </bean>
+
+    <!--3.property name value/ref 需要提供get/set方法-->
+    <bean class="cn.cxd.beans.NiceCarImpl" id="car">
+        <property name="carSimbol" value="ofo"></property>
+        <property name="numberID" value="AE86"></property>
+    </bean>
+
+<!--二、.SpringEL -->
+
+    <!--1. 字符串：#{'xxx'}
+        2. 数字：#{12}  -->
+    <bean id="manager4" class="cn.cxd.beans.ManagerImpl">
+        <constructor-arg name="car" ref="car"></constructor-arg>
+        <constructor-arg name="name" value="#{'Wade'}"></constructor-arg>
+        <constructor-arg name="age"  value="#{22}"></constructor-arg>
+    </bean>
+
+    <!--3. 对象引用：#{beanid}同ref
+        4. 引用的实例方法：#{beanid.method()
+        5. 引用的成员变量：{beanid.age}}
+        6. 类的静态变量/方法：T(className).method()/T(className).MAX-->
+
+    <bean id="manager5" class="cn.cxd.beans.ManagerImpl">
+        <constructor-arg name="car" value="#{car}"></constructor-arg>
+        <constructor-arg name="name" value="#{'James'.toString()}"></constructor-arg>
+        <constructor-arg name="age"  value="#{car.beanAge}"></constructor-arg>
+        <constructor-arg index="2" name="salary" value="#{T(Math).random()}"></constructor-arg>
+    </bean>
+
+<!--四、集合属性的注入(数组,map,list,properties,set)-->
+    <bean class="cn.cxd.beans.NiceCarImpl" id="car2">
+        <property name="carSimbol" value="moby"></property>
+        <property name="numberID" value="A888"></property>
+    </bean>
+
+    <!--1.array []数组，引用类型，可以是使用constructor-arg / property  ref标签中使用bean属性-->
+    <bean id="manager6" class="cn.cxd.beans.ManagerImpl">
+        <constructor-arg name="name" value="#{'bosh'}"></constructor-arg>
+        <constructor-arg name="carsArray">
+            <array>
+                 <ref bean="car"></ref>
+                 <ref bean="car2"></ref>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <!--2.list 引用类型，可以是使用constructor-arg / property-->
+    <bean id="manager7" class="cn.cxd.beans.ManagerImpl">
+        <constructor-arg name="name" value="#{'bosh'}"></constructor-arg>
+        <property name="carsList">
+            <list>
+                <ref bean="car"></ref>
+                <ref bean="car2"></ref>
+            </list>
+        </property>
+    </bean>
+
+
+    <!--3.Set 引用类型，可以是使用constructor-arg / property-->
+    <bean id="manager8" class="cn.cxd.beans.ManagerImpl">
+        <constructor-arg name="name" value="#{'bosh'}"></constructor-arg>
+        <property name="carsSet">
+            <set>
+                <ref bean="car"></ref>
+                <ref bean="car2"></ref>
+            </set>
+        </property>
+    </bean>
+
+    <!--4.Set/List/Array 基础/String类型，可以是使用constructor-arg / property 在value标签体中写值，可以是SpringEL-->
+    <bean id="manager9" class="cn.cxd.beans.ManagerImpl">
+        <constructor-arg name="name" value="#{'bosh'}"></constructor-arg>
+        <property name="girlFriendsNames">
+            <array>
+                <value>girlA</value>
+                <value>#{'girlB'}</value>
+                <value>#{'girlC'}</value>
+            </array>
+        </property>
+    </bean>
+
+
+    <!--5.Map类型 entry  key/key-ref value/value-ref
+        6.Properties props-prop key 在标签体中ref
+        -->
+    <bean id="manager10" class="cn.cxd.beans.ManagerImpl">
+        <constructor-arg name="name" value="#{'bosh'}"></constructor-arg>
+        <property name="carMap">
+            <map>
+                <entry key="1" value-ref="car"></entry>
+                <entry key="2" value-ref="car2"></entry>
+            </map>
+        </property>
+
+        <property name="carsProperties">
+            <props>
+                <prop key="1">car2</prop>
+                <prop key="2">car</prop>
+            </props>
+        </property>
+    </bean>
+
+
+
+
+</beans>
+
+
