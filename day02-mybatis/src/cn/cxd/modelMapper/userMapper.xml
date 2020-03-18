@@ -1,0 +1,155 @@
+<!DOCTYPE mapper    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.cxd.modelMapper.UserMapper">
+
+
+
+
+    <select id="findUserByid" parameterType="int" resultType="user">
+        select * from user where id = #{xxx};
+    </select>
+
+    <select id="findUserByName" parameterType="String" resultType="user">
+        select * from user where username like '%${xxx}%';
+    </select>
+
+
+    <resultMap id="selectMap" type="cn.cxd.model.User">
+        <id property="id" column="_id"></id>
+        <result property="username" column="_username"></result>
+        <result property="password" column="_password"></result>
+    </resultMap>
+    
+
+    
+    <select id="findUserByidUseResultMap" parameterType="int" resultMap="selectMap">
+        select id _id,username _username,password _password from user where id = #{xxx};
+    </select>
+
+    <insert id="insert" parameterType="user" >
+        insert  into user (id,username,password) values ({#id},#{username},#{password});
+    </insert>
+
+
+    <resultMap id="userVoResultMap" type="cn.cxd.modelVo.UserVo">
+        <association property="user" javaType="user">
+            <id property="id" column="u_id"></id>
+            <result property="username" column="u_username"></result>
+            <result property="password" column="u_password"></result>
+        </association>
+    </resultMap>
+
+
+    <select id="findUserByArrayUnionList" parameterType="userVo" resultMap="userVoResultMap">
+        select id u_id,username u_username, password u_password from user where
+        <if test="user != null">
+            <if test="user.username != null and user.username != '' ">
+                username = #{user.username} or
+            </if>
+        </if>
+        <if test="idsArray != null">
+            <foreach collection="idsArray" item="id" open="id in (" close=")" separator="," index="index">
+                #{id}
+            </foreach>
+        </if>
+        or
+        <if test="idsList != null">
+            <foreach collection="idsList" item="id" open="id in (" close=")" separator="," index="index">
+                #{id}
+            </foreach>
+        </if>
+    </select>
+
+    <sql id="usernameDoubleIds">
+
+        <if test="user != null">
+            <if test="user.username != null and user.username != '' ">
+                username = #{user.username} or
+            </if>
+        </if>
+        <if test="idsArray != null">
+            <foreach collection="idsArray" item="id" open="id in (" close=")" separator="," index="index">
+                #{id}
+            </foreach>
+        </if>
+        and
+        <if test="idsList != null">
+            <foreach collection="idsList" item="id" open="id in (" close=")" separator="," index="index">
+                #{id}
+            </foreach>
+        </if>
+    </sql>
+
+    <resultMap id="u_UserResultMap" type="cn.cxd.model.User">
+        <id property="id" column="u_id"></id>
+        <result property="username" column="u_username"></result>
+        <result property="password" column="u_password"></result>
+    </resultMap>
+
+    <select id="findUserByArrayInList" parameterType="userVo" resultMap="u_UserResultMap">
+        select id u_id,username u_username, password u_password from user
+        <where>
+            <include refid="usernameDoubleIds"></include>
+        </where>
+    </select>
+
+
+    <resultMap id="userVoIdResultMap" type="cn.cxd.modelVo.UserVo">
+        <id property="id" column="u_id"></id>
+        <association property="user" javaType="user">
+            <id property="id" column="u_id"></id>
+            <result property="username" column="u_username"></result>
+            <result property="password" column="u_password"></result>
+        </association>
+    </resultMap>
+
+    <resultMap id="userVoArrayResultMap" type="cn.cxd.modelVo.UserVo">
+        <id property="id" column="u_id"></id>
+        <association property="user" javaType="user">
+            <id property="id" column="u_id"></id>
+            <result property="username" column="u_username"></result>
+            <result property="password" column="u_password"></result>
+        </association>
+        <collection property="idsList" ofType="Integer"></collection>
+    </resultMap>
+
+    <select id="findUserByArrayInListRecordIdsToList" parameterType="userVo" resultMap="userVoArrayResultMap">
+        select id u_id,username u_username, password u_password from user
+        <where>
+            <include refid="usernameDoubleIds"></include>
+        </where>
+        
+    </select>
+
+
+    <resultMap id="UserByIdRecordOrders" type="cn.cxd.modelVo.UserVo">
+        <id property="id" column="u_id"></id>
+        <association property="user" javaType="user">
+            <id property="id" column="u_id"></id>
+            <result property="username" column="u_username"></result>
+            <result property="password" column="u_password"></result>
+        </association>
+        <collection property="idsList" ofType="Integer"></collection>
+        <collection property="ordersList" ofType="order">
+            <id property="id" column="o_id"></id>
+            <result property="userId" column="u_id"></result>
+            <result property="productName" column="product"></result>
+            <result property="price" column="price"></result>
+        </collection>
+    </resultMap>
+
+    <select id="findUserByIdRecordOrders" parameterType="userVo" resultMap="UserByIdRecordOrders">
+        SELECT user.id u_id,username u_username, PASSWORD u_password,orders.id o_id, product productName, price
+        FROM USER,orders
+        WHERE user.id = orders.user_id AND user.id = #{id};
+    </select>
+
+
+    <select id="findUserIntegers" parameterType="userVo" resultMap="UserByIdRecordOrders">
+        SELECT user.id u_id,username u_username, PASSWORD u_password,orders.id o_id, product productName, price
+        FROM USER,orders
+        WHERE user.id = orders.user_id AND user.id = #{id};
+    </select>
+</mapper>
