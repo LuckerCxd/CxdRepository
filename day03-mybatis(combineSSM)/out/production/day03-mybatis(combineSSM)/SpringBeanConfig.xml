@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <context:property-placeholder location="classpath:c3p0.properties"></context:property-placeholder>
+
+    <bean class="com.mchange.v2.c3p0.ComboPooledDataSource" id="dataSource">
+        <property name="driverClass" value="${c3p0.driverClass}"></property>
+        <property name="jdbcUrl" value="${c3p0.jdbcUrl}"></property>
+        <property name="user" value="${c3p0.user}"></property>
+        <property name="password" value="${c3p0.password}"></property>
+        <property name="initialPoolSize" value="${c3p0.initialPoolSize}"></property>
+        <property name="maxPoolSize" value="${c3p0.maxPoolSize}"></property>
+        <property name="checkoutTimeout" value="${c3p0.checkoutTimeout}"></property>
+    </bean>
+
+
+    <!--0. 使用这个bean,OpenSession,selectOne-->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="factoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+        <property name="configLocation" value="classpath:MyBatisMapConfig.xml"></property>
+    </bean>
+
+    <!-- 1. 继承SqlSessionDaoSupport,客户端getBean这个dao-->
+    <bean class="cn.cxd.impl.UserDaoImpl" id="dao">
+        <property name="sqlSessionFactory" ref="factoryBean"></property>
+    </bean>
+
+    <!-- 2. 由Spring产生MapperFactory,openSession,getMapper -->
+    <bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="sqlSessionFactory" ref="factoryBean"></property>
+        <property name="mapperInterface" value="cn.cxd.mapper.UserMapper"></property>
+    </bean>
+
+    <!-- 3. 由Spring产生MapperFactory..getBean-->
+    <bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="sqlSessionFactory" ref="factoryBean"></property>
+        <property name="mapperInterface" value="cn.cxd.mapper.UserMapper"></property>
+    </bean>
+
+    <!--4. 自动为包下配置mapperFactory,getBean-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="cn.cxd"></property>
+        <property name="sqlSessionFactoryBeanName" value="factoryBean"></property>
+    </bean>
+
+</beans>
+
+

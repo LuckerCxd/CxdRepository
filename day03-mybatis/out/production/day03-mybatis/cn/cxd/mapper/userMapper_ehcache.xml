@@ -1,0 +1,30 @@
+<!DOCTYPE mapper    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.cxd.mapper.UserMapper">
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+    <resultMap id="userMap" type="user">
+        <id column="u_id" property="id"></id>
+        <result column="u_username" property="username"></result>
+        <result column="u_password" property="password"></result>
+    </resultMap>    
+    
+    
+    <select id="findUserById" parameterType="int" resultMap="userMap" >
+        select id u_id,username u_username,password u_password from user where id = #{xx};
+    </select>
+
+    <select id="findUserByUser" parameterType="user" resultMap="userMap">
+        select id u_id,username u_username,password u_password from user where id = #{id};
+    </select>
+
+    <select id="findUserByInt" parameterType="int" resultMap="userMap">
+        select id u_id,username u_username,password u_password from user where id = #{xx};
+    </select>
+
+    <insert id="insertUser" parameterType="user" >
+        insert into user (id,username,password) values (#{id},#{username},#{password});
+    </insert>
+    
+</mapper>
