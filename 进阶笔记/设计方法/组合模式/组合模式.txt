@@ -1,0 +1,68 @@
+组合模式：
+	用于树式结构，即对象包含对象的问题
+1.定义抽象类，设置通用方法，都要重写的设为抽象
+	只有一部分子类要重写的，设为具体方法	
+2.各自定义具体类继承抽象类，根据需要重写方法
+3.客户端通过对抽象类的操作进而完成树形结构
+
+1.定义抽象类，设置通用方法，都要重写的设为抽象
+	只有一部分子类要重写的，设为具体方法
+	abstract class Node{
+		protected String nodeName;
+		public abstract void display();
+		public void addNode(Node node) {};
+		public Node(String nodeName) {
+			this.nodeName = nodeName;
+		}
+	}
+2.定义具体类继承抽象类，根据需要重写方法
+	class Filer extends Node{
+		public Filer(String nodeName) {
+			super(nodeName);
+		}
+		@Override
+		public void display() {
+			System.out.println(nodeName);
+		}
+	}
+	
+	class Dictory extends Node{
+		public Dictory(String nodeName) {
+			super(nodeName);
+		}
+		private List<Node> nodeList = new ArrayList<>();
+		
+		@Override
+		public void addNode(Node node) {
+			nodeList.add(node);
+		}
+		
+		@Override
+		public void display() {
+			System.out.println(nodeName);
+			for(Node node: nodeList) {
+				node.display();
+			}
+		}
+	}	
+3.客户端通过对抽象类的操作进而完成树形结构
+	public static void createTree(Node node) {
+		File file = new File(node.nodeName);
+		File[] files = file.listFiles();
+		for(File f:files) {
+			if(f.isFile()) {
+				Filer filer = new Filer(f.getAbsolutePath());
+				node.addNode(filer);
+			}
+			if(f.isDirectory()) {
+				Dictory dictory = new Dictory(f.getAbsolutePath());
+				node.addNode(dictory);
+				createTree(dictory);
+			}
+		}
+	}
+	public static void main(String[] args) {
+		Node node = new Dictory("D:\\7-zip");
+		createTree(node);
+		node.display();
+	}		

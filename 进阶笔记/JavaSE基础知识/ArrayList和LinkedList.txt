@@ -1,0 +1,2 @@
+ArrayList 适合查找，适合for循环查找，因为实现了RandomAccess接口,基于数组
+LinkedList适合插删，更占内存，有前后两个指向。

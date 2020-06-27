@@ -1,0 +1,44 @@
+
+<html>
+<head>
+<title>页面</title>
+</head>
+<body>
+
+
+
+<form action="http://localhost:8080/JavaServletJSP/servlet.do" method="get" id = "registerForm">
+<table align = "center" border="1" cellspacing = "0" width = "230">
+	<caption>  用户注册  </caption>
+		<tr>
+			<td><label for = "inputName">学号： </label></td>
+			<td ><input type = "text" required="required" placeholder="输入学号" name = "sno" id = "inputName" ></td>
+		</tr>	
+		<tr>
+			<td><label for = "inputPassword">姓名： </label></td>
+			<td ><input type = "text" required="required" placeholder="输入姓名" name = "name" id = "inputPassword"></td>
+		</tr>
+		
+		<tr>
+			<td colspan = "2" >
+				<input type = "submit"  value="提交" id = "submitForm">
+				<input type = "button"  value="重置" id = "clearForm">
+			</td>
+		</tr>
+	
+	</table>
+
+</form>
+
+<script>
+	
+	window.onload = function(){
+		var clearForm = document.getElementById("clearForm");
+		clearForm.onclick = function(){
+			document.getElementById("registerForm").reset();
+		}
+	}
+</script>
+
+</body>
+</html>

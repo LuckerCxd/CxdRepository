@@ -1,0 +1,23 @@
+/*
+     * try{
+     * 		
+     * 
+     * }catch(Exception){
+     * 
+     * 	
+     * 
+     * }finally{
+     * 		
+     * }
+     * System.out.println("it is end");
+     * return "A"；
+     * 
+     * 
+     * 在try中如果抛出能被catch捕获的异常，那么程序从try中抛出Exception的位置，
+     * 转向可捕获到该Exception的catch块中，如果在该catch块中又再一次抛出新的Exception并且没有新的try-catch-finally处理的话
+     * 那么程序从catch抛出Exception的位置转向finally块，随后结束，不会处理finally块后的语句。
+     * 如果,在catch块中没有再抛出新的Exception,并且如果catch中没有return语句，那么程序执行完完整的catch后转向finally块，再处理finally块后的语句，
+     * 如果在catch中已经有了return语句，那么程序执行到return后转向finally块，不处理finally块后的语句。
+	其实也就是说，不管是return,还是exception，这两种的效果都是停止下一步语句的执行，完成finally块已经是仁至义尽了。
+     * 
+     */

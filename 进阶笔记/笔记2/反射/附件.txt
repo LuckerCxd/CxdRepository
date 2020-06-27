@@ -1,0 +1,35 @@
+¸½¼þ£º	
+public class Calculate {
+	private int a=5,b=3;
+	private String name="helloWorld";
+	public String ya = "a";
+	public String ua = "a";
+	public String ia = "a";
+	public static int age = 10;
+	
+	public int add(int a,int b) {
+		return a+b;
+	}
+	public int sub(int a,int b) {
+		return a-b;
+	}
+	private String info() {
+		return "it private func";
+	}
+	public Calculate(String name,int priority) {
+		this.name = name;
+		System.out.println(name+" is a priority "+priority+" calculator");
+	}
+	public Calculate(String name,String priority) {
+		this(name,Integer.parseInt(priority));
+	}
+	
+	public Calculate() {
+		super();
+	}
+	@Override
+	public String toString() {
+		return "Calculate [a=" + a + ", b=" + b + ", name=" 
+			+ name + ", ya=" + ya + ", ua=" + ua + ", ia=" + ia + "]";
+	}
+}

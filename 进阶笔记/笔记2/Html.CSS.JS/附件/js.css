@@ -1,0 +1,48 @@
+@charset "UTF-8";
+
+
+/*
+
+
+td{
+	border : 1px solid red;
+	
+}
+
+img{
+	border : 1px solid red;
+	width : 100px;
+	height : 180px;
+}
+
+div {
+	border : 1px solid red;
+}
+#id1{
+	width : 200px;
+	height: 200px;
+}
+
+#id2{
+	width : 100px;
+	height: 100px;
+}
+
+*/
+
+
+table{
+	border : 1px solid blue;
+}
+tr{
+	border: 1px solid blue;
+	text-align :center;	
+}
+
+td,th{
+	width : 100px;
+}
+
+
+
+

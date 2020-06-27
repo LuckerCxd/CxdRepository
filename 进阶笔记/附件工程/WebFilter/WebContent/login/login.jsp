@@ -1,0 +1,79 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+<!DOCTYPE html>
+	<html lang="zh-CN">
+	  <head>
+	    <metacharset="ISO-8859-1">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+	    <title>Bootstrap 101 Template</title>
+	    <link href="../css/bootstrap.min.css" rel="stylesheet">
+	    <style type="text/css">
+	    .place{
+	    	font-size: 30px;
+	    	border: 2px solid black;
+	    	padding-top: 100px;
+	    	padding-bottom: 100px;
+	    }
+	    .form-group{
+	    	align-content: center;
+	    	margin-top: 40px;
+	    }
+	    .login{font-size: 25px;}
+	    </style>
+	    
+		<!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+	    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+	    <!--[if lt IE 9]>
+	      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+	      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+	    <![endif]-->
+	  </head>
+	  <body>
+	    <form action="http://localhost:8080/WebFilter/LoginServlet" class = "form-horizontal place"  method = "post">
+			<div class="form-group">
+				<label for = "user"  class = "col-sm-5 control-label" >登录:</label>
+				<div class = "col-sm-5">
+				<input id = "user" name = "username" placeholder="输入用户名"></input>
+				</div>
+		 	</div>	
+		  <div class="form-group">
+				<label for = "pwd" class = "col-sm-5 control-label">密码:</label> 
+				<div class = "col-sm-5">
+					<input id = "pwd" type = "password" name = "password" placeholder="输入密码"></input>
+				</div>
+		  </div>
+		  
+	   		<div class = "col-sm-5 form-group"> </div>
+	   		<button type="submit" class="btn btn-danger col-sm-3 login" >登录</button>
+		</form>
+		
+		
+		<div class = "col-sm-5 form-group">
+		
+		${sessionScope.tip}
+		
+		
+		</div>
+		
+		<div class = "col-sm-5 form-group">
+		
+		<%
+		
+		request.setAttribute("name","hello");
+		
+		%>
+		
+		
+		</div>
+		
+	    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+	    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+	    <script src="../js/bootstrap.min.js"></script>
+	  </body>
+	</html>
+
+
+
+

@@ -1,0 +1,295 @@
+<!DOCTYPE mapper    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.cxd.mapper.EmployeeMapper">
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+    <insert id="insert">
+        insert into employee (id,name,gender,email,last_name,dept_id)
+            values (#{id},#{name},#{gender},#{email},#{lastName},#{deptId});
+    </insert>
+
+    <insert id="insertUseKey" useGeneratedKeys="true" keyProperty="id">
+        insert into employee (name,gender,email,last_name,dept_id)
+            values (#{name},#{gender},#{email},#{lastName},#{deptId});
+    </insert>
+
+    <select id="selectById" resultType="cn.cxd.model.Employee">
+        select id,name,last_name ,gender,email,dept_id from employee where id = #{id}
+    </select>
+
+    <select id="selectList" resultType="cn.cxd.model.Employee">
+        select id,name,last_name ,gender,email,dept_id from employee where id >= #{id}
+    </select>
+
+
+    <select id="selectArray" resultType="cn.cxd.model.Employee">
+        select id,name,last_name ,gender,email,dept_id from employee where id >= #{id}
+    </select>
+
+    <select id="selectCollection" resultType="cn.cxd.model.Employee">
+        select id,name,last_name ,gender,email,dept_id from employee where id >= #{id}
+    </select>
+
+    <select id="selectMap" resultType="map">
+        select id,name,last_name ,gender,email,dept_id from employee where id = #{id}
+    </select>
+
+    <select id="selectEmployeeMap" resultType="cn.cxd.model.Employee">
+        select id,name,last_name ,gender,email,dept_id from employee where id > #{id}
+    </select>
+
+    <select id="selectMultiParm" resultType="cn.cxd.model.Employee">
+        select id,name,last_name ,gender,email,dept_id from employee where id >= #{id} and gender = #{gender}
+    </select>
+
+    <select id="selectOrderBy" resultType="cn.cxd.model.Employee">
+        select id,name,last_name,gender,email,dept_id from employee where id >= #{id,jdbcType=NUMERIC,numericScale=2} order by ${column}
+    </select>
+
+    <resultMap id="simpleEmployee" type="cn.cxd.model.Employee">
+        <id property="id" column="id"></id>
+        <result property="lastName" column="last_name"></result>
+        <result property="gender" column="gender"></result>
+        <result property="deptId" column="dept_id"></result>
+        <result property="name" column="name"></result>
+        <result property="email" column="email"></result>
+    </resultMap>
+
+    <select id="selectSimpleMap" resultMap="simpleEmployee">
+        select * from Employee where id >= #{id}
+    </select>
+
+
+    <resultMap id="withDeptMap" type="cn.cxd.vo.EmployeeWithDept">
+        <id property="id" column="id"></id>
+        <result property="lastName" column="last_name"></result>
+        <result property="gender" column="gender"></result>
+        <result property="deptId" column="dept_id"></result>
+        <result property="name" column="name"></result>
+        <result property="email" column="email"></result>
+        <association property="department" javaType="cn.cxd.model.Department">
+            <id property="deptId" column="dept_id"></id>
+            <result property="deptName" column="dept_name"></result>
+        </association>
+    </resultMap>
+
+    <select id="selectEmployeeWithDept" resultMap="withDeptMap">
+        select e.id,last_name,gender,e.name,email,d.id dept_id,d.name dept_name
+        from employee e, department d
+        where e.dept_id = d.id and e.id = #{id}
+    </select>
+
+
+    <resultMap id="stepResultMap" type="cn.cxd.vo.EmployeeWithDept">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="email" property="email"></result>
+        <result column="last_name" property="lastName"></result>
+        <result column="gender" property="gender"></result>
+        <association property="department" javaType="cn.cxd.model.Department"
+                     select="cn.cxd.mapper.DepartmentMapper.selectStep" column="dept_id"/>
+    </resultMap>
+
+    <select id="selectEmployeeStep" resultMap="stepResultMap">
+        select * from employee where id = #{id}
+    </select>
+
+    <select id="selectDepartmentStep" resultType="cn.cxd.model.Employee">
+        select id,gender,name,email,last_name lastName,dept_id deptId from employee where dept_id = #{dept_id}
+    </select>
+
+
+    <resultMap id="boyEmployeeMap" type="cn.cxd.model.Employee">
+        <result column="last_name" property="lastName"></result>
+        <result column="last_name" property="email"></result>
+    </resultMap>
+
+    <resultMap id="discriminatorMap" type="cn.cxd.model.Employee">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="last_name" property="lastName"></result>
+        <result column="email" property="email"></result>
+        <result column="dept_id" property="deptId"></result>
+        <result column="gender" property="gender"></result>
+        <discriminator javaType="int" column="gender">
+            <case value="1" resultMap="boyEmployeeMap"></case>
+            <case value="2" resultType="cn.cxd.model.Employee">
+                <result column="email" property="lastName"></result>
+            </case>
+        </discriminator>
+    </resultMap>
+
+    <select id="selectEmployeeDiscriminator" resultMap="discriminatorMap">
+        select id,gender,name,email,last_name,dept_id from employee where id = #{id};
+    </select>
+
+    <select id="selectByWhereStat" resultType="cn.cxd.model.Employee">
+        select * from employee where 1 = 1
+        <if test="deptId != null">
+            and dept_id = #{deptId}
+        </if>
+        <if test="gender != null and gender != ''">
+            and gender = #{gender}
+        </if>
+    </select>
+
+    <select id="selectByWhereStat2" resultType="cn.cxd.model.Employee">
+        select * from employee
+        <where>
+            <if test="deptId != null">
+                and dept_id = #{deptId}
+            </if>
+            <if test="gender != null and gender != ''">
+                and gender = #{gender}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByTrimStat" resultType="cn.cxd.model.Employee">
+        select * from employee
+        <trim prefix="where" prefixOverrides="and |or ">
+            <if test="deptId != null">
+                and dept_id = #{deptId}
+            </if>
+            <if test="gender != null and gender != ''">
+                and gender = #{gender}
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectByChooseStat" resultType="cn.cxd.model.Employee">
+        select * from employee
+        <where>
+            <choose>
+                <when test="gender == 1">
+                    id = 2
+                </when>
+                <when test="gender == 2">
+                    id = 3
+                </when>
+                <otherwise>
+                    id = 1
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <update id="updateBySetStat">
+        update employee
+        <set>
+            <if test="deptId != null">
+                dept_id = #{deptId},
+            </if>
+            <if test="gender != null and gender != ''">
+                gender = #{gender},
+            </if>
+        </set>
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+        </where>
+    </update>
+
+    <update id="updateByTrimStat">
+        update employee
+        <trim prefix="set" prefixOverrides=",">
+            <if test="deptId != null">
+                dept_id = #{deptId}
+            </if>
+            <if test="gender != null">
+                ,gender = #{gender}
+            </if>
+        </trim>
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+        </where>
+    </update>
+
+    <select id="selectForeachStat" resultType="cn.cxd.model.Employee">
+        select id,name,email,gender,last_name lastName,dept_id deptId from employee
+        <where>
+            <foreach collection="list" item="id" separator="," open="id in (" close=")">
+                #{id}
+            </foreach>
+        </where>
+    </select>
+
+    <insert id="insertForeachStat1" keyProperty="id" useGeneratedKeys="true">
+        insert into employee
+        <foreach collection="list" item="e" separator=","
+                 open="(email,gender,last_name,dept_id,name) values">
+            (#{e.email},#{e.gender},#{e.lastName},#{e.deptId},#{e.name})
+        </foreach>
+    </insert>
+
+    <insert id="insertForeachStat2" keyProperty="id" useGeneratedKeys="true">
+        <foreach collection="collection" item="e" separator=";">
+            insert into employee (email,gender,last_name,dept_id,name) values
+            (#{e.email},#{e.gender},#{e.lastName},#{e.deptId},#{e.name})
+        </foreach>
+    </insert>
+
+    <select id="selectForeachStat2" resultType="cn.cxd.model.Employee">
+        select id,name,email,gender,last_name lastName,dept_id deptId from employee
+        <where>
+            <foreach collection="idList" item="id" separator="," open="id in (" close=")">
+                #{id}
+            </foreach>
+            <if test="gender != null and gender != ''">
+                and gender = #{gender}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectForeachStat3" resultType="cn.cxd.model.Employee">
+        select id,name,email,gender,last_name lastName,dept_id deptId from employee
+        <where>
+            <foreach collection="param1" item="id" separator="," open="id in (" close=")">
+                #{id}
+            </foreach>
+            <if test="gender != null and gender != ''">
+                and gender = #{gender}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectLike" resultType="cn.cxd.model.Employee">
+        select id,name,email,gender,last_name lastName,dept_id deptId from employee
+        <where>
+            name like #{name}
+        </where>
+    </select>
+
+    <select id="selectLike2" resultType="cn.cxd.model.Employee">
+        select id,name,email,gender,last_name lastName,dept_id deptId from employee
+        <where>
+            name like "%${name}%"
+        </where>
+    </select>
+
+    <select id="selectLike3" resultType="cn.cxd.model.Employee">
+        <bind name="partName" value="'%'+name+'%'"/>
+        select id,name,email,gender,last_name lastName,dept_id deptId from employee
+        <where>
+            name like #{partName}
+        </where>
+    </select>
+
+    <sql id="selectItems">
+        id,name,email,gender,last_name lastName,dept_id deptId
+    </sql>
+
+    <sql id="fromWhereIdCondition">
+        from employee where id = #{id}
+    </sql>
+
+    <select id="selectSqlStat" resultType="cn.cxd.model.Employee">
+        select
+        <include refid="selectItems"></include>
+        <include refid="fromWhereIdCondition"></include>
+    </select>
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE configuration  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="c3p0.properties"></properties>
+    <settings>
+        <setting name="cacheEnabled" value="true"/>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+    <environments default="test">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="cn.cxd.custom_config.C3P0DatasourceFactory">
+                <property name="driverClass" value="${driverClass}"/>
+                <property name="jdbcUrl" value="${jdbcUrl}"/>
+                <property name="user" value="${user}"/>
+                <property name="password" value="${password}"/>
+                <property name="maxPoolSize" value="${maxPoolSize}"/>
+                <property name="initialPoolSize" value="${initialPoolSize}"/>
+            </dataSource>
+        </environment>
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driverClass}"/>
+                <property name="url" value="${jdbcUrl}"/>
+                <property name="username" value="${user}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <databaseIdProvider type="DB_VENDOR">
+        <property name="Mysql" value="mysql"/>
+    </databaseIdProvider>
+    <mappers>
+        <mapper resource="cn/cxd/mapper/EmployeeMapper.xml"></mapper>
+        <mapper class="cn.cxd.mapper.DepartmentMapper"></mapper>
+    </mappers>
+</configuration>

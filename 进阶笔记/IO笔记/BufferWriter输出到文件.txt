@@ -1,0 +1,9 @@
+BufferedWriter bw = new BufferedWriter(new FileWriter(".\\bugs.txt"));
+bw.append(m.getName() + "() 出现异常");
+bw.newLine();
+bw.append("异常名称:  "+ e.getCause().getClass().getSimpleName());
+bw.newLine();
+bw.append("异常原因：  "+e.getCause().getMessage());
+bw.newLine();
+
+

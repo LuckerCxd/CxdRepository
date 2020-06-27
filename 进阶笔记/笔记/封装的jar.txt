@@ -1,0 +1,7 @@
+commons-beanutils-1.8.0.jar
+commons-logging-1.2.jar
+beanutil.populate
+Map<String, String[]> map = req.getParameterMap();
+		Student student = new Student();
+		try {
+			BeanUtils.populate(student, map);

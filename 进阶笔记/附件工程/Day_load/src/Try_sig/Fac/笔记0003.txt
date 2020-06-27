@@ -1,0 +1,132 @@
+建造者模式 
+	用于组合类，不再如同抽象工厂的独立产品
+1.定义产品类接口，该接口定义了产品的通用方法，方法可以有其他接口的返回类型
+2.如果产品类接口有其他接口返回类型的通用方法，则定义其他接口以及实现接口的具体类
+3.定义抽象类继承产品类接口，重写可以确认的功能，其余不动，可以有多种不同的抽象产品类
+4.定义具体产品类，继承抽象产品类，并实现剩余的抽象函数
+5.定义一个Suits套装类，内部设置LinkedList，具备add方法(可以用于组合一系列的具体产品类)
+6.定义一个Builder类，通过Suits类的add方法，确定出具体的产品组合函数
+7.客户端生成Builder类实例，调用其产品组合函数
+
+	
+1.定义产品类接口，该接口定义了产品的通用方法，方法可以有其他接口的返回类型	
+	public interface EletronicProduct {
+		public abstract Cpu cpuInfo();
+		public abstract Brand brandInfo();
+		public abstract float priceInfo();
+	}
+	
+2.如果产品类接口有其他接口返回类型的通用方法，则定义其他接口以及实现接口的具体类	
+	public interface Cpu {
+		public abstract String modelName();
+	}
+	public interface Brand {
+		public abstract String BrandName();
+	}
+	class GaoTong implements Cpu{
+		@Override
+		public String modelName() {
+			return "高通865";
+		}
+	}
+	class XiaoLong implements Cpu{
+		@Override
+		public String modelName() {
+			return "骁龙975";
+		}
+	}
+	
+	class HuaWei implements Brand{
+		@Override
+		public String BrandName() {
+			return "华为";
+		}
+	}
+	
+	class Apple implements Brand{
+		@Override
+		public String BrandName() {
+			return "Iphone";
+		}
+	}
+	
+3.定义抽象类继承产品类接口，重写可以确认的功能，其余不动，可以有多种不同的抽象产品类	
+	abstract class Phone implements EletronicProduct{
+		@Override
+		public Brand brandInfo() {
+			return new HuaWei();
+		}
+	}
+	
+	abstract class PC implements EletronicProduct{
+		@Override
+		public Brand brandInfo() {
+			return new HuaWei();
+		}
+	}	
+	
+4.定义具体产品类，继承抽象产品类，并实现剩余的抽象函数
+	class BigPhone extends Phone{
+		@Override
+		public Cpu cpuInfo() {
+			return new GaoTong();
+		}
+		@Override
+		public float priceInfo() {
+			return 1000;
+		}
+	}
+	
+	class FastPC extends PC{
+		@Override
+		public Cpu cpuInfo() {
+			return new XiaoLong();
+		}
+		@Override
+		public float priceInfo() {
+			return 6000;
+		}
+	}	
+	
+5.定义一个Suits套装类，内部设置LinkedList，具备add方法(可以用于组合一系列的具体产品类)
+	class Menu{
+		private LinkedList<EletronicProduct> linkedList = new LinkedList<>();
+		public void add(EletronicProduct temp) {
+			linkedList.add(temp);
+		}
+		public float cost() {
+			float re = 0;
+			for(EletronicProduct i:linkedList) {
+				re += i.priceInfo();
+			}
+			return re;
+		}
+		public void show() {
+			StringBuilder stringBuilder = new StringBuilder();
+			for(EletronicProduct i:linkedList) {
+				stringBuilder.append(i.cpuInfo().modelName());
+				stringBuilder.append(i.brandInfo().BrandName());
+				stringBuilder.append("  ");
+			}
+			System.out.println(stringBuilder);
+		}
+	}	
+	
+6.定义一个Builder类，通过Suits类的add方法，确定出具体的产品组合函数
+	class MenuBuilder{
+		public Menu preBigHigh() {
+			Menu menu = new Menu();
+			menu.add(new FastPC());
+			menu.add(new FastPC());
+			return menu;
+		}
+	}
+	
+7.客户端生成Builder类实例，调用其产品组合函数
+	public static void main(String[] args) {
+		MenuBuilder menuBuilder = new MenuBuilder();
+		Menu menu = menuBuilder.preBigHigh();
+		menu.show();
+		System.out.println(menu.cost());
+		
+	}			

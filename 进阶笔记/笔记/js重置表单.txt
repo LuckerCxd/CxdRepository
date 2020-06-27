@@ -1,0 +1,4 @@
+document.getElementById("registerForm").reset();
+
+
+dom 不要自己赋值成var 再reset（）

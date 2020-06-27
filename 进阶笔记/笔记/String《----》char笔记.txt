@@ -1,0 +1,7 @@
+1.  字符数组  -> 字符串  c  -> s          bString = new String(aCharArray);
+2.  字符串 ->  字符数组  s -> c           char[] aCharArray = aString.toCharArray();
+3.  字符   -> 字符串                      string = char + "";       
+       4. String.indexOf(str)  :  
+       		可以搜索整个字符串的 某一个子串,内部用的是Char[] 来查, 返回的是起始下标
+       5. String.CharAt(int)   :
+       		可以查找int的下标的字符 , 内部是char[] ,所以返回的也是字符

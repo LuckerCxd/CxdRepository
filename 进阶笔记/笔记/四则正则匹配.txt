@@ -1,0 +1,33 @@
+
+	public static void input_oper(Result result) {
+		Scanner input = new Scanner(System.in);	
+		boolean bool_op = true;
+		String in_str = null;
+		Pattern pattern;
+		Matcher matcher;
+		String[] regex = {"[+]","[-]","[*]","[/]"};
+		int index = 0;
+		
+		while (bool_op ) {
+			System.out.print("ÊäÈëÔËËã·û(+-*/)  : ");
+			in_str = input.nextLine();
+			for(int i=0;i<4;i++) {
+				pattern = Pattern.compile(regex[i]);
+				matcher = pattern.matcher(in_str);
+				if(matcher.matches()) {
+					bool_op = false;
+					index = i;
+					break;
+				}
+			}
+		}
+		result.op = regex[index].charAt(1)+"";
+		
+	}
+
+
+	class Result {
+	public static double a = 0;
+	public static double b = 0;
+	public static String op = null;
+	}

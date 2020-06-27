@@ -1,0 +1,101 @@
+option{
+	color : red;
+}
+
+
+div{
+	border : 1px solid;
+}
+
+
+#small{
+	width : 100px;
+	height : 100px;
+	margin :auto;    /*1.所有 4 个外边距都是 50px*/
+}
+
+#big{
+	width : 200px;
+	height : 200px;
+	/*box-sizing:border-box;  
+	padding : 50px;   /*2.所有 4 个内边距都是 50px*/
+	/*
+	固定盒子大小，避免调整内边距影响盒子的大小
+	*/
+}
+
+.c1{
+	float:left;
+}
+
+.c2{
+	float:left;
+}
+.c3{
+	float:right;
+}
+
+
+
+/*
+
+font{   
+	color : blue;
+	font-size :30px;
+	text-align :center;
+	line-height:1;
+}
+
+
+div{
+	
+	border : 5px solid;
+	height : 200px;
+	width : 200px;
+	background-color:blue
+	
+}
+
+a:link{
+	color : "grey";
+}
+
+
+a:hover{
+	color : "yellow";
+}
+a:active{
+	color : "green";
+}
+a:visited{
+	color : "red";
+}
+
+font[size = "10"]{  //元素属性选择器 作用于具备指定属性值的标签
+	color : #ff0080;
+	border:5px solid;
+}
+
+
+font>b{   //父选择器 作用于 b外部的font标签
+	border:5px solid;
+	
+}
+
+
+
+font b{   //子选择器 作用于 font内部的b标签 
+	color : blue;
+}
+
+div,font{     //并集选择器 作用于 font或div标签  
+	color : blue;
+}
+
+
+
+*{
+	color : red;
+}
+*/
+

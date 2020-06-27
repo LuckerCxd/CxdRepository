@@ -1,0 +1,138 @@
+泛型：泛型类、泛型接口、泛型方法
+1. 泛型类：
+
+	class Box<T>{
+	private T t;
+	public Box(T t) {
+		this.t = t;
+	}
+	public T getContent() {
+		System.out.println("t.hashcode"+t.hashCode());
+		return t;
+	}
+	public void cat() {
+		if(this.t instanceof Integer) {
+			System.out.println("it num");
+		}
+	}
+}
+	注意：
+		1.构造器:  this.t = t;  
+			对于基础类型是不可以的.得是一个引用类型..可以接收基础类型的包装类型
+			包装类型会自动拆包，可以满足到基础类型的属性稳定问题，<int,float,double,String>
+			也就是说：
+				Integer integer = 5;
+				Box<Integer> iBox  = new Box<Integer>(integer);
+				iBox.getContent();
+				integer  =  new Integer(6);
+				iBox.getContent();
+				
+				运行结果为：
+					5
+					5		
+			但是如果是创建的类：那么随着实例的属性变化，泛型类的成员泛型也会变化：
+			也就是说：
+				D5_Dog tempDog =  new D5_Dog(1, "abby");
+				Box<D5_Dog>dBox = new Box(tempDog);
+				dBox.getContent();
+				tempDog.setName("awway");
+				dBox.getContent();
+				
+				运行结果为：
+					D5_Dog [age=1, name=abby]
+					D5_Dog [age=1, name=awway]
+			然而这并不只是泛型类的原因，任何类的成员为引用类型，就会有这种现象。
+			但是如果是   同一个变量名 =  new xxx(xxx),则不会发生这种现象--Java里都是指针的概念
+		
+		2.this.t = t;
+			本质上只是在构造器接收了一个参数内容，并以此作instanceof判断，
+			整个类型所知道的只是 当前所接收到的这个参数T实例  而已..
+			其他函数的T返回类型，实际上也就是返回  传入的参数内容t
+			但是可以说明的是：T 可以是 用 newInstance()出来.
+				无参类：	Class类实例.newInstance()
+				有参类：  Constructor<T> constructor = 类实例.getDeclaredConstructor(new Class[] {int.class,String.class})
+						constructor.newInstance(new Object[]{2,"a"});
+			如果尝试构造器是需要对 t 作instanceof判断来生成的，可以说是很low。
+				例如：
+					private T t;
+					public T next() {
+						if(t instanceof Integer)	
+							return (T) new Integer(new Random().nextInt(100));
+						return null;
+					}
+				
+			
+2.泛型接口：
+	实现接口的类：1.实现接口传入 泛型实参类型     2. 实现接口不传入 泛型实参类型
+	1.实现接口传入 泛型实参类型
+		public interface generator<T> 
+		class NoDefineInterface<T> implements generator<String>
+			private String string = null;
+			@Override
+			public String next() {
+				return "abc";
+			}
+	2.实现接口不传入 泛型实参类型
+		public interface generator<T> 
+		class NoDefineInterface<T> implements generator<T>
+			private T t;
+			@Override
+			public T next() {
+				return null;
+			}
+
+3.泛型方法：
+	格式：
+		public <T> T foo(T t) {
+			return t;
+		}
+		
+		
+4.生成器 --涉及反射
+注意说明的是：T 可以是 用 newInstance()出来.因此可以是一个生成器
+	无参类：	Class类实例.newInstance()
+	有参类：  Constructor<T> constructor = 类实例.getDeclaredConstructor(new Class[] {int.class,String.class})
+			constructor.newInstance(new Object[]{2,"a"});
+	0.接口
+public interface generator<T> {
+	public abstract T next();
+}
+	
+	1.主函数
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
+public class Try_generator<T> implements generator<T>{
+	private Class<T> type;
+	@Override
+	public T next() {
+		try {
+			Constructor<T> constructor = type.getDeclaredConstructor(new Class[] {int.class,String.class});
+			try {
+				return constructor.newInstance(new Object[]{2,"a"});
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	public Try_generator(Class<T> type) {
+		super();
+		this.type = type;
+	}
+	public static <T>Try_generator<T> create_Generator(Class<T> type){
+		return new Try_generator<>(type);
+	}
+	public static void main(String[] args) {
+		Try_generator<D5_Dog> temp = Try_generator.create_Generator(D5_Dog.class);
+		
+		System.out.println(temp.next());
+	}
+}
+

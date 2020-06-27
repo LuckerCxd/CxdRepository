@@ -1,0 +1,99 @@
+1.数组长度允许为0 , 为0并不等于null
+	代码:
+		int[] array_int;
+		int[] test_array = null;
+		array_int = new int[0];
+		System.out.println(array_int);
+		System.out.println(test_array);
+	结果:
+		[I@7852e922
+		null
+		
+	源码:
+	Arrays.toString()  
+	public static String toString(int[] a) {
+        if (a == null)
+            return "null";
+        int iMax = a.length - 1;
+        if (iMax == -1)
+            return "[]";
+
+        StringBuilder b = new StringBuilder();
+        b.append('[');
+        for (int i = 0; ; i++) {
+            b.append(a[i]);
+            if (i == iMax)
+                return b.append(']').toString();
+            b.append(", ");
+        }
+    }
+    
+    
+    
+2.static main 接收参数args 为cmd 命令行的输入 args[] 都是参数 0,第一个参数,1第二个参数
+	public static void main(String[] args) {
+		ara_to_ara();
+		for(String temp : args) {
+			System.out.println(temp);
+		}
+	}	
+	
+	
+3.数组 显示： 也许不用for each:all{} 可以尝试print Arrays.toString(xx_array)
+	int[] a = {1,2,3,4,5};
+	int[] b = new int[10];
+	System.arraycopy(a, 0, b, 2, a.length);
+	System.out.println( Arrays.toString(b) );
+	
+4.数组 复制： 
+	1.  System.arraycopy(源数组, 开始位置, 目标数组,开始位置,个数) 本地静态方法, copy_a 要new 空间
+			public static native void arraycopy(Object src,  int  srcPos,
+                                        Object dest, int destPos,
+                                        int length);
+            
+                                        
+     2.Arrays.copyOf(源数组,个数) 基于System.arraycopy, copy_a不用new 空间
+     	public static <T,U> T[] copyOf(U[] original, int newLength, Class<? extends T[]> newType) {
+		    @SuppressWarnings("unchecked")
+		    T[] copy = ((Object)newType == (Object)Object[].class)
+		        ? (T[]) new Object[newLength]
+		        : (T[]) Array.newInstance(newType.getComponentType(), newLength);
+		    System.arraycopy(original, 0, copy, 0,
+		                     Math.min(original.length, newLength));
+		    return copy;
+		}
+
+	 3.Arrays.copyOfRange(源数组,起始位置,终止位置) 基于System.copy, copy_a不用new 空间
+	 	public static <T,U> T[] copyOfRange(U[] original, int from, int to, Class<? extends T[]> newType) {
+		    int newLength = to - from;
+		    if (newLength < 0)
+		        throw new IllegalArgumentException(from + " > " + to);
+		    @SuppressWarnings("unchecked")
+		    T[] copy = ((Object)newType == (Object)Object[].class)
+		        ? (T[]) new Object[newLength]
+		        : (T[]) Array.newInstance(newType.getComponentType(), newLength);
+		    System.arraycopy(original, from, copy, 0,
+		                     Math.min(original.length - from, newLength));
+		    return copy;
+		}
+	4. xxarrays.clone() 本地方法.不用new空间,直接全部复制
+		 protected native Object clone() throws CloneNotSupportedException;
+
+5.二维数组的赋值
+	应该使用for each:all 和 for(int i)两种   
+		第一层 使用for each:all   第二层 使用 for(int i)
+		public static int[][] set_multi_array() {
+			int[][] a = new int[3][4];
+			int count = 0;
+			for(int[]i:a) {
+				for (int j = 0;j<i.length;j++) {
+					i[j] = count;
+					count ++;
+				}
+			}
+			return a;
+		}
+
+6.
+
+

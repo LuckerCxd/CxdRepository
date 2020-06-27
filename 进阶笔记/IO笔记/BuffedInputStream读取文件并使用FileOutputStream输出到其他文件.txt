@@ -1,0 +1,6 @@
+	BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file));
+	FileOutputStream fileOutputStream = new FileOutputStream(new File("D:\\XD学习\\练习本\\jjj.txt"));
+	byte[] bs = new byte[4096];
+	while(bufferedInputStream.read(bs) != -1) {
+		fileOutputStream.write(bs);
+	}

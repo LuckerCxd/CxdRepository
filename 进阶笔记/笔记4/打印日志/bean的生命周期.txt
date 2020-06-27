@@ -1,0 +1,103 @@
+---1.如果有类实现了BeanFactoryPostProcessor接口，
+	需要重写postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory)
+	其中：configurableListableBeanFactory : 
+	org.springframework.beans.factory.support.DefaultListableBeanFactory@48524010: defining beans [UserService8,cn.cxd.beanLives.MyBeanFactoryPostProcessor#0,cn.cxd.beanLives.MyInstantiationAwareBeanPostProcessor#0]; root of factory hierarchy
+
+1:BeanFactoryPostProcessor(postProcessBeanFactory) configurableListableBeanFactory : org.springframework.beans.factory.support.DefaultListableBeanFactory@48524010: defining beans [UserService8,cn.cxd.beanLives.MyBeanFactoryPostProcessor#0,cn.cxd.beanLives.MyInstantiationAwareBeanPostProcessor#0]; root of factory hierarchy
+实现了BeanFactoryPostProcessor接口的类：root of factory hierarchy工程层次结构的根
+
+---2.如果有类实现了InstantiationAwareBeanPostProcessor接口，
+	重写 postProcessBeforeInstantiation(Class<?> aClass, String s)
+	其中：aClass:class cn.cxd.beans.UserServiceImpl,s:UserService8
+	
+2.InstantiationAwareBeanPostProcessor(postProcessBeforeInstantiation):aClass:class cn.cxd.beans.UserServiceImpl,s:UserService8
+
+
+---3.Bean类的实例化，调用Bean类的构造函数
+3.Bean类的实例化：constructor here,username:null,password:null
+
+
+---4.如果有类实现了InstantiationAwareBeanPostProcessor接口，
+	重写 postProcessAfterInstantiation(Object o, String s)
+	其中：object:cn.cxd.beans.UserServiceImpl@3eb7fc54,s:UserService8
+	完成实例化，获取到bean对象
+4.InstantiationAwareBeanPostProcessor(postProcessAfterInstantiation):object:cn.cxd.beans.UserServiceImpl@3eb7fc54,s:UserService8
+
+
+---5.如果有类实现了InstantiationAwareBeanPostProcessor接口，
+	重写postProcessPropertyValues(PropertyValues propertyValues, PropertyDescriptor[] propertyDescriptors, Object o, String s)
+	其中：
+	propertyValues:PropertyValues: length=2; bean property 'username'; bean property 'password'
+	object:cn.cxd.beans.UserServiceImpl@3eb7fc54,s:UserService8
+	propertyDescriptors:org.springframework.beans.GenericTypeAwarePropertyDescriptor[name=class]org.springframework.beans.GenericTypeAwarePropertyDescriptor[name=password]org.springframework.beans.GenericTypeAwarePropertyDescriptor[name=username]
+	id和属性property注入，初始化前
+5.InstantiationAwareBeanPostProcessor(postProcessPropertyValues):propertyValues:PropertyValues: length=2; bean property 'username'; bean property 'password',object:cn.cxd.beans.UserServiceImpl@3eb7fc54,s:UserService8
+propertyDescriptors:org.springframework.beans.GenericTypeAwarePropertyDescriptor[name=class]org.springframework.beans.GenericTypeAwarePropertyDescriptor[name=password]org.springframework.beans.GenericTypeAwarePropertyDescriptor[name=username]
+获取到<bean>中的<property>中的id
+
+---6.如果Bean类实现了BeanNameAware接口，
+	重写setBeanName(String s)
+	其中：s:UserService8
+	设置bean对象为<bean class id>中的id
+6.BeanNameAware(setBeanName):s:UserService8
+
+
+---7.如果Bean类实现了BeanFactoryAware接口，
+	重写setBeanFactory(BeanFactory beanFactory)
+	其中：beanFactory:
+	org.springframework.beans.factory.support.DefaultListableBeanFactory@48524010: defining beans [UserService8,cn.cxd.beanLives.MyBeanFactoryPostProcessor#0,cn.cxd.beanLives.MyInstantiationAwareBeanPostProcessor#0]; root of factory hierarchy
+	设置beanFactory 为实现了BeanFactoryPostProcessor接口的类
+7.BeanFactoryAware(setBeanFactory):beanFactory:org.springframework.beans.factory.support.DefaultListableBeanFactory@48524010: defining beans [UserService8,cn.cxd.beanLives.MyBeanFactoryPostProcessor#0,cn.cxd.beanLives.MyInstantiationAwareBeanPostProcessor#0]; root of factory hierarchy
+
+---7-1.如果有类实现了BeanPostProcessor接口，
+	重写postProcessBeforeInitialization(Object o, String s)
+	其中：object:cn.cxd.beans.UserServiceImpl@7f552bd3,s:UserService8
+7-1.BeanPostProcessor(postProcessBeforeInitialization)object:cn.cxd.beans.UserServiceImpl@7f552bd3,s:UserService8
+
+---8.如果有类实现了InstantiationAwareBeanPostProcessor接口，
+	重写postProcessBeforeInitialization(Object o, String s)
+	其中：object:cn.cxd.beans.UserServiceImpl@3eb7fc54,s:UserService8
+8.InstantiationAwareBeanPostProcessor(postProcessBeforeInitialization)object:cn.cxd.beans.UserServiceImpl@3eb7fc54,s:UserService8
+
+
+---9.如果Bean类实现了InitializingBean接口，
+	重写afterPropertiesSet()空参void的设定
+	在属性property注入后
+9.InitializingBean(afterPropertiesSet)空参void
+
+
+
+---10.如果在<beans.xml的bean中>配置了init-method,就会调用
+	这次的命名为beanInit()，也是空参void的设定
+10.beanInit(beans.xml.init_method)空参void
+
+---10-1.如果有类实现了BeanPostProcessor接口，
+	重写postProcessAfterInitialization(Object o, String s)
+	其中：object:cn.cxd.beans.UserServiceImpl@7f552bd3,s:UserService8
+10-1.BeanPostProcessor(postProcessAfterInitialization):object:cn.cxd.beans.UserServiceImpl@7f552bd3,s:UserService8
+
+---11.如果有类实现了InstantiationAwareBeanPostProcessor接口，
+	重写postProcessAfterInitialization(Object o, String s),
+	其中object:cn.cxd.beans.UserServiceImpl@3eb7fc54,s:UserService8
+	初始化后,property设置完后
+11.InstantiationAwareBeanPostProcessor(postProcessAfterInitialization):object:cn.cxd.beans.UserServiceImpl@3eb7fc54,s:UserService8
+
+
+---12.在getBean()后的使用,在main中获取到对象并使用方法
+12.bean的使用添加用户: 苏轼 123546
+
+
+---13.在main中将context强制关闭后context.getClass().getMethod("close").invoke(context);
+	如果Bean类实现了DisposableBean接口，需要重写destroy空参void方法
+
+13.DisposableBean(destroy)空参void
+
+---14.如果在<beans.xml的bean中>配置了destroy-method,就会调用
+	这次的命名为beanDestroy()，也是空参void的设定
+14.beanDestroy(beans.xml.destroy_method)void
+
+end
+
+
+beanFactory：org.springframework.beans.factory.support.DefaultListableBeanFactory@48524010: defining beans [UserService8,cn.cxd.beanLives.MyBeanFactoryPostProcessor#0,cn.cxd.beanLives.MyInstantiationAwareBeanPostProcessor#0]; root of factory hierarchy
+configurableListableBeanFactory : org.springframework.beans.factory.support.DefaultListableBeanFactory@48524010: defining beans [UserService8,cn.cxd.beanLives.MyBeanFactoryPostProcessor#0,cn.cxd.beanLives.MyInstantiationAwareBeanPostProcessor#0]; root of factory hierarchy

@@ -1,0 +1,41 @@
+策略模式
+	一个系统有许多许多类，而区分它们的只是他们直接的行为，可以使用策略模式
+1.定义抽象策略接口
+2.定义具体类实现抽象接口，重写具体行为
+3.定义Context上下文类，内有抽象接口成员变量，通过设置，可执行其具体行为
+4.客户端通过Context类，进行策略的选择和执行
+
+1.定义抽象策略接口
+	public interface Strategy {
+		public abstract int doAction(int num);
+	}
+2.定义具体类实现抽象接口，重写具体行为
+	class PowNum implements Strategy{
+		@Override
+		public int doAction(int num) {
+			return (int) Math.pow(num, 2);
+		}
+	}
+	class AddOne implements Strategy{
+		@Override
+		public int doAction(int num) {
+			return num+1;
+		}
+	}
+3.定义Context上下文类，内有抽象接口成员变量，通过设置，可执行其具体行为
+	class Context{
+		private Strategy strategy;
+		public void setStrategy(Strategy strategy) {
+			this.strategy = strategy;
+		}
+		public void executeStrategy(int num) {	
+			System.out.println(strategy.doAction(num));
+		}
+	}
+4.客户端通过Context类，进行策略的选择和执行	
+	public static void main(String[] args) {
+		Context context = new Context();
+		context.setStrategy(new PowNum());
+		context.executeStrategy(11);
+		
+	}

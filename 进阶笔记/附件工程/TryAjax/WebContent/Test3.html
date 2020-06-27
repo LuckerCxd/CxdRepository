@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="JS/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+
+
+<input type="button" id = "send" value = "json提交示范">
+
+<input type="text" id = "block" >
+
+</body>
+
+<script type="text/javascript">
+
+/* 
+$("#send").click(function () {
+	$.ajax({
+		url:"http://localhost:8080/TryAjax/servletDemo",
+		type:"POST",
+		data:{"username":"LiMi",
+				"age":23,
+				"location":"GuangDong"},
+		success:function(data){
+			alert(data);
+		},
+		dataType:"text"	
+	});
+})
+
+ */
+ 
+/*  
+$("#send").click(function () {
+	$.get("http://localhost:8080/TryAjax/servletDemo",
+			{"username":"LiMi","age":23,"location":"GuangDong"},
+			function (data) {
+				alert(data);
+			},
+			"text"
+		);
+}) 
+
+
+Request URL:http://localhost:8080/TryAjax/servletDemo?username=LiMi&age=23&location=GuangDong
+Request Method:GET
+Status Code:200 
+Remote Address:[::1]:8080
+Referrer Policy:no-referrer-when-downgrade
+*/
+ 
+ 
+
+$("#send").click(function () {
+	$.post("http://localhost:8080/TryAjax/servletDemo",
+			{"username":"LiMi","age":23,"location":"GuangDong"},
+			function (data) {
+				alert(data);
+			},
+			"text"
+		);
+}) 
+
+
+
+/* 
+Request URL:http://localhost:8080/TryAjax/servletDemo
+Request Method:POST
+Status Code:200 
+Remote Address:[::1]:8080
+Referrer Policy:no-referrer-when-downgrade
+Response Headers
+
+ */
+</script>
+
+</html>

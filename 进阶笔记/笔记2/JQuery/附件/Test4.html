@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src = "JS/jquery-3.3.1.min.js"></script>
+<style type="text/css">
+
+
+#square{
+	width : 100px;
+	height : 100px;
+	border : 1px solid red;
+}
+
+</style>
+</head>
+
+
+
+
+<body>
+
+<div id = "square" class  = "mini eff" ></div>
+
+
+
+</body>
+
+<script type="text/javascript">
+
+$(function () {
+	$("#square").click(function () {
+		$("#square").removeAttr("class");
+		alert($("#square").prop("class"))
+	});
+	
+})
+
+
+</script>
+</html>

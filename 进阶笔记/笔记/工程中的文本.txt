@@ -1,0 +1,13 @@
+1.无需打包的：
+bReader = new BufferedReader(new FileReader(new File("./src/token_src.txt")));
+2.如果要打普通jar包：
+BufferedReader bReader = null;
+		try {
+			InputStream resourceAsStream = TokenMain.class.getClassLoader().getResourceAsStream("token_src.txt");
+			InputStreamReader inputStreamReader = new InputStreamReader(resourceAsStream);
+			bReader = new BufferedReader(inputStreamReader);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+文本均放在src下

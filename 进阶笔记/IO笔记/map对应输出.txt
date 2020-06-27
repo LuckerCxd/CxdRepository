@@ -1,0 +1,14 @@
+Map<String, String[]> parameterMap = request.getParameterMap();
+	Set<String> keySet = parameterMap.keySet();
+	for (String string : keySet) {
+		System.out.print("key: "+string+" values: ");
+		String[] strings = parameterMap.get(string);
+		for (String string2 : strings) {
+			System.out.print(string2);
+			if(string2.equals(strings[strings.length-1])) {
+				break;
+			}
+			System.out.print(",");
+		}
+		System.out.println();
+	}

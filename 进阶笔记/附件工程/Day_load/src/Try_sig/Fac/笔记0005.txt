@@ -1,0 +1,66 @@
+桥接模式：
+	实现多角度分类，分类与组合
+1.定义角度抽象接口，定义该角度下的通用函数
+2.定义具体类继承接口，并重写函数
+3.定义完整抽象类，内部具备抽象接口成员变量，
+	用于使用角度下的分类，并定义出功能完整的抽象函数
+4.定义具体类继承完整抽象类，通过构造器角度联合，并重写抽象函数	
+5.客户端使用通过具体类的构造器来实现功能
+
+1.定义角度抽象接口，定义该角度下的通用函数
+	public interface FillColor {
+		public abstract void fill(float degree);
+	}
+2.定义具体类继承接口，并重写函数
+	class RedFill implements FillColor{
+		@Override
+		public void fill(float degree) {
+			System.out.println("Red,choose color degree:"+degree);
+		}
+	}
+	
+	class BlueFill implements FillColor{
+		@Override
+		public void fill(float degree) {
+			System.out.println("Blue,choose color degree:"+degree);
+		}
+		
+	}
+3.定义抽象完整类，内部具备抽象接口成员变量，
+	用于使用角度下的分类，并定义出功能完整的抽象函数	
+	abstract class Shape{
+		public FillColor fillColor;
+		public abstract void printColor();
+	}
+4.定义具体类继承完整抽象类，通过构造器角度联合，并重写抽象函数	
+	class Rectangle extends Shape{
+		private float tdegree;
+		public Rectangle(float degree,FillColor color) {
+			fillColor = color;
+			this.tdegree = degree;
+		}
+		@Override
+		public void printColor() {
+			System.out.print("Rectangle:");
+			fillColor.fill(tdegree);
+		}
+	}
+	class Square extends Shape{
+		private float tdegree;
+		public Square(float degree,FillColor color) {
+			fillColor = color;
+			this.tdegree = degree;
+		}
+		@Override
+		public void printColor() {
+			System.out.print("Square:");
+			fillColor.fill(tdegree);
+		}
+	}	
+5.客户端使用通过具体类的构造器来实现功能
+	public static void main(String[] args) {
+		Shape redSquare = new Square(10, new RedFill());
+		redSquare.printColor();
+		Shape blueRectangle = new Rectangle(10, new BlueFill());
+		blueRectangle.printColor();
+	}	

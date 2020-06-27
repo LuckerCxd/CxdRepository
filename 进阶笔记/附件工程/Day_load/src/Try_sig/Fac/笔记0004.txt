@@ -1,0 +1,83 @@
+适配器：
+	用于转换，使原来不兼容的接口可以兼容
+1.定义普通接口，包含通用的方法
+2.定义用于实现特殊方法的接口，可以有多个特殊方法
+3.定义具体类仅具体实现特定的特殊方法，其余的特殊方法仅仅是重写为空
+4.定义适配器类继承普通接口，内部包含特殊接口作为成员变量，
+	并重写接口方法，实际上仅使用特殊方法
+5.定义完整类继承普通接口，内部包含适配器作为成员变量，
+	并为重写接口方法，普通方法在其中做完善
+6.客户端使用完整类进行所有方法的调用
+
+
+1.定义普通接口，包含通用的方法
+	public interface OrdinaryMediaPlayer {
+		public abstract void play(String format);
+	}
+2.定义用于实现特殊方法的接口，可以有多个特殊方法
+	public interface AdvancedMediaPlayer {
+		public abstract void playMP4();
+		public abstract void playPPt();
+	}
+3.定义具体类仅具体实现特定的特殊方法，其余的特殊方法仅仅是重写为空
+	class MP4Player implements AdvancedMediaPlayer{
+		@Override
+		public void playMP4() {
+			System.out.println("MP4 is supported");
+		}
+		@Override
+		public void playPPt() {}
+	}
+	
+	class PPTPlayer implements AdvancedMediaPlayer{
+		@Override
+		public void playMP4() {}
+		@Override
+		public void playPPt() {
+			System.out.println("PPT is supported");
+		}
+	}
+		
+4.定义适配器类继承普通接口，内部包含特殊接口作为成员变量，
+	并重写接口方法，实际上使用的却是特殊方法
+	class MediaAdapter implements OrdinaryMediaPlayer{
+		private AdvancedMediaPlayer advancedMediaPlayer ;
+		@Override
+		public void play(String format) {
+			if(format.equalsIgnoreCase("MP4")) {
+				advancedMediaPlayer = new MP4Player();
+				advancedMediaPlayer.playMP4();
+			}
+			else {
+				advancedMediaPlayer = new PPTPlayer();
+				advancedMediaPlayer.playPPt();
+			}	
+		}
+	}
+	
+5.定义完整类继承普通接口，内部包含适配器作为成员变量，
+	并为重写接口方法，普通方法在其中做完善
+	class AutoPlayer implements OrdinaryMediaPlayer{
+		private MediaAdapter mediaAdapter;
+		@Override
+		public void play(String format) {
+			if(format.equalsIgnoreCase("mp3"))
+				System.out.println("mp3 is supported");
+			else if(format.equalsIgnoreCase("MP4") 
+			|| format.equalsIgnoreCase("PPT")){
+				mediaAdapter = new MediaAdapter();
+				mediaAdapter.play(format);
+			}
+			else {
+				System.out.println("invaid format");
+			}
+		}
+	}
+6.客户端使用完整类进行所有方法的调用
+	public static void main(String[] args) {
+		AutoPlayer autoPlayer = new AutoPlayer();
+		autoPlayer.play("mp3");
+		autoPlayer.play("Mp4");
+		autoPlayer.play("ppt");
+		autoPlayer.play("vdat");
+	}

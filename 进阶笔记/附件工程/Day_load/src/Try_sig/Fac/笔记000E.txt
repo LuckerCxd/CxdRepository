@@ -1,0 +1,62 @@
+迭代器模式
+	遍历一个聚合对象
+1.定义迭代器抽象接口，有hasNext和next方法
+2.定义聚合抽象接口，有getIterator方法
+3.定义具体迭代器类实现迭代器接口，
+	设置index成员变量，用于重写接口方法
+4.定义具体聚合类实现聚合接口，数组成员变量用于迭代，
+	并getIterator方法返回上面指定的具体迭代器类	
+5.客户端通过使用聚合类和迭代器类，使用循环体迭代
+
+1.定义迭代器抽象接口，有hasNext和next方法
+	public interface Iterator {
+		public abstract boolean hasNext();
+		public abstract Object next();
+		
+	}
+2.定义聚合抽象接口，有getIterator方法
+	public interface Container {
+		public abstract Iterator getIterator();
+	}	
+3.定义具体迭代器类实现迭代器接口，
+	设置index成员变量，用于重写接口方法
+	class NameIterator implements Iterator{
+		private String[] names;
+		private int index ;
+		public NameIterator(String []names) {
+			this.names = names;
+		}
+		@Override
+		public boolean hasNext() {
+			if(index < names.length)
+				return true;
+			return false;
+		}
+		@Override
+		public Object next() {
+			if(hasNext())
+				return names[index++];
+			return null;
+		}
+	}
+4.定义具体聚合类实现聚合接口，数组成员变量用于迭代，
+	并getIterator方法返回上面指定的具体迭代器类	
+	class NameContainer implements Container{
+		private String[] names ;
+		public NameContainer(String[] names) {
+			this.names = names;
+		}
+		@Override
+		public Iterator getIterator() {
+			return new NameIterator(names);
+		}
+	}	
+5.客户端通过使用聚合类和迭代器类，使用循环体迭代
+	public static void main(String[] args) {
+		String[] names= {"Lucy","Habby","Kathy"};
+		Container nameContainer = new NameContainer(names);
+		Iterator nameIterator = nameContainer.getIterator();
+		while(nameIterator.hasNext()) {
+			System.out.println(nameIterator.next());
+		}
+	}			

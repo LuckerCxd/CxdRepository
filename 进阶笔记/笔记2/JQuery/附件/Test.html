@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="JS/jquery-3.3.1.min.js"></script>
+<style type="text/css">
+
+#small{
+	width : 100px;
+	height : 100px;
+	margin :50px;    /*1.所有 4 个外边距都是 50px*/
+}
+
+#big{
+	width : 200px;
+	height : 200px;
+	/*box-sizing:border-box;  
+	padding : 50px;   /*2.所有 4 个内边距都是 50px*/
+	/*
+	固定盒子大小，避免调整内边距影响盒子的大小
+	*/
+	margin : 100px;
+}
+
+#Big{
+	width : 400px;
+	height : 400px;
+	
+}
+
+
+</style>
+</head>
+<body>
+
+<h1>Don't Mention it</h1>
+
+
+<div id = "Big" class = "mini eff">
+	<div  id = "big" class = "mini eff">
+		<input type="button" id = "small" class = "mini eff" value ="登录">
+	</div>
+</div>
+
+</body>
+<script type="text/javascript" >
+$(function () {
+	
+	$("div").css("border","1px solid red");
+	$("span").css("border","1px solid red");
+})
+
+$(function () {
+	
+	//首元素选择器
+	//$("#Big:first").css("backgroundColor","black");
+	
+	
+	//尾元素选择器
+	//$("div:last").css("backgroundColor","black");
+	
+	//非元素选择器1,2
+	//$("div:not(div:last)").css("backgroundColor","black");
+	//$("div:not(.en)").css("backgroundColor","black");
+	
+	//偶数选择器
+	//$("#small:even").css("backgroundColor","black");
+	
+	//奇数选择器
+	//$("div:odd").css("backgroundColor","black");
+	
+	//等于索引选择器
+	//$("input:eq(0)").css("backgroundColor","black");
+	
+	//大于索引选择器,gt(0)->1
+	//$("div:gt(0)").css("backgroundColor","black");
+	
+	//小于索引选择器,lt(1) ->0
+	//$("input:lt(1)").css("backgroundColor","black");
+	
+	//标题选择器
+	$(":header").css("backgroundColor","pink");
+})
+
+
+</script>
+</html>

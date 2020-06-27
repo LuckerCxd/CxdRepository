@@ -1,0 +1,6 @@
+
+
+Enumeration为HashTable和Vector提供迭代，
+	它只支持查找而不支持修改集合，需要加入同步才能实现线程同步；
+Iterator为其他集合类使用，除了能查找元素还能对底层集合进行删除，
+	它是快速失败机制因此比Enumeration安全，Enumeration速度是Iterator的2倍，且占用更少内存

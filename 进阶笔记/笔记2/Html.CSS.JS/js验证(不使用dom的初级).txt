@@ -1,0 +1,5 @@
+var userName=document.forms[0].userName.value;
+var password=document.forms[0].password.value;
+var rePassword=document.forms[0].rePassword.value;
+
+

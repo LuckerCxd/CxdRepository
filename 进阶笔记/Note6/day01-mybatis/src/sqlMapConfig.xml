@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE configuration  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="c3p0.properties"></properties>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${c3p0.driverClass}"/>
+                <property name="url" value="${c3p0.jdbcUrl}"/>
+                <property name="username" value="${c3p0.user}"/>
+                <property name="password" value="${c3p0.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper resource="cn/cxd/models/user.xml"/>
+    </mappers>
+</configuration>

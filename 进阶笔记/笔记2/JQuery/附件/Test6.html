@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src = "JS/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+
+<ul id = "hobby">
+<li>唱</li>
+<li>跳</li>
+<li>Rap</li>
+</ul>
+
+
+</body>
+<script type="text/javascript">
+
+$(function () {
+	
+	//1.jq对象.each方式 
+	//$("#hobby li").each(function () {
+		//1.alert(this.innerHTML);
+		//2.alert($(this).html());
+		
+	//});
+	
+	
+	//$("#hobby li").each(function (index) {
+		//alert(index+":"+$(this).html());
+		
+	//});
+	
+	//$("#hobby li").each(function (index,element) {
+		//1.alert(this.innerHTML);
+		//if("跳" == $(element).html()){
+			//return false;
+		//}
+		//alert(index+":"+$(element).html());
+		
+	//});
+	
+	
+
+	
+	$.each($("#hobby li"),function (index,element) {
+		if("跳" == $(element).html()){
+			return true;
+		}
+		alert(index+":"+$(element).html());
+		
+	});
+})
+
+</script>
+</html>

@@ -1,0 +1,212 @@
+注解：
+
+常用JDK预定义注解
+	@Override       检查是否重写
+	@Deprecated		标志已过时
+	@SuppressWarnings("all") 压制警告
+
+经过对其class文件进行反编译后：
+Compiled from "TestAnnotation.java"
+public interface Day_8.TestAnnotation extends java.lang.annotation.Annotation 
+得知：
+	注解 都继承于Annotation接口
+	
+创建注解：
+	元注解
+	public @interface 注解名称 {
+		属性列表;   //也是抽象方法，注解本质是一个借口
+	}
+	
+元注解；
+	主要是：
+		@Target({ElementType.FIELD,ElementType.TYPE})  
+			//可以作用的位置，method(方法),field(变量),type(类)..
+		@Retention(RetentionPolicy.RUNTIME)	
+			//被保留的阶段(SOURCE源代码,CLASS类对象,RUNTIME运行时)
+		@Documented
+			//是否被抽取到api,即命令行下执行后javadoc后可否看见注解
+		@Inherited
+			//是否可被子类继承该注释
+
+属性列表：
+	String,8种基本类型，注解，枚举类，以及前面这些的数组类型
+在注解里添加了属性后，在设置注解时，需要进行赋值
+@MyAnnotation(intType = 5,stringArray = {"add","sub"},annotationType = @TestAnnotation1,enumType=Season.spring)
+	1.如果是数组，则值使用{}
+	2.可以为属性设默认值 default 值;
+
+演示：
+	TestAnnotation.java
+	
+	@Target({ElementType.FIELD,ElementType.TYPE})
+	@Retention(RetentionPolicy.RUNTIME)
+	@Documented
+	@Inherited
+	public @interface TestAnnotation {
+		int happyDegree() default 6;
+		String className() default "ac";
+		Season happySeason();
+		TestAnnotation1 happyAnnotation();
+		String[] methodsName();
+	}
+
+实际上生成一个类继承注解接口实现对象，并根据赋值的内容，重写抽象方法(返回出来)；	
+	public tempClass implements MyAnnotation{
+		public int intType(){
+			return 5;
+		}
+		public String[] stringArray(){
+			String[] tempString = {"add","sub"};
+			return tempString;
+		}
+		...
+	}
+
+			
+通过注解创建任意对象并执行任意方法
+0.前提是有className，methodName属性，并被有效赋值
+1.通过加了注解的类，使用其类对象来获取注解对象
+2.注解属性赋值后，通过注解对象的方法(属性)可以获取值
+3.通过反射Class.forName获取类对象，在使用该类对象获取构造器和method方法
+4.完成method方法的invoke()
+
+	Class class1 = Calculate.class;
+	TestAnnotation testAnnotation = (TestAnnotation) class1.getAnnotation(TestAnnotation.class);
+	Class class2 = Class.forName(testAnnotation.className());
+	Object object = class2.getConstructor(String.class,int.class).newInstance("美团",11);
+	Method method = class2.getMethod(testAnnotation.methodsName()[0],int.class,int.class);
+	Method method1 = class2.getMethod(testAnnotation.methodsName()[1],int.class,int.class);
+	System.out.println(method.invoke(object, 3,4));
+	System.out.println(method1.invoke(object, 3,4));
+	
+注解作为解析代码的一种方式,可以供编译器使用，
+	通过对各种类型的isAnnotationPresent(Annotation.class)的判断，对注解进行自定义的处理
+附件：	
+		Calculate.java
+		
+package Day_8;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.Properties;
+
+@TestAnnotation(happyDegree = 5,className = "Day_8.Calculate",methodsName = {"add","sub"},happyAnnotation = @TestAnnotation1,happySeason=Season.spring)
+@SuppressWarnings("all")
+public class Calculate {
+	private int a=5,b=3;
+	private String name="helloWorld";
+	public String ya = "a";
+	public String ua = "a";
+	public String ia = "a";
+	public static int age = 10;
+
+	public int add(int a,int b) {
+		return a+b;
+	}
+	
+	public int sub(int a,int b) {
+		return a-b;
+	}
+	
+	public Calculate(String name,int priority) {
+		this.name = name;
+		System.out.println(name+" is a priority "+priority+" calculator");
+	}
+	public Calculate(String name,String priority) {
+		this(name,Integer.parseInt(priority));
+	}
+	public Calculate() {
+		super();
+	}
+	
+	@Override
+	public String toString() {
+		return "Calculate [a=" + a + ", b=" + b + ", name=" + name + ", ya=" + ya + ", ua=" + ua + ", ia=" + ia + "]";
+	}
+	
+	public static void main(String[] args) throws Exception {	
+		Class class1 = Calculate.class;
+		TestAnnotation testAnnotation = (TestAnnotation) class1.getAnnotation(TestAnnotation.class);
+		Class class2 = Class.forName(testAnnotation.className());
+		Object object = class2.getConstructor(String.class,int.class).newInstance("美团",11);
+		Method method = class2.getMethod(testAnnotation.methodsName()[0],int.class,int.class);
+		Method method1 = class2.getMethod(testAnnotation.methodsName()[1],int.class,int.class);
+		System.out.println(method.invoke(object, 3,4));
+		System.out.println(method1.invoke(object, 3,4));
+	}
+}
+	
+		Season.java
+		
+public enum Season {
+	spring,summer,fall,winter;
+}
+		
+		Check.java
+			
+package Day_8Test;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface Check {
+}
+		
+		Problem.java
+		
+package Day_8Test;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+@SuppressWarnings("all")
+public class Problem {
+	@Check
+	public static void add() {
+		int result = 1+0;
+		System.out.println("1 + 0 = "+result);
+	}
+	@Check
+	public static void sub() {
+		int result = 1-0;
+		System.out.println("1 - 0 = "+result);
+	}
+	@Check
+	public static void mul() {
+		int result = 1*0;
+		System.out.println("1 * 0 = "+result);
+	}
+	@Check
+	public static void div() {
+		int result = 1/0;
+		System.out.println("1 / 0 = "+result);
+	}
+	public static void main(String[] args) throws Exception {
+		Class class1 = Problem.class;
+		Method[] methods = class1.getMethods();
+		BufferedWriter bw = new BufferedWriter(new FileWriter(".\\bugs.txt"));
+		for(Method m:methods) {
+			if(m.isAnnotationPresent(Check.class)) {
+				try{
+					m.invoke(class1);
+				} catch (Exception e) {	
+					bw.append(m.getName() + "() 出现异常");
+					bw.newLine();
+					bw.append("异常名称:  "+ e.getCause().getClass().getSimpleName());
+					bw.newLine();
+					bw.append("异常原因：  "+e.getCause().getMessage());
+					bw.newLine();
+				}
+			}
+		}
+		bw.flush();
+		bw.close();
+	}
+}
+		

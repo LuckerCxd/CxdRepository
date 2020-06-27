@@ -1,0 +1,16 @@
+<script type="text/javascript">
+function check_num(){
+    var num=document.getElementById("num").value;  
+    //alert(num);  
+    if(isNaN(num)){   //用于检查其参数是否是非数字值
+        alert("必须输入入0-100之间的数字！");
+        return false;
+    }else if(parseInt(num)<=0 || parseInt(num)>100){   //注意‘或’的写法
+        alert("必须输入0-100之间的数字！");
+        return false;       
+    }
+}
+</script>
+————————————————
+版权声明：本文为CSDN博主「moqiang02」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/moqiang02/article/details/20626465

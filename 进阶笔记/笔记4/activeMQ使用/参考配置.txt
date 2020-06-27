@@ -1,0 +1,19 @@
+jetty.xml:
+	<property name="host" value="0.0.0.0"/>
+        <property name="port" value="8161"/>
+
+
+
+jetty-realm.properties
+
+	admin: admin, admin
+	user: user, user
+
+
+activemq.xml：开启服务，用于日志打印
+	 <managementContext>
+            <managementContext createConnector="true" connectorPort="1093"                                                                 
+                       connectorPath="/jmxrmi" jmxDomainName="org.apache.activemq"/>
+        </managementContext>
+
+http://localhost:8161/admin

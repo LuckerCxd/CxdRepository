@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script type="text/javascript">
+window.onload(){
+	var another = document.getElementById("another");
+	another.onclick = function(){
+		var nowMills = new Date().getTime();
+		var img = document.getElementById("img");
+		img.src = "http://localhost:8080/WebServlet/ResponseDemo1" + nowMills;
+	}
+}
+
+
+
+
+</script>
+<body>
+	
+	<h1>Hello everyBody! There is a basketball! Let 's Ctrl !</h1>
+	<br/>
+	<img id = "img" src = "http://localhost:8080/WebServlet/ResponseDemo1">
+	<a id = "another" href="" target="_self">another </a>	
+	<hr/>	
+</body>
+</html>

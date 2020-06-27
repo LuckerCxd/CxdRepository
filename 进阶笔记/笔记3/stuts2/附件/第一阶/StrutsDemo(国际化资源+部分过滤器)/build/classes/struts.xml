@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+	<constant name="struts.devMode" value="true"></constant>
+	
+	<!--  
+		<constant name="struts.custom.i18n.resources" value="cn.cxd.web.actions.I18NActionDemo"/>
+	-->
+	
+	<package name="p1" namespace="/p1" extends="struts-default">
+		
+		<action name="i18n" class="cn.cxd.web.actions.I18NActionDemo" method="doShow">
+			<result name="input">/login_i18n.jsp</result>
+		</action>
+		
+	</package>
+	
+	<package name="p2" namespace="/p2" extends="struts-default">
+		<interceptors>
+			<interceptor name="interceptor1" class="cn.cxd.web.interceptors.InterceptorDemo1"></interceptor>
+			<interceptor name="interceptor2" class="cn.cxd.web.interceptors.InterceptorDemo2"></interceptor>
+		</interceptors>
+		<action name="interceptor" class="cn.cxd.web.actions.InterceptorAction" method="execute">
+			<interceptor-ref name="interceptor1"></interceptor-ref>
+			<interceptor-ref name="interceptor2"></interceptor-ref>
+			<result>/success.jsp</result>
+		</action>
+	
+	</package>
+	
+	
+</struts>

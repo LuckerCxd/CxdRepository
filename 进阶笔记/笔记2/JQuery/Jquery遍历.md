@@ -1,0 +1,74 @@
+jq遍历：
+    
+    1.jq对象.each(callback)
+    2.$.each(jq对象,[callback])
+
+注意：
+
+    1.this.innerHTML <--> $(this).html()等价
+    2.在each循环体中，使用if判断，
+        return true --> continue;
+        return false --> break;
+    3.在callback中可传入参数,可获取索引,内容
+        element.innerHTML <--> this.innerHTML
+
+举例：
+    
+    
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <script src = "JS/jquery-3.3.1.min.js"></script>
+    </head>
+    <body>
+    
+    <ul id = "hobby">
+    <li>唱</li>
+    <li>跳</li>
+    <li>Rap</li>
+    </ul>
+    
+    
+    </body>
+    <script type="text/javascript">
+    
+    $(function () {
+    	
+    	//1.jq对象.each方式 
+    	//$("#hobby li").each(function () {
+    		//1.alert(this.innerHTML);
+    		//2.alert($(this).html());
+    		
+    	//});
+    	
+    	
+    	//$("#hobby li").each(function (index) {
+    		//alert(index+":"+$(this).html());
+    		
+    	//});
+    	
+    	//$("#hobby li").each(function (index,element) {
+    		//1.alert(this.innerHTML);
+    		//if("跳" == $(element).html()){
+    			//return false;
+    		//}
+    		//alert(index+":"+$(element).html());
+    		
+    	//});
+    	
+    	
+    
+    	
+    	$.each($("#hobby li"),function (index,element) {
+    		if("跳" == $(element).html()){
+    			return true;
+    		}
+    		alert(index+":"+$(element).html());
+    		
+    	});
+    })
+    
+    </script>
+    </html>

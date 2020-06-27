@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE configuration  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="c3p0.properties"></properties>
+    <settings>
+        <setting name="lazyLoadingEnabled" value="true"/>
+    </settings>
+    <typeAliases>
+<!--
+        <typeAlias alias="user" type="cn.cxd.model.User" ></typeAlias>
+        <typeAlias alias="userVo" type="cn.cxd.modelVo.UserVo"></typeAlias>
+        <typeAlias type="cn.cxd.model.Order" alias="order"></typeAlias>
+-->
+        <package name="cn.cxd.model"/>
+        <package name="cn.cxd.modelVo"/>
+    </typeAliases>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${c3p0.driverClass}"/>
+                <property name="url" value="${c3p0.jdbcUrl}"/>
+                <property name="username" value="${c3p0.user}"/>
+                <property name="password" value="${c3p0.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+
+
+    <mappers>
+        <!--
+            <mapper resource="cn/cxd/modelMapper/userMapper.xml"/>
+            <mapper class="cn.cxd.modelMapper.UserMapper"></mapper>
+            <package name="cn.cxd.modelMapper"/>
+
+        -->
+        <mapper resource="cn/cxd/modelMapper/userMapper.xml"/>
+    </mappers>
+
+
+</configuration>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="JS/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+<div id="div1">div1</div>
+<div id="div2">div2</div>
+</body>
+<script type="text/javascript" >
+
+var divs1 = document.getElementsByTagName("div");
+var divs2 = $(divs1);
+var divs3 = $("div");
+
+
+for(var i = 0; i < divs3.length;i++){
+	divs1[i].innerHTML = "js1";
+}
+alert(divs1[0].innerHTML);
+
+
+divs2.html("js2");
+alert($(divs2[0]).html());
+
+divs3.get(0).innerHTML = "js3";
+alert(divs3[0].innerHTML);
+
+
+var div1 = document.getElementById("div1");
+alert("div():"+div1.innerHTML);
+var div2 = $(div1);
+alert("div2:"+div2.html());
+
+
+alert("divs2:"+divs2.html());
+divs2.html("teml")
+alert("divs2:"+divs2.html());
+</script>
+</html>

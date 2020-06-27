@@ -1,0 +1,341 @@
+1.流的创建
+	1.Array  -> 流
+		Stream.of(array_instance) 以及  Arrays.Stream(array_instance,from,end)
+		使用 1：
+			String[] seasons = {"spring","summer","fall","winter"};
+			Stream<String> stream = Stream.of(seasons);
+			List<String> list = stream.collect(Collectors.toList());
+			for(String string : list) {
+				System.out.println(string);
+			}
+		
+			2:
+			Stream<String> stream = Arrays.stream(seasons);
+			List<String> list = stream.collect(Collectors.toList());
+			for(String string : list) {
+				System.out.println(string);
+			}
+		源码：
+			public static<T> Stream<T> of(T... values) {
+		        return Arrays.stream(values);
+		    }	
+		    
+		    public static <T> Stream<T> stream(T[] array, int startInclusive, int endExclusive) {
+		        return StreamSupport.stream(spliterator(array, startInclusive, endExclusive), false);
+		    }
+		
+		附加:  流  --> Array
+		使用：    
+			String[] strings = stream.toArray(String[]::new);
+			for(String string:strings) {
+				System.out.println(string);
+			}
+			
+		源码：	
+			<A> A[] toArray(IntFunction<A[]> generator);
+			
+			举例：
+			<pre>{@code
+		          Person[] men = people.stream()
+		                               .filter(p -> p.getGender() == MALE)
+		                               .toArray(Person[]::new);
+		     }</pre>
+	
+	2. Collection --> 流
+		collection_instance.Stream()
+		使用：
+			List<String> list = Arrays.asList(seasons);
+			Stream stream = list.stream();
+			Iterator<String>iterator = stream.iterator();
+			while(iterator.hasNext()) {
+				System.out.println(iterator.next());
+			}
+		
+		源码：	
+			default Stream<E> stream() {
+		        return StreamSupport.stream(spliterator(), false);
+		    }
+		 
+		附加: 流  --> Collection
+			1.
+			Set<String> set = stream.collect(Collectors.toSet());
+			for(String string : set) {
+				System.out.println(string);
+			}
+			
+			:2.
+		    List<String> slist =  stream.collect(Collectors.toList());
+	
+	3. 创建空流	  
+		Stream.empty()
+		使用：
+			Stream<String> stream = Stream.empty();
+			List<String> slist =  stream.collect(Collectors.toList());
+		  	for(String string : slist) {
+				System.out.println(string);
+			}
+			
+		源码：	
+			public static<T> Stream<T> empty() {
+		        return StreamSupport.stream(Spliterators.<T>emptySpliterator(), false);
+		    }
+	
+	4.创建无限流
+		1. Stream.generate(()->randomNum())  Stream.generate(StreamLearning::randomNum)
+		2. 	Stream.iterate(randomNum(), n-> n.valueOf(randomNum()))	
+			Stream.iterate(randomNum(), n-> randomNum())
+		
+		使用：1 generate(() -> func()) 或  generate(Class::funcName)
+		
+				Stream<Integer> stream = Stream.generate(()->randomNum());
+				List<Integer> list = stream.limit(10).collect(Collectors.toList());
+				for(int i = 0; i < list.size();i++) {
+					if(i > 0) System.out.print(",");
+					if(i < list.size()) System.out.print(list.get(i));
+					else	System.out.print("...");
+				}
+				
+				public static int randomNum(){
+					try {
+						return Random.class.newInstance().nextInt(20);
+					} catch (Exception e) {
+						e.printStackTrace();
+					} 
+					return -1;
+				}
+				
+			:2	iterate(firstSeed(), n -> otherseed())  无视n..直接使用方法，不使用 firstSeed()的返回类 静态方法
+				iterate(firstSeed(), n -> n.func())  n : firstSeed()的返回(的包装)类型  n.func() ：返回类型的静态函数
+				  
+				Stream<Integer> stream = Stream.iterate(randomNum(), n-> randomNum());
+				List<Integer> list = stream.limit(10).collect(Collectors.toList());
+				for(int i = 0; i < list.size();i++) {
+					if(i > 0) System.out.print(",");
+					if(i < list.size()) System.out.print(list.get(i));
+					else	System.out.print("...");
+				}
+		
+		源码：
+			public static<T> Stream<T> generate(Supplier<T> s) {
+		        Objects.requireNonNull(s);
+		        return StreamSupport.stream(
+		                new StreamSpliterators.InfiniteSupplyingSpliterator.OfRef<>(Long.MAX_VALUE, s), false);
+		    }
+		    
+		    public static<T> Stream<T> iterate(final T seed, final UnaryOperator<T> f) {
+		        Objects.requireNonNull(f);
+		        final Iterator<T> iterator = new Iterator<T>() {
+		            @SuppressWarnings("unchecked")
+		            T t = (T) Streams.NONE;
+		
+		            @Override
+		            public boolean hasNext() {
+		                return true;
+		            }
+		
+		            @Override
+		            public T next() {
+		                return t = (t == Streams.NONE) ? seed : f.apply(t);
+		            }
+		        };
+		        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(
+		                iterator,
+		                Spliterator.ORDERED | Spliterator.IMMUTABLE), false);
+		    }
+		    
+		    
+2.filter 、 map 、 flatMap()
+		filter() :产生一个流，它包含了  当前流中所有满足断言条件  的元素	
+					t : 流中元素     t.func():元素的实例函数 ,  条件的返回类型应该是boolean
+					
+		map():	产生一个流，它包含 将mapper应用于  当前流中所有元素 下所产生的结果
+					t : 流中元素     t.func():元素的实例函数  
+						mapper函数返回类型，应该作为Stream<T> 中的T类型
+					
+		flatMap():产生一个流，它是通过将  mapper应用于 前流中所有元素下所产生的结果	连接到一起而产生的。		
+					调用的mapper的返回类型得是 Stream<xxx> 
+					因为flatMap相当于是在聚合 map()的流结果，而map的结果是流，所以flatMapper的返回类型得是Stream<xxx>流型
+		
+		使用：	
+			filter()	    
+			Stream<String> stream = Stream.of(seasons).filter(t -> t.charAt(0)=='w');
+			List<String> list = stream.limit(10).collect(Collectors.toList());
+			for(int i = 0; i < list.size();i++) {
+				if(i > 0) System.out.print(",");
+				if(i < list.size()) System.out.print(list.get(i));
+				else	System.out.print("...");
+			}
+			
+			
+			map()
+			1. Stream<String> stream = Stream.of(seasons).filter(t -> t.charAt(0)=='w').map(t -> t.toUpperCase());
+			2. concatMap("word",Stream.of(contents.split("\\PL+")).filter(t -> t.length() > 5).map(t ->letters(t)));
+			
+			public static <T> void concatMap(String title,Stream<T>stream) {
+				final int size = 10;
+				
+				@SuppressWarnings("rawtypes")
+				List<Stream> firstElements = (List<Stream>) stream.limit(size+1).collect(Collectors.toList());
+				
+				System.out.println("title" +": ");
+				for(int i = 0; i < firstElements.size(); i++) {
+					if (i > 0)	System.out.print(",");
+					if(i < size ) {
+						
+						@SuppressWarnings("unchecked")
+						List<T> list = (List<T>) firstElements.get(i).collect(Collectors.toList());
+						int tempsize = list.size();
+						for (int j = 0; j < tempsize ; j++) {
+							if (j > 0)	System.out.print(",");
+							System.out.print(list.get(j));
+						}
+					}
+					else	System.out.print("...");
+				}
+			}
+			
+			
+			flatMap()
+			Stream<String> stream = Stream.of(seasons).filter(t -> t.length() > 2).flatMap(t -> letters(t));
+			public static Stream<String> letters(String s) {
+				 List<String> result = new ArrayList<>();
+				 for(int i=0;i < s.length();i++) {
+					 result.add(s.substring(i, i+1));
+				 }
+				 return result.stream();
+			}
+			
+		源码：
+			Stream<T> filter(Predicate<? super T> predicate);
+			<R> Stream<R> map(Function<? super T, ? extends R> mapper);
+			<R> Stream<R> flatMap(Function<? super T, ? extends Stream<? extends R>> mapper);
+			
+			public String toUpperCase() {
+		        return toUpperCase(Locale.getDefault());
+		    } 
+		    
+		    
+3.抽取子流 和 连接
+	limit(): 返回新的流，相当于是原流裁剪尺寸，再作成新流返回出来
+	skip():  跳过前n个元素，截取后面的元素，再作成新流返回出来
+	concat():连接两个流，并返回出新的流
+	
+	使用：
+		limit()：
+			Stream<String> stream = Stream.of(seasons).filter(t -> t.length() > 2).map(t -> t.toUpperCase());
+			List<String> list = stream.limit(2).collect(Collectors.toList());
+			for(int i = 0; i < list.size();i++) {
+				if(i > 0) System.out.print(",");
+				if(i < list.size()) System.out.print(list.get(i));
+				else	System.out.print("...");
+			}
+		
+		skip():
+			Stream<String> stream = Stream.of(seasons).filter(t -> t.length() > 2).map(t -> t.toUpperCase());
+			List<String> list = stream.skip(1).collect(Collectors.toList());
+		
+		concat():
+			Stream<String> stream = Stream.concat(letters(seasons[0]), letters(seasons[1]));
+			List<String> list = stream.collect(Collectors.toList());
+			for(int i = 0; i < list.size();i++) {
+				if(i > 0) System.out.print(",");
+				if(i < list.size()) System.out.print(list.get(i));
+				else	System.out.print("...");
+			}					
+			
+			public static Stream<String> letters(String s) {
+				 List<String> result = new ArrayList<>();
+				 for(int i=0;i < s.length();i++) {
+					 result.add(s.substring(i, i+1));
+				 }
+				 return result.stream();
+			}
+	
+	源码：		
+		Stream<T> skip(long n);
+		
+		Stream<T> limit(long maxSize);
+		
+		public static <T> Stream<T> concat(Stream<? extends T> a, Stream<? extends T> b) {
+	        Objects.requireNonNull(a);
+	        Objects.requireNonNull(b);
+	
+	        @SuppressWarnings("unchecked")
+	        Spliterator<T> split = new Streams.ConcatSpliterator.OfRef<>(
+	                (Spliterator<T>) a.spliterator(), (Spliterator<T>) b.spliterator());
+	        Stream<T> stream = StreamSupport.stream(split, a.isParallel() || b.isParallel());
+	        return stream.onClose(Streams.composedClose(a, b));
+	    }
+			
+4.流的转换
+	distinct(): 剔除重复元素，返回新流
+	sorted(): 返回排序后的新的流
+	peek(): 产生另外一个流，当其内元素被获取时会调用一个函数action
+	
+	使用：
+		distinct():
+			Stream<String> stream = Stream.concat(letters(seasons[0]), letters(seasons[1])).distinct();
+			List<String> list = stream.collect(Collectors.toList());
+			for(int i = 0; i < list.size();i++) {
+				if(i > 0) System.out.print(",");
+				if(i < list.size()) System.out.print(list.get(i));
+				else	System.out.print("...");
+			}
+		sorted():
+			1. Stream<String> stream = Stream.concat(letters(seasons[0]), letters(seasons[1])).distinct().sorted();
+			2. Stream<String> stream = Stream.of(seasons).sorted(new LengthComparator());
+			3. Stream<String> stream = Stream.of(seasons).sorted(new LengthComparator().reversed());
+			4. Stream<String> stream = Stream.of(seasons).sorted(Comparator.comparing(String::length));
+			
+			public class LengthComparator implements Comparator<String> {
+				@Override
+				public int compare(String o1, String o2) {
+					int len1 = o1.length();
+					int len2 = o2.length();
+					return Integer.compare(len1, len2);
+				}
+				
+			}
+		
+		peek():	没有collect(Collectors.toList())、迭代 等等 -> 如果没有获取元素..peek不使用
+			1.
+				Stream<String> stream = Stream.of(seasons).filter(t -> t.length() > 4).peek(t -> System.out.println(t));
+				List<String> list = stream.collect(Collectors.toList());
+			
+			2.
+				Stream<String> stream = Stream.of(seasons).filter(t -> t.length() > 4).peek(t -> System.out.println(t));
+				Iterator<String>iterator = stream.iterator();
+				while(iterator.hasNext()) {
+					iterator.next();   //不用sout
+				}
+			
+			
+	源码：	
+		Stream<T> distinct();
+		
+		Stream<T> sorted(Comparator<? super T> comparator);
+		
+		default Comparator<T> reversed() {
+	        return Collections.reverseOrder(this);
+	    }
+		
+		public interface Comparator<T>{xxx}
+		public static <T, U extends Comparable<? super U>> Comparator<T> comparing(
+            Function<? super T, ? extends U> keyExtractor)
+	    {
+	        Objects.requireNonNull(keyExtractor);
+	        return (Comparator<T> & Serializable)
+	            (c1, c2) -> keyExtractor.apply(c1).compareTo(keyExtractor.apply(c2));
+	    }
+    	
+    	Stream<T> peek(Consumer<? super T> action);
+    		
+    		String类：(Sorted 演示时使用过)
+    	public int length() {
+	        return value.length;
+	    }
+    	
+    	
+    	
+    
+    		    

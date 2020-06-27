@@ -1,0 +1,49 @@
+<!DOCTYPE mapper    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.cxd.mapper.DepartmentMapper">
+    <insert id="insertSimple">
+        INSERT INTO department (id,NAME) VALUES (1,'开发部');
+    </insert>
+    <select id="selectSimple" resultType="cn.cxd.model.Department">
+        select * from department where id = #{id};
+    </select>
+
+    <select id="selectStep" resultType="cn.cxd.model.Department">
+        select id dept_id,name dept_name from department where id = #{id};
+    </select>
+    
+    <resultMap id="withEmployeeMap" type="cn.cxd.vo.DepartmentWithEmployee">
+        <id column="dept_id" property="deptId"></id>
+        <result column="dept_name" property="deptName"></result>
+        <collection property="employees" ofType="cn.cxd.model.Employee">
+            <id column="e_id" property="id"></id>
+            <result column="e_name" property="name"></result>
+            <result column="gender" property="gender"></result>
+            <result column="email" property="email"></result>
+            <result column="last_name" property="lastName"></result>
+            <result column="dept_id" property="deptId"></result>
+        </collection>
+    </resultMap>
+    
+    <select id="selectDepartmentWithEmployee" resultMap="withEmployeeMap">
+        select d.id dept_id,d.name dept_name,e.id e_id,e.name e_name,gender,email,
+                last_name,dept_id
+        from department d,employee e
+        where d.id = e.dept_id and e.dept_id = #{dept_id}
+    </select>
+
+
+    <resultMap id="stepResultMap" type="cn.cxd.vo.DepartmentWithEmployee">
+        <id column="id" property="deptId"></id>
+        <result column="name" property="deptName"></result>
+        <collection property="employees" column="id"
+                    ofType="cn.cxd.model.Employee"
+                    select="cn.cxd.mapper.EmployeeMapper.selectDepartmentStep"/>
+    </resultMap>
+    <select id="selectDepartmentWithEmployeeStep" resultMap="stepResultMap">
+        select * from department where id = #{id}
+    </select>
+
+</mapper>

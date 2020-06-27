@@ -1,0 +1,40 @@
+包装类：
+	Java为每个基本类型都提供了包装类,这样,我们便可以把这些基本类型转化为对象来处理了.
+	这些包装类有:Boolean,Byte,Short,Character,Integer,Long,Float,Double,Void共9个
+Integer:
+	类函数：
+		static int parseInt(String s)     -> int   (s(radix基数) -> 十进制数)
+		static int parseInt(String s, int radix) 
+		
+		static Integer valueOf(int i)     -> Integer  
+		static Integer valueOf(String s)
+		static Integer valueOf(String s, int radix) 
+		
+		static String toString(int i)     ->string 类型 （十进制 -> radix 基数的数字）
+		static String toString(int i, int radix)  
+		
+
+	成员函数：
+		integer.toString()     -> string 类型
+		integer."type"Value()  ->  type基本类型
+		
+String:
+	类方法：
+		String.valueOf(type)  ->String
+		
+		String.format("itsde %d %d is nii", 100,200)
+		
+		char []tt = {'c','e','t','+','e'};
+		String cope = String.copyValueOf(tt)
+		
+	成员方法：
+		int 		length()         
+		char	 	charAt(index);
+		string[]    split(String regex);
+		string 		substring(int beginIndex, int endIndex);
+		boolean 	startsWith(string);
+		boolean 	endsWith(string);
+			
+		
+
+

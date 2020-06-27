@@ -1,0 +1,295 @@
+Files 
+1.copy
+	可复制文本文件、图像文件
+	使用：
+		try(FileOutputStream fileOutputStream = new FileOutputStream(new File(".\\neRWtext.txt"))) {
+				System.out.println(Files.exists(Paths.get(".\\neRWtext.txt")));
+				//	如果不存在，输出流会自己新建出目标文件
+				Files.copy(Paths.get(".\\RWtext.txt"),fileOutputStream);	
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+	
+	源码：返回值为 long ,读取的文件字节大小
+	public static long copy(Path source, OutputStream out) throws IOException {
+        // ensure not null before opening file
+        Objects.requireNonNull(out);
+        try (InputStream in = newInputStream(source)) {
+            return copy(in, out);
+        }
+    }
+
+2.delete
+	删除文件，delete 不可以删除不存在的文件..报错.   ---> 可以使用 deleteIfExists文件 
+	使用：
+		Files.delete(Paths.get(".\\tt.txt"));
+		System.out.println(Files.deleteIfExists(Paths.get(".\\tt.txt")));
+	
+	源码：返回类型为void
+		public static void delete(Path path) throws IOException {
+        	provider(path).delete(path);
+    	}
+    	
+    	 ：返回值为boolean
+    	public static boolean deleteIfExists(Path path) throws IOException {
+	        return provider(path).deleteIfExists(path);
+	    }
+
+3.size
+	获取文件的字节数
+	使用：
+		Path path = Paths.get(".\\RWtext.txt");
+		System.out.println(Files.size(path));
+		File file = new File(".\\RWtext.txt");
+		System.out.println(file.length());	
+	
+	源码： 返回值为 long
+		public static long size(Path path) throws IOException {
+	        return readAttributes(path, BasicFileAttributes.class).size();
+	    }
+	    
+	    : 返回值为 length
+	    public long length() {
+	        SecurityManager security = System.getSecurityManager();
+	        if (security != null) {
+	            security.checkRead(path);
+	        }
+	        if (isInvalid()) {
+	            return 0L;
+	        }
+	        return fs.getLength(this);
+	    }
+
+4.getLastModifiedTime、getOwner、isWritable、getFileStore、probeContentType
+	获取文件最后修改时间，可获取到年月日时分秒
+	获取文件拥有者 
+	获取文件是否可写
+	获取文件所在位置
+	探测文件类型..但没有严格按照后缀名..可用但要了解过后再使用
+	
+	使用：
+		System.out.println(Files.getLastModifiedTime(Paths.get(".\\RWtext.txt")));
+		System.out.println(Files.getOwner(Paths.get(".\\RWtext.txt")));
+		System.out.println(Files.isWritable(Paths.get(".\\RWtext.txt")));
+		System.out.println(Files.getFileStore(Paths.get(".\\RWtext.txt")));
+		System.out.println(Files.probeContentType(path));
+		
+	源码：
+		 public static FileTime getLastModifiedTime(Path path, LinkOption... options)
+	        throws IOException
+	    {
+	        return readAttributes(path, BasicFileAttributes.class, options).lastModifiedTime();
+	    }
+
+		public static UserPrincipal getOwner(Path path, LinkOption... options) throws IOException {
+	        FileOwnerAttributeView view =
+	            getFileAttributeView(path, FileOwnerAttributeView.class, options);
+	        if (view == null)
+	            throw new UnsupportedOperationException();
+	        return view.getOwner();
+	    }
+	    
+	    public static boolean isWritable(Path path) {
+	        return isAccessible(path, AccessMode.WRITE);
+	    }
+	    
+	    public static FileStore getFileStore(Path path) throws IOException {
+	        return provider(path).getFileStore(path);
+	    }
+	    
+	    public static String probeContentType(Path path)
+        throws IOException
+	    {
+	        // try installed file type detectors
+	        for (FileTypeDetector detector: FileTypeDetectors.installeDetectors) {
+	            String result = detector.probeContentType(path);
+	            if (result != null)
+	                return result;
+	        }
+	
+	        // fallback to default
+	        return FileTypeDetectors.defaultFileTypeDetector.probeContentType(path);
+	    }
+
+5.lines
+	读取文件中的所有行，作为一个流
+	使用：
+		流的迭代输出：
+		Stream<String> tStream = Files.lines(path,Charset.defaultCharset());
+		Iterator<String> iterator = tStream.iterator(); 
+		while(iterator.hasNext()) {
+			System.out.println(iterator.next());
+		}
+			
+			注意不可以：[Can only iterate over an array or an instance of java.lang.Iterable]
+				for(String t:tStream) {
+					System.out.println(t);
+				}
+				
+		流-->List -> for循环输出
+		Stream<String> tStream = Files.lines(path,Charset.defaultCharset());
+		List list = tStream.collect(Collectors.toList());
+		for(int i=0;i<list.size();i++) {
+			System.out.println(list.get(i));
+		}
+
+6.move 
+	移动文件..只能移动存在的文件，如果文件不存在，出错
+	path_instance.getFileName() ->获取文件名(带后缀..不带位置)
+	path_instance.getNameCount() ->获取文件的文件夹 +1 的数目，最后一个为文件名称(相当于getFileName())
+	
+	使用：
+		Path temp = Files.move(path,Paths.get(".\\"+path.getFileName()));
+		System.out.println("temp:"+temp);
+		System.out.println("fileName:"+path.getFileName());
+		for(int i=0;i<temp.getNameCount();i++) {
+			System.out.println(temp.getName(i));
+		}
+	
+	源码：返回值为移动后的文件位置
+		public static Path move(Path source, Path target, CopyOption... options)
+        throws IOException
+	    {
+	        FileSystemProvider provider = provider(source);
+	        if (provider(target) == provider) {
+	            // same provider
+	            provider.move(source, target, options);
+	        } else {
+	            // different providers
+	            CopyMoveHelper.moveToForeignTarget(source, target, options);
+	        }
+	        return target;
+	    }
+				
+6.newBufferReader  
+	相当于是 创建BufferReader的简化步骤 
+	使用：
+		BufferedReader bufferedReader = Files.newBufferedReader(path, Charset.defaultCharset());
+		String string = null;
+		while((string = bufferedReader.readLine()) != null) {
+			System.out.println(string);
+		}			
+ 	相当于：
+ 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(".\\RWtext.txt")), Charset.defaultCharset()));
+		String string = null;
+		while((string = bufferedReader.readLine()) != null) {
+			System.out.println(string);
+		}
+	
+	源码：
+		 public static BufferedReader newBufferedReader(Path path, Charset cs)
+        throws IOException
+	    {
+	        CharsetDecoder decoder = cs.newDecoder();
+	        Reader reader = new InputStreamReader(newInputStream(path), decoder);
+	        return new BufferedReader(reader);
+	    }
+	    
+	    
+7.readAllByte
+	读取文件中的所有字节，可以读图片，但是是乱码..
+	使用：
+		byte[] data = Files.readAllBytes(path);
+		System.out.println(new String(data));		
+	
+	源码： 
+		 public String(byte bytes[]) {
+	        this(bytes, 0, bytes.length);
+	    }
+	    
+	    
+	    public String(byte bytes[], int offset, int length) {
+	        checkBounds(bytes, offset, length);
+	        this.value = StringCoding.decode(bytes, offset, length);
+	    }
+	    
+	    
+	    public static byte[] readAllBytes(Path path) throws IOException {
+	        try (SeekableByteChannel sbc = Files.newByteChannel(path);
+	             InputStream in = Channels.newInputStream(sbc)) {
+	            long size = sbc.size();
+	            if (size > (long)MAX_BUFFER_SIZE)
+	                throw new OutOfMemoryError("Required array size too large");
+	
+	            return read(in, (int)size);
+	        }
+	    }
+
+8.readAllLines
+	从文件中读取所有行
+	
+	使用：返回的是 list 而不是流 ，但是二者都能用iterator、或是list直接for循环
+		List list = Files.readAllLines(path,Charset.defaultCharset());
+		Iterator iterator = list.iterator();
+		while(iterator.hasNext()) {
+			System.out.println(iterator.next());
+		}
+		
+		for(int i=0;i<list.size();i++) {
+			System.out.println(list.get(i));
+		}
+	
+	源码：	
+		public static List<String> readAllLines(Path path, Charset cs) throws IOException {
+	        try (BufferedReader reader = newBufferedReader(path, cs)) {
+	            List<String> result = new ArrayList<>();
+	            for (;;) {
+	                String line = reader.readLine();
+	                if (line == null)
+	                    break;
+	                result.add(line);
+	            }
+	            return result;
+	        }
+	    }
+
+9.write
+	写入..相当于是copy了吧 1.
+	
+	使用：返回写入的path路径	
+		byte[] data = Files.readAllBytes(path);
+		System.out.println(Files.write(Paths.get(".\\neRWtext.txt"), data));
+	    
+	    ：返回写入的path路径
+	    List list = Files.readAllLines(path,Charset.defaultCharset());
+	    System.out.println(Files.write(Paths.get(".\\neRWtext.txt"), list, Charset.defaultCharset()));
+	    
+	源码：   
+		1. 对应 byte[] data = Files.readAllBytes(path)
+		public static Path write(Path path, byte[] bytes, OpenOption... options)
+        throws IOException
+	    {
+	        // ensure bytes is not null before opening file
+	        Objects.requireNonNull(bytes);
+	
+	        try (OutputStream out = Files.newOutputStream(path, options)) {
+	            int len = bytes.length;
+	            int rem = len;
+	            while (rem > 0) {
+	                int n = Math.min(rem, BUFFER_SIZE);
+	                out.write(bytes, (len-rem), n);
+	                rem -= n;
+	            }
+	        }
+	        return path;
+	    }
+	    2.对应 List list = Files.readAllLines(path,Charset.defaultCharset());
+	    	public static Path write(Path path, Iterable<? extends CharSequence> lines,
+                             Charset cs, OpenOption... options)
+        throws IOException
+	    {
+	        // ensure lines is not null before opening file
+	        Objects.requireNonNull(lines);
+	        CharsetEncoder encoder = cs.newEncoder();
+	        OutputStream out = newOutputStream(path, options);
+	        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, encoder))) {
+	            for (CharSequence line: lines) {
+	                writer.append(line);
+	                writer.newLine();
+	            }
+	        }
+	        return path;
+	    }
+	    

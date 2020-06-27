@@ -1,0 +1,57 @@
+vim /etc/httpd/conf/httpd.conf
+
+AddHandler cgi-script .cgi .pl .py
+
+vim 在/var/www/cgi-bin/test.pl
+
+#! /usr/bin/perl -w
+print "Content-type:text/html\n\n";
+print '<html>';
+print '<head>';
+print '<meta charset="utf-8">';
+print '<title>菜鸟教程(runoob.com)</title>';
+print '</head>';
+print '<body>';
+use strict;
+use DBI;
+my $host = "47.112.233.51";
+my $driver = "mysql";
+my $database = "tmpdb";
+my $dsn = "DBI:$driver:database=$database:$host";
+my $userid = "root";
+my $password = "123456";
+my $dbh = DBI->connect($dsn, $userid, $password ) or die $DBI::errstr;
+$dbh->do("set names utf8");
+my $sth = $dbh->prepare("SELECT * FROM student");
+$sth->execute();
+while ( my @row = $sth->fetchrow_array() ){
+         print '<p>'. join("\t", @row)."\n</p>";
+ }
+$sth->finish();
+$dbh->disconnect();
+print '</body>';
+print '</html>';
+
+
+chmod 777 给可执行权限test.pl
+
+安装perl-ExtUtils-MakeMaker
+yum install perl-ExtUtils-MakeMaker
+wget http://files.directadmin.com/services/9.0/ExtUtils-MakeMaker-6.31.tar.gz
+tar zxvf ExtUtils-MakeMaker-6.31.tar.gz
+cd ExtUtils-MakeMaker-6.31
+perl Makefile.PL
+
+
+安装DBI
+https://cpan.metacpan.org/authors/id/T/TI/TIMB/DBI-1.636.tar.gz
+tar -zxvf DBI-1.636.tar.gz
+cd DBI-1.636
+perl Makefile.PL
+make
+make test
+make install
+
+安装perl-DBD-MySQL
+yum install perl-DBD-MySQL
+

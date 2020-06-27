@@ -1,0 +1,84 @@
+反射：通过反射和配置文件创建任意类的对象，并执行对象的任意方法
+
+1.在包的同级创建File,作为配置文件
+2.在配置文件中定义类名，方法名
+3.使用该目标类的类加载器对配置文件资源加载到程序中并转为流
+4.使用properties对象将该流加载到内存中
+5.使用properities对象来获取配置文件的属性，内容为String
+5.使用Class.forClass等加载出类对象，并通过获取构造器newInstance出实际对象
+6.通过类对象加载出method,并调用invoke(实际对象)完成
+
+1.在包的同级创建File,作为配置文件
+
+	Day_8
+		Calculate.java
+	calu.properities
+	
+2.在配置文件中定义类名，方法名
+
+	className = Day_8.Calculate
+	methodName = add
+
+3.使用同级包中任意一个类加载器对配置文件资源加载到程序中并转为流
+
+	Properties properties = new Properties();
+	ClassLoader classLoader = Day_1.Dog.class.getClassLoader();
+	InputStream inStream = classLoader.getResourceAsStream("calu.properities");
+	
+4.使用properties对象将该流加载到内存中
+
+	properties.load(inStream);
+	
+5.使用properities对象来获取配置文件的属性，内容为String
+
+	String className = properties.getProperty("className");
+	String methodName = properties.getProperty("methodName");
+	
+5.使用Class.forClass等加载出类对象，并通过获取构造器并newInstance出实际对象
+
+	Class class1 = Class.forName(className);
+	Constructor constructor = class1.getConstructor(String.class,int.class);
+	Object object = constructor.newInstance("美团",11);
+	
+6.通过类对象加载出method,并调用invoke(实际对象)完成
+
+	Method method = class1.getDeclaredMethod(methodName,int.class,int.class);
+	System.out.println(method.invoke(object, 3,4));
+	
+	
+附件:
+	
+
+	public class Calculate {
+		private int a=5,b=3;
+		private String name="helloWorld";
+		public String ya = "a";
+		public String ua = "a";
+		public String ia = "a";
+		public static int age = 10;
+		
+		public int add(int a,int b) {
+			return a+b;
+		}
+		public int sub(int a,int b) {
+			return a-b;
+		}
+		private String info() {
+			return "it private func";
+		}
+		public Calculate(String name,int priority) {
+			this.name = name;
+			System.out.println(name+" is a priority "+priority+" calculator");
+		}
+		public Calculate(String name,String priority) {
+			this(name,Integer.parseInt(priority));
+		}
+		
+		public Calculate() {
+			super();
+		}
+		@Override
+		public String toString() {
+			return "Calculate [a=" + a + ", b=" + b + ", name=" + name + ", ya=" + ya + ", ua=" + ua + ", ia=" + ia + "]";
+		}
+	}

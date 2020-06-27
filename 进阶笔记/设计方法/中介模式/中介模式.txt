@@ -1,0 +1,55 @@
+中介模式
+	降低多个对象和类之间的通信复杂性，通信封装到一个类中单独处理
+1.定义产品类
+2.定义通信方类，内部有产品成员对象(s)和通信行为方法
+3.定义中介方类，内部有通信方(s)和用于通信方通信的方法
+4.客户端通过中介方类，对通信方的通信实现具体管理
+
+1.定义产品类
+	class Product{
+		public String productName;
+		public float sale;
+		public Product(String productName, float sale) {
+			this.productName = productName;
+			this.sale = sale;
+		}
+		
+	}
+2.定义通信方类，内部有产品成员对象(s)和通信行为方法
+	class Trader{
+		protected List<Product> products = new ArrayList<>();
+		protected float money;
+		protected String name;
+		public Trader(String name,float money) {
+			this.money = money;
+			this.name = name;
+		}
+		public void sell(Market market,Product product,Trader trader) {
+			market.sell(this, trader, product);
+		}
+		
+	}
+3.定义中介方类，内部有通信方(s)和用于通信方通信的方法
+	class Market{
+		private String marketName ;
+		private int credibility;
+		public Market(String marketName, int credibility) {
+			this.marketName = marketName;
+			this.credibility = credibility;
+		}
+		public void sell(Trader seller,Trader buyer,Product product){
+			System.out.println(buyer.name +" buy "+product.productName + " from "+seller.name+" in "+marketName);
+			buyer.money -= product.sale;
+			seller.money += product.sale;
+			buyer.products.add(product);
+			seller.products.remove(product);
+		}
+	}
+4.客户端通过中介方类，对通信方的通信实现具体管理	
+	public static void main(String[] args) {
+		Market market = new Market("天题交易行", 10);
+		Trader atrader = new Trader("A", 3500);
+		Trader btrader = new Trader("B", 2000);
+		Product product = new Product("米其林轮胎", 1000);
+		atrader.sell(market, product, btrader);
+	}	

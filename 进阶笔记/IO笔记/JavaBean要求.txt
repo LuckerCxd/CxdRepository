@@ -1,0 +1,9 @@
+JavaBean实体类要求：
+-	
+	1.类使用public修饰	
+	2.拥有无参构造器
+	3.成员变量使用private修饰	
+	4.对于成员方法都有Getter,Setter方法
+	JavaBean的属性：
+		去掉set,get再将剩余部分首字母变小写即为JavaBean的属性
+		从get或set方法中找出属性，而不是从成员变量来查找属性

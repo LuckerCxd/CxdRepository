@@ -1,0 +1,4 @@
+response.setHeader("Content-Type", "text/html;charset=utf-8");
+PrintWriter writer = response.getWriter();
+writer.write("你好猪头");
+		

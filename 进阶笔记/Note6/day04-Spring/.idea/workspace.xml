@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="84a529bb-ba8e-4380-ac90-a5325cfe9954" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1Y3sPbJxOPSElnLNvt74Jh3obbi" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15625" />
+    <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="test" />
+      <recent name="cn.cxd.services" />
+      <recent name="cn.cxd.beans" />
+      <recent name="cn.cxd.annoaop.aspects" />
+      <recent name="cn.cxd.impls" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\IDEAProjects\day04-Spring\src" />
+      <recent name="D:\IDEAProjects\day03-Spring\src" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.TestAnnoTx">
+    <configuration name="TestAnnoTx" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="test.TestAnnoTx" />
+      <module name="day04-Spring" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestC3P0Jdbc" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="test.TestC3P0Jdbc" />
+      <module name="day04-Spring" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestHalfTx" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="test.TestHalfTx" />
+      <module name="day04-Spring" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestHandTx" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="test.TestHandTx" />
+      <module name="day04-Spring" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestWholeTx" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="test.TestWholeTx" />
+      <module name="day04-Spring" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.TestAnnoTx" />
+        <item itemvalue="Application.TestWholeTx" />
+        <item itemvalue="Application.TestHalfTx" />
+        <item itemvalue="Application.TestHandTx" />
+        <item itemvalue="Application.TestC3P0Jdbc" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="84a529bb-ba8e-4380-ac90-a5325cfe9954" name="Default Changelist" comment="" />
+      <created>1582182588559</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1582182588559</updated>
+      <workItem from="1582182599692" duration="6649000" />
+      <workItem from="1582268587266" duration="17845000" />
+      <workItem from="1582364908908" duration="10055000" />
+      <workItem from="1582446681503" duration="8876000" />
+      <workItem from="1582533114903" duration="10072000" />
+      <workItem from="1582598712278" duration="6171000" />
+      <workItem from="1582643290026" duration="579000" />
+      <workItem from="1582789462809" duration="200000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="491" y="232" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1582269966140">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="491" y="232" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.864@0.0.1536.864" timestamp="1582269966140" />
+    <state x="557" y="130" key="#com.intellij.ide.util.MemberChooser" timestamp="1582382097557">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="557" y="130" key="#com.intellij.ide.util.MemberChooser/0.0.1536.864@0.0.1536.864" timestamp="1582382097557" />
+    <state x="437" y="355" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1582556176990">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="437" y="355" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1536.864@0.0.1536.864" timestamp="1582556176990" />
+    <state x="470" y="176" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1582273559794">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="470" y="176" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.864@0.0.1536.864" timestamp="1582273559794" />
+    <state x="533" y="115" key="FileChooserDialogImpl" timestamp="1582182771905">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="533" y="115" key="FileChooserDialogImpl/0.0.1536.864@0.0.1536.864" timestamp="1582182771905" />
+    <state width="1137" height="186" key="GridCell.Tab.0.bottom" timestamp="1582616333953">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state width="1137" height="186" key="GridCell.Tab.0.bottom/0.0.1536.864@0.0.1536.864" timestamp="1582616333953" />
+    <state width="1137" height="186" key="GridCell.Tab.0.center" timestamp="1582616333951">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state width="1137" height="186" key="GridCell.Tab.0.center/0.0.1536.864@0.0.1536.864" timestamp="1582616333951" />
+    <state width="1137" height="186" key="GridCell.Tab.0.left" timestamp="1582616333950">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state width="1137" height="186" key="GridCell.Tab.0.left/0.0.1536.864@0.0.1536.864" timestamp="1582616333950" />
+    <state width="1137" height="186" key="GridCell.Tab.0.right" timestamp="1582616333952">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state width="1137" height="186" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1582616333952" />
+    <state x="392" y="123" key="NewModule_or_Project.wizard" timestamp="1582182726540">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="392" y="123" key="NewModule_or_Project.wizard/0.0.1536.864@0.0.1536.864" timestamp="1582182726540" />
+    <state x="190" y="15" key="SettingsEditor" timestamp="1582277640243">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="190" y="15" key="SettingsEditor/0.0.1536.864@0.0.1536.864" timestamp="1582277640243" />
+    <state x="451" y="170" width="540" height="524" key="StructurePopup" timestamp="1582277871417">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="451" y="170" width="540" height="524" key="StructurePopup/0.0.1536.864@0.0.1536.864" timestamp="1582277871417" />
+    <state x="431" y="244" key="com.intellij.ide.util.TipDialog" timestamp="1582789586296">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="431" y="244" key="com.intellij.ide.util.TipDialog/0.0.1536.864@0.0.1536.864" timestamp="1582789586296" />
+    <state x="181" y="0" key="new project wizard" timestamp="1582789666137">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="181" y="0" key="new project wizard/0.0.1536.864@0.0.1536.864" timestamp="1582789666137" />
+    <state x="414" y="186" width="672" height="678" key="search.everywhere.popup" timestamp="1582614600280">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="414" y="186" width="672" height="678" key="search.everywhere.popup/0.0.1536.864@0.0.1536.864" timestamp="1582614600280" />
+  </component>
+</project>

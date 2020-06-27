@@ -1,0 +1,46 @@
+空对象模式
+	适用于对象为空时的仍要面对的统一化管理
+1.定义抽象产品类，设置通用方法
+2.定义具体产品类和空产品类都继承产品类，重写抽象方法
+3.定义工厂类，内部定义获取产品类的方法
+4.客户端通过工厂类来实现空产品检测	
+
+1.定义抽象产品类，设置通用方法
+	abstract class Product{
+		protected String productName;
+		public String getName() {
+			return "已拥有商品： "+productName;
+		}
+	}
+2.定义具体产品类和空产品类都继承产品类，重写抽象方法
+	class MeaningProduct extends Product{
+		public MeaningProduct(String productName) {
+			this.productName = productName;
+		}
+	}
+	class NullProduct extends Product{
+		@Override
+		public String getName() {
+			return "Invalid Product Name";
+		}
+	}
+3.定义工厂类，内部定义获取产品类的方法
+	class ProductFactory{
+		private String[] productNames = {"笔记本","计算器","文具盒"};
+		public Product getProduct(String productName) {
+			for(String s:productNames) {
+				if(s.equals(productName)) {
+					return new MeaningProduct(productName);
+				}	
+			}
+			return new NullProduct();
+		}
+	}
+4.客户端通过工厂类来实现空产品检测	
+	public static void main(String[] args) {
+		ProductFactory productFactory = new ProductFactory();
+		Product product = productFactory.getProduct("小说");
+		System.out.println(product.getName());
+		product = productFactory.getProduct("文具盒");
+		System.out.println(product.getName());
+	}

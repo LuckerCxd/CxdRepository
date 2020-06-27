@@ -1,0 +1,114 @@
+		RootController
+package application;
+import application.Context;
+
+public class RootController {
+	public RootController(){
+        //初始化时保存当前Controller实例
+        Context.controllers.put(this.getClass().getSimpleName(), this);
+    }
+}
+
+
+
+		ContextController
+package Controller;
+import java.util.HashMap;
+import java.util.Map;
+
+public class ContextController {
+	//Controller容器
+    	public static Map<String, Object> controllers = new HashMap<String, Object>();
+	
+	public static Map<String, Object> getControllers() {
+		return controllers;
+	}
+}
+
+	
+		举例应用
+public class UiController extends RootController implements Initializable
+
+System.out.println(ContextControll.getControllers());
+//从容器中获取FunctionController实例
+UiController controller = 
+	(UiController) ContextController.controllers.get(UiController.class.getSimpleName());
+controller.serverForLeastRest((ArrayList<ProcessControllBlock>)readyQueue, freePCBList,iBlock);
+
+
+		线程启动
+	
+Thread t = new Thread(new Runnable(){
+public void run(){
+  	Context_Strategy context_Strategy = new Context_Strategy(new Least_Rest_Strategy(),initFree_ReadyQueue.readyQueue,initFree_ReadyQueue.freePCBList);
+        		context_Strategy.selected_method();
+            }});
+t.start();
+
+
+
+		子线程控制速度
+Thread thread = Thread.currentThread();
+try {
+	thread.sleep(1000);
+} catch (InterruptedException e) {
+	e.printStackTrace();
+}
+
+
+		即时更新UI界面（与子线程速度一致，都为1000ms，但是实时更新）
+EventHandler<ActionEvent> eventHandler = e->{
+	    //操作
+	};
+Timeline animation = new Timeline(new KeyFrame(Duration.millis(1000), eventHandler));
+animation.setCycleCount(Timeline.INDEFINITE  // 1); //可以只显示一次
+animation.play();
+
+		深度复制
+public  InitFree_ReadyQueue  independent_copy(InitFree_ReadyQueue source) {
+	ArrayList<ProcessControllBlock> target_ready =  new ArrayList<ProcessControllBlock>(source.readyQueue.size());
+	ArrayList<ProcessControllBlock> target_free = new ArrayList<ProcessControllBlock>(source.freePCBList.size());
+		
+		
+	for(int i=0,max = source.readyQueue.size();i<max;i++) {
+		target_ready.add(new ProcessControllBlock(source.readyQueue.get(i).getPid(),source.readyQueue.get(i).getState(),source.readyQueue.get(i).getServertime(),source.readyQueue.get(i).getPriority(),source.readyQueue.get(i).getStart_time()));
+	}
+		
+	for(int i=0,max = source.freePCBList.size();i<max;i++) {
+		target_free.add(new ProcessControllBlock(source.freePCBList.get(i).getPid(),source.freePCBList.get(i).getState(),source.freePCBList.get(i).getServertime(),source.freePCBList.get(i).getPriority(),source.freePCBList.get(i).getStart_time()));
+	}
+		
+	return new InitFree_ReadyQueue(target_free,target_ready);
+}
+
+
+public class InitFree_ReadyQueue implements Cloneable{
+	public ArrayList<ProcessControllBlock> freePCBList;
+	public List<ProcessControllBlock> readyQueue;
+	
+	public InitFree_ReadyQueue(ArrayList<ProcessControllBlock> freePCBList, List<ProcessControllBlock> readyQueue) {
+		super();
+		this.freePCBList = freePCBList;
+		this.readyQueue = readyQueue;
+	}
+	
+}
+
+		listview 显示
+			ObservableList<String> strReadyList = FXCollections.observableArrayList();
+	    	ObservableList<String> strFreeList = FXCollections.observableArrayList();
+
+
+	    	Iterator<ProcessControllBlock> iterator  = readyQueue.iterator();
+	    	ProcessControllBlock temp = null;
+			while (iterator.hasNext() && readyQueue.size() != 0) {
+				temp  = iterator.next();
+				strReadyList.add(temp.toString());
+			}
+			
+			short_ready.setItems(strReadyList);  //重点！！
+
+		多线程重要问题
+		如果偶尔出现没代码端出错的异常，就说明一些函数要public synchronized  修饰
+
+	

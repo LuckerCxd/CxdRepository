@@ -1,0 +1,24 @@
+		String a = null;
+		String b = null;
+		Scanner input = new Scanner(System.in);
+		System.out.println("----start-----");
+		double d_a = 0;
+		double d_b = 0;
+		
+		boolean flag = true;
+		while(flag) {
+			try {
+				System.out.print("input number a :");
+				a = input.nextLine();
+				d_a = Double.parseDouble(a);
+				System.out.print("input number b :");
+				b = input.nextLine();
+				d_b = Double.parseDouble(b);
+				flag = false;
+			} catch (Exception e) {
+				continue;
+			}
+		}
+		
+		System.out.println(Double.parseDouble(a));
+		System.out.println(Double.parseDouble(b));

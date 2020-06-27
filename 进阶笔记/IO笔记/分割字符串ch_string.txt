@@ -1,0 +1,7 @@
+public static String[] parseToKey(String completeName) {
+		String[] split = completeName.split("=");
+		char bigFirst = (char)(split[0].charAt(0) - 32);
+		String another = split[0].substring(1, split[0].length());
+		split[0] = bigFirst+another;
+		return split;
+	}

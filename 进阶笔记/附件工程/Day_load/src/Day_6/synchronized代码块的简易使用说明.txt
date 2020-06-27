@@ -1,0 +1,86 @@
+synchronized (资源实例(可以是文件句柄File或是其他obj)) {
+	
+}
+
+应该这样理解：
+	1.synchronized 监控一个资源[事实上，synchronize(xx) xx只能是一个内容，而不存在&&的操作]
+		只有当前这个资源的监控下，才能进行wait 和 notify 操作
+		当系统中存在这一个资源时，且没有被其他synchronize块占用的使用，
+		那么当前的synchronize块就占据了这个资源，其他的线程的 监控这一资源的synchronize 块将不能向下运行
+		  [意味着其他线程不能用这个资源 (除非是非synchronized代码块、方法) ]
+	2.什么时候释放出资源呢？
+		当synchronize块 运行出来  或是 中途wait出来时 资源被释放了，而当前可以唤醒notify其他没有内容的线程，等自己的一旦退出或是等待，就给别人
+		而其他没有被wait的线程里的 synchronize块 就可以开始运行了
+		（注意：当前线程的sleep并不会释放出这个资源）
+	3.wait 与 notify
+		它们通常作为一对，使用在不同的线程的synchronize块中.但是一个块中可以有多个wait和notify，但不应该把它们看作一对
+		使用场景：当两个线程开始时，获得资源的那个线程synchronize块 发生wait后 ，在当前位置停止运行，释放出资源
+		而此时，如果另一个线程有 需要这个资源的synchronize块 那么它将被运行，它可以在中途 进行notify，
+		在进行完notify后，只要它从当前的synchronize块出来，则另一个wait的线程synchronize块将继续运行
+		 (注意：是“当前的synchronize块”只要进行完这个块，后面如果还有等待操作，那也不会再等了，而是让另一个线程的synchronize块继续运行)
+		
+生动形象的代码例子：（材料来自于：https://blog.csdn.net/swh1314/article/details/81193825 ）	
+
+
+	public class Demo{
+	    final static Object person =new Object();
+	    public static class T1 extends Thread{
+	    	
+	        public void run(){
+	            synchronized (person){
+	                System.out.println(System.currentTimeMillis()+"T1 come");
+	                try{
+	                    System.out.println(System.currentTimeMillis()+"T1 wait");
+	                    person.wait();
+	                   
+	                }catch (Exception r){
+	                    r.getStackTrace();
+	                }
+	                System.out.println(System.currentTimeMillis()+"T1 over");
+	//                person.notify();
+	            }
+	            
+	        }
+	    }
+	    public static class T2 extends Thread{
+	        public void run(){
+	//        	System.out.println(person);
+	            synchronized (person){      	
+	//            	System.out.println(person);
+	                System.out.println(System.currentTimeMillis()+"T2 come");
+	                person.notify();
+	                
+	                try{
+	//                    person.wait();
+	//                	 Thread.currentThread().sleep(2000);
+	                    System.out.println(System.currentTimeMillis()+"T2 over");
+	                }catch (Exception r){
+	                    r.getStackTrace();
+	                }
+	 
+	            }
+	           
+	           
+	        }
+	    }
+	 
+	    public static void main(String args[]){
+	        try{
+	            Thread thread1=new T1();
+	            Thread thread2=new T2();
+	            thread1.start();
+	            thread2.start();
+	        }catch (Exception e){
+	            e.printStackTrace();
+	        }
+	 
+	    }
+	}
+			 
+	运行结果为：
+		1560173992515T1 come
+		1560173992516T1 wait
+		1560173992516T2 come
+		1560173992516T2 over
+		1560173992516T1 over
+

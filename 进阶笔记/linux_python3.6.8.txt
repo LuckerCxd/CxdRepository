@@ -1,0 +1,29 @@
+0. wget https://www.python.org/ftp/python/3.6.1/Python-3.6.1.tgz
+1. mkdir -p /usr/local/python3
+2. tar -zxvf Python-3.6.1.tgz
+3. cd Python-3.6.1
+   ./configure --prefix=/usr/local/python3
+4. make
+5. make install
+6. ln -s /usr/local/python3/bin/python3 /usr/bin/python3
+7. vim ~/.bash_profile
+
+	PATH=$PATH:$HOME/bin:/usr/local/python3/bin
+	export PATH
+8. source ~/.bash_profile
+9. python3 -V
+10. pip3 -V
+11. wget --no-check-certificate  https://pypi.python.org/packages/source/s/setuptools/setuptools-19.6.tar.gz#md5=c607dd118eae682c44ed146367a17e26
+12. tar -zxvf setuptools-19.6.tar.gz
+13. cd setuptools-19.6
+14. python3 setup.py build
+15. python3 setup.py install
+16. wget --no-check-certificate  https://pypi.python.org/packages/source/p/pip/pip-8.0.2.tar.gz#md5=3a73c4188f8dbad6a1e6f6d44d117eeb
+17. tar -zxvf pip-8.0.2.tar.gz
+18. cd pip-8.0.2
+19. python3 setup.py build
+20. python3 setup.py install
+21. pip install PyMySQL
+22. pip install web.py 
+23. yum install coreutils （后台执行）
+24. nohup python3 helloweb.py

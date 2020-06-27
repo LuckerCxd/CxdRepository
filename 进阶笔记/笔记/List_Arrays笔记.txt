@@ -1,0 +1,74 @@
+1.用接口 List mylist来创建 具体容器类
+	mylist.toArray()   -> Object[] myobjects
+	源码：
+	
+		 public Object[] toArray() {
+	        return Arrays.copyOf(elementData, size);
+	    }
+	    
+	Arrays.asList(myobjects)  -> List接口类（返回Arraylist，但由接口声明，因此还是List）
+	源码：
+	
+		public static <T> List<T> asList(T... a) {
+        	return new ArrayList<>(a);
+    	}
+
+2.Arrays类方法：
+	Arrays.asList(a)  -> List接口类（返回Arraylist，但由接口声明，因此还是List）
+	源码：
+		
+		public static <T> List<T> asList(T... a) {
+	        return new ArrayList<>(a);
+	    }
+    
+	Arrays.sort(a, c)  ->参数：数组，比较器，用比较器来排序 ,返回值为 void
+	源码：
+	
+		public static <T> void sort(T[] a, Comparator<? super T> c) {
+	        if (c == null) {
+	            sort(a);
+	        } else {
+	            if (LegacyMergeSort.userRequested)
+	                legacyMergeSort(a, c);
+	            else
+	                TimSort.sort(a, 0, a.length, c, null, 0, 0);
+	        }
+	    }
+	  
+	Arrays.copyOf(original, newLength)  ->参数：数组，长度 ，内部使用System.arraycopy(),返回 新数组
+	源码：
+	
+		   public static <T> T[] copyOf(T[] original, int newLength) {
+		        return (T[]) copyOf(original, newLength, original.getClass());
+		    }
+		    
+	Arrays.copyOfRange(original, from, to) ->类似上面
+	源码：
+		
+		 public static <T> T[] copyOfRange(T[] original, int from, int to) {
+		        return copyOfRange(original, from, to, (Class<? extends T[]>) original.getClass());
+		    }
+		
+	Arrays.toString(a);   ->将数组元素的toString()都输出
+	源码：
+		
+		 public static String toString(long[] a) {
+		        if (a == null)
+		            return "null";
+		        int iMax = a.length - 1;
+		        if (iMax == -1)
+		            return "[]";
+		
+		        StringBuilder b = new StringBuilder();
+		        b.append('[');
+		        for (int i = 0; ; i++) {
+		            b.append(a[i]);
+		            if (i == iMax)
+		                return b.append(']').toString();
+		            b.append(", ");
+		        }
+		    }
+		
+	
+Arrays.fill(T[] data,T val)//数组的每一个元素赋值为val
+		

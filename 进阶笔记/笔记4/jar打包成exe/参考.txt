@@ -1,0 +1,6 @@
+1.首先是使用eclipse打包成runnable jar
+2.使用exe4j配置打包
+   具体：https://blog.csdn.net/qq_20473985/article/details/53186216
+   其中注意一下：6.Preferred VM:
+		使用Client hostpot VM
+3.现在已经有一个好用的配置了：D:\JavaToEXE\userfulConfOfEXE4J.exe4j

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <!--  
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+     
+    <constant name="struts.devMode" value="true" />
+	
+    <package name="default" namespace="/" extends="struts-default">
+	
+        <default-action-ref name="index" />
+
+        <global-results>
+            <result name="error">/WEB-INF/jsp/error.jsp</result>
+        </global-results>
+
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exception" result="error"/>
+        </global-exception-mappings>
+
+        <action name="index">
+            <result type="redirectAction">
+                <param name="actionName">HelloWorld</param>
+                <param name="namespace">/example</param>
+            </result>
+        </action>
+    </package>
+
+    <include file="example.xml"/>
+    
+    -->
+	
+	<!-- <constant name="struts.action.extension" value="com"></constant>  -->
+	
+	<!-- public class HelloAction 普通类,什么类或接口也不继承-->
+	<package name="p1" extends="struts-default" namespace="/p1" >
+		<action name="hello1" class="cn.cxd.action.HelloAction" method="doHello">
+			<result name = "success" type="dispatcher" >/success.html</result>
+			<result name = "fail" type="dispatcher" >/fail.html</result>
+		</action>
+		
+		<!-- public class HelloAction2 implements Action 实现Action接口-->
+		<action name="hello2" class="cn.cxd.action.HelloAction2" >
+			<result name = "success" type="dispatcher" >/success.html</result>
+			<result name = "fail" type="dispatcher" >/fail.html</result>
+		</action>
+		
+		<!-- public class HelloAction3 extends ActionSupport 继承ActionSupport类-->
+		<action name="hello3" class="cn.cxd.action.HelloAction3" method="doHello">
+			<result name = "success" type="dispatcher" >/success.html</result>
+			<result name = "fail" type="dispatcher" >/fail.html</result>
+		</action>
+		
+		<!-- 默认action,具备默认类 com.opensymphony.xwork2.ActionSupport -->
+		<action name="hello4" >
+			<result name = "success" type="dispatcher" >/success.html</result>
+		</action>
+		
+	</package>
+	
+	<package name="p2" extends="struts-default" namespace="/p2">
+		<action name="*_*" class="cn.cxd.action.{2}" method="{1}{2}">
+			<result name = "success" type="dispatcher">/{2}/success.html</result>
+		</action>
+	</package>
+	
+	
+	<!-- 动态方法调用 http://localhost:8080/StrutsDmeo/p3/User!deleteUser  -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="true"></constant>
+	<package name="p3" extends="struts-default" namespace="/p3">
+		<action name="User" class="cn.cxd.action.User">
+			<result name = "fail" type="dispatcher">/User/fail.html</result>
+		</action>
+	</package>
+	
+
+	<package name="p4" extends="struts-default" namespace="/p4">
+		<!-- 重定向到网页资源redirect,默认是dispatcher转发请求 -->
+		<action name="hello0" class="cn.cxd.action.HelloAction3" method="doHello">
+			<result name = "success" type="dispatcher">/success.html</result>
+		</action>
+		
+		<!-- 重定向到网页资源redirect,默认是dispatcher转发请求 -->
+		<action name="hello1" class="cn.cxd.action.HelloAction3" method="doHello">
+			<result name = "success" type="redirect">/success.html</result>
+		</action>
+		
+		<!-- chain转发到同包下的其他action 
+			标签体内容仅是action_name,无包 -->
+		<action name="hello2" class="cn.cxd.action.HelloAction3" method="doHello">
+			<result name = "success" type="chain">hello1</result>
+		</action>
+		
+		<!--redirectAction重定向到同包下的其他action, 
+			标签体内容仅是action_name即可,无包 -->
+		<action name="hello3" class="cn.cxd.action.HelloAction3" method="doHello">
+			<result name = "success" type="redirectAction">hello1</result>
+		</action>
+		
+		<!--redirectAction重定向到不同包下的其他action, 需要参数
+			在struts-default.xml中查找出：
+			<result-type name="redirectAction" class="org.apache.struts2.dispatcher.ServletActionRedirectResult"/>
+			去其源码找出内容,发现：可以被设置
+				protected String actionName;
+	   			protected String namespace;
+   			-->
+		<action name="hello4" class="cn.cxd.action.HelloAction3" method="doHello">
+			<result name = "success" type="redirectAction">
+				<param name="namespace">/p1</param>
+				<param name="actionName">hello1</param>
+			</result>
+		</action>
+		
+		
+		<!--chain转发到不同包下的其他action, 需要参数
+			在struts-default.xml中查找出：
+			<result-type name="chain" class="com.opensymphony.xwork2.ActionChainResult"/>
+			去其源码找出内容,发现：可以被设置
+				 private String actionName;
+   				 private String namespace;
+   			-->
+		<action name="hello5" class="cn.cxd.action.HelloAction3" method="doHello">
+			<result name = "success" type="chain">
+				<param name="namespace">/p1</param>
+				<param name="actionName">hello1</param>
+			</result>
+		</action>
+		
+	</package>
+	
+	<!-- 自定义result-type,类继承StrutsResultSuppor,重写doExecute -->
+	<package name="p5" extends="struts-default" namespace="/p5">
+		<result-types>
+			<result-type name="code" class="cn.cxd.action.ValidCode"/>
+		</result-types>
+		<action name="hello0" class="cn.cxd.action.HelloAction3" method="doHello">
+			<result name = "success" type="code">
+				<param name="width">300</param>
+				<param name="height">50</param>
+			</result>
+		</action>
+	</package>
+	
+	
+	<package name="p6" extends="struts-default" abstract="true">
+		<result-types>
+			<result-type name="code" class="cn.cxd.action.ValidCode"/>
+		</result-types>
+	</package>
+	
+	<package name="p7" extends="p6" namespace="/p7">
+		<action name="hello0" class="cn.cxd.action.HelloAction3" method="doHello">
+			<result name = "success" type="code">
+				<param name="width">300</param>
+				<param name="height">50</param>
+			</result>
+		</action>
+	</package>
+	
+	<package name="p8" extends="struts-default" namespace="/p8">
+		<action name="hello0" class="cn.cxd.action.HelloAction4" method="showApi">
+		</action>
+	</package>
+	
+	<package name="p9" extends="struts-default" namespace="/p9">
+		<action name="hello0" class="cn.cxd.action.HelloAction5" method="showPara"></action>
+		<action name="hello1" class="cn.cxd.action.HelloAction6" method="showPara">	
+			<!--  DateConvertor2中将错误抛出，才有回显->错误回显,而非自己处理  -->
+			<result name="input">/formAction2.jsp</result>
+		</action>
+		<action name="hello2" class="cn.cxd.action.HelloAction7" method="showPara"></action>
+	</package>
+</struts>

@@ -1,0 +1,63 @@
+观察者模式
+	目标对象的状态发生改变，所有观察者对象都将得到广播通知
+
+1.定义抽象观察者类，内有产品类成员变量和更新方法
+2.定义产品类，内有抽象观察类列表成员变量，
+	和(添加入观察者列表)函数，
+	和重设产品类信息(内将列表中元素都执行更新方法)函数
+3.定义具体观察类继承抽象观察者类，重写抽象方法
+4.客户端通过产品类的添加观察者类方法，实现广播通知
+
+1.定义抽象观察者类，内有产品类成员变量和更新方法
+	abstract class Observer{
+		protected Num num;
+		public abstract void update();
+	}
+2.定义产品类，内有抽象观察类列表成员变量，
+	和(添加入观察者列表)函数，
+	和重设产品类信息(内将列表中元素都执行更新方法)函数
+	class Num{
+		private List<Observer>observers = new ArrayList();
+		private int contentNum;
+		public void addObserver(Observer observer) {
+			observers.add(observer);
+		}
+		public void setNum(int contentNum) {
+			this.contentNum = contentNum;
+			System.out.println("数值为: "+contentNum);
+			for(Observer o:observers) {
+				o.update();
+			}
+		}
+		public int getContentNum() {
+			return contentNum;
+		}
+	}
+3.定义具体观察类继承抽象观察者类，重写抽象方法
+	class HexObserver extends Observer{
+		public HexObserver(Num num) {
+			this.num = num;
+		}
+		@Override
+		public void update() {
+			System.out.println("Hex: "+Integer.toHexString(num.getContentNum()));
+		}
+	}
+	class BinObserver extends Observer{
+		public BinObserver(Num num) {
+			this.num = num;
+		}
+		@Override
+		public void update() {
+			System.out.println("Hex: "+Integer.toBinaryString(num.getContentNum()));
+		}
+	}
+4.客户端通过产品类的添加观察者类方法，实现广播通知
+	public static void main(String[] args) {
+		Num num = new Num();
+		HexObserver hexObserver = new HexObserver(num);
+		BinObserver binObserver = new BinObserver(num);
+		num.addObserver(hexObserver);
+		num.addObserver(binObserver);
+		num.setNum(55660);
+	}

@@ -1,0 +1,182 @@
+实质：
+        一个工厂类根据传入的参数，动态决定应该创建哪一个产品类（这些产品类继承自一个父类或接口）的实例。
+
+过程：
+1.合理输入两个数字
+2.合理输入一个运算符（正则）
+3.工厂创建具体类 （赋给成员）
+4.成员执行计算函数
+
+代码
+
+```
+package Try_sig.Fac;
+
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+
+public class Alu_fac {
+	public static void main(String[] args) {
+		Result result = new Result();
+		input_2_num(result);
+		input_oper(result);
+		Fac_M factoc = new Fac_M(result);
+		factoc.get_End();
+	}
+
+	public static void input_2_num(Result result) {
+		String a = null;
+		String b = null;
+		Scanner input = new Scanner(System.in);
+		System.out.println("----start-----");
+		double d_a = 0;
+		double d_b = 0;
+
+		boolean a_flag = true;
+		while (a_flag) {
+			try {
+				System.out.print("input number a :");
+				a = input.nextLine();
+				d_a = Double.parseDouble(a);
+				a_flag = false;
+			} catch (Exception e) {
+				continue;
+			}
+		}
+
+		boolean b_flag = true;
+		while (b_flag) {
+			try {
+				System.out.print("input number b :");
+				b = input.nextLine();
+				d_b = Double.parseDouble(b);
+				b_flag = false;
+			} catch (Exception e) {
+				continue;
+			}
+		}
+
+		result.a = d_a;
+		result.b = d_b;
+	}
+
+	public static void input_oper(Result result) {
+		Scanner input = new Scanner(System.in);
+		boolean bool_op = true;
+		String in_str = null;
+		Pattern pattern;
+		Matcher matcher;
+		String[] regex = { "[+]", "[-]", "[*]", "[/]" };
+		int index = 0;
+
+		while (bool_op) {
+			System.out.print("输入运算符(+-*/)  : ");
+			in_str = input.nextLine();
+			for (int i = 0; i < 4; i++) {
+				pattern = Pattern.compile(regex[i]);
+				matcher = pattern.matcher(in_str);
+				if (matcher.matches()) {
+					bool_op = false;
+					index = i;
+					break;
+				}
+			}
+		}
+		result.op = regex[index].charAt(1) + "";
+
+	}
+}
+
+class Result {
+	public static double a = 0;
+	public static double b = 0;
+	public static String op = null;
+}
+
+abstract class Opera_abstract {
+	public abstract double getEnd();
+}
+
+class Opera_add extends Opera_abstract {
+	private double end_num = 0;
+
+	public Opera_add(Result result) {
+		end_num = result.a + result.b;
+	}
+
+	@Override
+	public double getEnd() {
+		return end_num;
+	}
+}
+
+class Opera_sub extends Opera_abstract {
+	private double end_num = 0;
+
+	public Opera_sub(Result result) {
+		end_num = result.a - result.b;
+	}
+
+	@Override
+	public double getEnd() {
+		return end_num;
+	}
+}
+
+class Opera_mul extends Opera_abstract {
+	private double end_num = 0;
+
+	public Opera_mul(Result result) {
+		end_num = result.a * result.b;
+	}
+
+	@Override
+	public double getEnd() {
+		return end_num;
+	}
+}
+
+class Opera_div extends Opera_abstract {
+	private double end_num = 0;
+
+	public Opera_div(Result result) {
+		end_num = result.a / result.b;
+	}
+
+	@Override
+	public double getEnd() {
+		return end_num;
+	}
+}
+
+class Fac_M {
+	private static Result result = null;
+	private static Opera_abstract op = null;
+	public Fac_M(Result result) {
+		this.result = result;
+		switch (this.result.op) {
+		case "+":
+			op = new Opera_add(result);
+			break;
+		case "-":
+			op = new Opera_sub(result);
+			break;
+		case "*":
+			op = new Opera_mul(result);
+			break;
+		case "/":
+			op = new Opera_div(result);
+			break;
+		} 
+	}
+
+	public void get_End() {
+		System.out.println("运算结果： a"+result.op+"b = "+op.getEnd());
+	}
+	
+}
+
+```

@@ -1,0 +1,109 @@
+CREATE USER mybatis@localhost IDENTIFIED BY "123456";
+SELECT HOST,USER FROM mysql.`user` ;
+CREATE TABLE Employee(id INT);
+GRANT ALL ON mybatis.* TO mybatis@localhost;
+
+// 外键失效，清空表，再重置自增id,再重新生效外键
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE employeeInfo;
+SET FOREIGN_KEY_CHECKS = 1;
+
+
+
+存储过程：
+
+DELIMITER //
+CREATE PROCEDURE calu_monthly (IN tmpDate VARCHAR(20))
+BEGIN	
+	DECLARE temp_money DOUBLE;
+	DECLARE temp_count INT;
+	DECLARE temp_count2 INT;
+	DECLARE temp_deptId INT;
+	DECLARE temp_jobId INT;
+	DECLARE temp_dayly_salary DOUBLE;
+	
+	DECLARE temp_tarMoney DOUBLE;
+	
+	DECLARE temp_id INT;
+	DECLARE finish INT DEFAULT 0;
+	DECLARE id_list CURSOR FOR SELECT id FROM employeeinfo;
+	# 为下面while循环建立一个退出标志，当游标遍历完后将flag的值设置为1
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET finish=1;
+	OPEN id_list;  # 打开游标
+	# 将游标中的值赋给定义好的变量，实现for循环的要点
+	FETCH id_list INTO temp_id;
+		WHILE finish <> 1 DO
+		# sql提供了字符串的切分，有left、right、substring、substring_index
+		# 在T-SQL中，局部变量必须以@作为前缀，声明方式set，select还有点差别
+		SELECT job_salary INTO temp_money FROM job NATURAL JOIN  employeeinfo WHERE id = temp_id;
+		SELECT COUNT(*) INTO temp_count FROM attendance WHERE e_id = temp_id AND DATE LIKE CONCAT(tmpDate,'%') AND flag = 1 ;
+		SELECT COUNT(*) INTO temp_count2 FROM attendance WHERE e_id = temp_id AND DATE LIKE CONCAT(tmpDate,'%') AND flag = 0 ;
+		SELECT dept_id INTO temp_deptId FROM employeeinfo WHERE id = temp_id;
+		
+		SELECT job_id INTO temp_jobId FROM employeeinfo WHERE id = temp_id;
+		SELECT job_salary/30 INTO temp_dayly_salary FROM job WHERE job_id = temp_jobId;
+		
+		SET temp_tarMoney = temp_money - temp_count * 40 - temp_dayly_salary * temp_count2;
+		INSERT INTO monthlywages (e_id,dept_id,DATE,salary) VALUES (temp_id,temp_deptId,tmpDate,temp_tarMoney);
+		FETCH id_list INTO temp_id;
+		END WHILE;
+		#select * from temp_table;
+	CLOSE id_list;  # 关闭游标
+END
+
+调用：
+CALL calu_monthly("2018-10");
+
+删除：
+DROP PROCEDURE calu_monthly;
+
+
+
+DELIMITER //
+CREATE PROCEDURE calu_yearbonus (IN tmpDate VARCHAR(20))
+BEGIN	
+	DECLARE temp_sum_salary DOUBLE;
+	DECLARE temp_name VARCHAR(20);
+	DECLARE temp_id INT;
+	DECLARE finish INT DEFAULT 0;
+	
+	DECLARE temp_type_id INT;
+	DECLARE temp_income DOUBLE;
+	DECLARE temp_bonus DOUBLE;
+	DECLARE temp_sum_bonus DOUBLE DEFAULT 0;
+	DECLARE temp_re_bonus DOUBLE DEFAULT 0;
+	DECLARE finish_inner INT DEFAULT 0;
+	DECLARE type_id_list CURSOR FOR SELECT type_id FROM processallowance;
+	DECLARE id_list CURSOR FOR SELECT id FROM employeeinfo;
+	# 为下面while循环建立一个退出标志，当游标遍历完后将flag的值设置为1
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET finish=1;
+	OPEN id_list;  # 打开游标
+	# 将游标中的值赋给定义好的变量，实现for循环的要点
+	FETCH id_list INTO temp_id;
+		WHILE finish <> 1 DO
+		# sql提供了字符串的切分，有left、right、substring、substring_index
+		# 在T-SQL中，局部变量必须以@作为前缀，声明方式set，select还有点差别
+		SELECT SUM(salary) INTO temp_sum_salary FROM monthlywages WHERE e_id = temp_id AND DATE LIKE CONCAT(tmpDate,'%');
+		SELECT NAME INTO temp_name FROM employeeinfo WHERE id = temp_id;
+		OPEN type_id_list;  # 打开游标
+		FETCH type_id_list INTO temp_type_id;
+		WHILE finish <> 1 DO
+			SELECT income INTO temp_income FROM processallowance WHERE type_id = temp_type_id;
+			SELECT SUM(TIME)*temp_income INTO temp_bonus FROM allowance WHERE e_id = temp_id AND type_id = temp_type_id;
+			IF temp_bonus IS NULL THEN
+				SET temp_bonus=0;
+			END IF;
+			SET temp_sum_bonus = temp_bonus + temp_sum_bonus;
+			SET temp_re_bonus = (temp_sum_salary + temp_sum_bonus)/12;
+			#insert into ttt(temp_sum_bonus,temp_re_bonus,temp_bonus) values (temp_sum_bonus,temp_re_bonus,temp_bonus);
+			FETCH type_id_list INTO temp_type_id;
+		END WHILE;
+		INSERT INTO yearbonus (e_id,e_name,DATE,bonus,salarys,result) VALUES (temp_id,temp_name,tmpDate,ROUND(temp_sum_bonus,2),ROUND(temp_sum_salary,2),ROUND(temp_re_bonus,2));
+		SET temp_sum_bonus = 0;
+		SET finish = 0;
+		CLOSE type_id_list;  # 关闭游标		
+	FETCH id_list INTO temp_id;
+	END WHILE;	
+	#select * from temp_table;
+	CLOSE id_list;  # 关闭游标
+END;

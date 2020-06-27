@@ -1,0 +1,87 @@
+备忘录模式
+	可恢复到原先的状态
+1.定义产品类
+2.定义存储状态类，内有产品类的信息成员变量
+	和(存储状态)函数和(根据成员返回产品类对象)函数
+3.定义帮助类，内有存储状态对象列表成员变量
+	和(添加存储状态)函数和(获取列表最后一个状态)函数
+4.定义操作类，内有帮助类和产品类成员变量
+ 	和(存储产品信息到帮助类中)函数和(从帮助类还原产品信息)函数
+5.客户端通过操作类，实现回滚状态
+
+1.定义产品类
+	class Product{
+		public String productName;
+		public float sale;
+		public Product(String productName, float sale) {
+			this.productName = productName;
+			this.sale = sale;
+		}
+		@Override
+		public String toString() {
+			return productName+" 售价："+sale;
+		}
+	}
+2.定义存储状态类，内有产品类的信息成员变量
+	和(存储状态)函数和(根据成员返回产品类对象)函数
+	class StockProductState{
+		private String productName;
+		private float sale;
+		public StockProductState(Product product) {
+			productName = product.productName;
+			sale = product.sale;
+		}
+		public Product getProduct(Product product){
+			product.productName = productName;
+			product.sale = sale;
+			return product;
+		}
+	}	
+3.定义帮助类，内有存储状态对象列表成员变量
+	和(添加存储状态)函数和(获取列表最后一个状态)函数
+	class Helper{
+		private List<StockProductState> states = new ArrayList<>();
+		public void addStateToStates(StockProductState state) {
+			states.add(state);
+		}
+		public StockProductState getStateFromStates() {
+			int lastOne = states.size() - 1;
+			if(lastOne >= 0)
+				return states.get(lastOne);
+			return null;
+		}
+	}	
+4.定义操作类，内有帮助类和产品类成员变量
+ 	和(存储产品信息到帮助类中)函数和(从帮助类还原产品信息)函数
+ 	class Operator{
+		private Product product;
+		private Helper helper = new Helper();
+		public Operator(Product product) {
+			this.product = product;
+		}
+		public void setProductState(String productName,float sale) {
+			product.productName = productName;
+			product.sale = sale;
+		}
+		public Product getCurrentState() {
+			return product;
+		}
+		public void saveCurrentState() {
+			helper.addStateToStates(new StockProductState(product));
+		}
+		public void getFormalState() {
+			product = helper.getStateFromStates().getProduct(product);
+		}
+	}
+5.客户端通过操作类，实现回滚状态	
+	public static void main(String[] args) {
+		Product product = new Product("笔记本", (float)11.2);
+		Operator operator = new Operator(product);
+		System.out.println(operator.getCurrentState().toString());
+		operator.saveCurrentState();
+		operator.setProductState("高级笔记本", 10);
+		System.out.println(operator.getCurrentState().toString());
+		operator.getFormalState();
+		System.out.println(operator.getCurrentState().toString());
+		
+	}

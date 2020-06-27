@@ -1,0 +1,7 @@
+1. 进入要转换为.class的java文件的最底层所在地，
+	执行：javac xxxx.java
+	---> 变为 .class文件
+2  使用CMD执行.class文件
+	仅进入src层
+	执行： java 包名.类名
+	---> 即可执行

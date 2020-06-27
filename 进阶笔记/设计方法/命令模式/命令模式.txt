@@ -1,0 +1,73 @@
+命令模式；
+	认为是命令的地方都可以使用命令模式
+1.定义命令的抽象接口
+2.定义命令的操作宾语类，(可以有多个)
+	并在内定义基于该宾语类的操作实例方法
+3.定义具体操作命令类实现抽象接口，
+命令类个数同上面的操作宾语类的操作实例方法个数一致
+内部有操作宾语类成员变量，用于使用宾语类的操作实例方法
+4.定义调用类，内部有命令list成员变量，
+	定义add命令方法和executeAll命令方法
+5.客户端通过使用调用类来执行命令
+
+1.定义命令的抽象接口
+	public interface Order {
+		public abstract void execute();
+	}
+2.定义命令的操作宾语类，(可以有多个)
+	并在内定义基于该宾语类的操作实例方法
+	class Product{
+		private String name = "p30";
+		private String quality = "S";
+		public void buy(){
+			System.out.println(name +"("+" "+quality+"级别"+")"+" buy it");
+		}
+		public void sell() {
+			System.out.println(name +"("+" "+quality+"级别"+")"+" sell it");
+		}
+	}	
+3.定义具体操作命令类实现抽象接口，
+命令类个数同上面的操作宾语类的操作实例方法个数一致
+内部有操作宾语类成员变量，用于使用宾语类的操作实例方法
+	class SellOrder implements Order{
+		private Product product;
+		public SellOrder(Product product) {
+			this.product = product;
+		}
+		@Override
+		public void execute() {
+			product.sell();
+		}
+	}
+	class BuyOrder implements Order{
+		private Product product;
+		public BuyOrder(Product product) {
+			this.product = product;
+		}
+		@Override
+		public void execute() {
+			product.buy();
+		}
+	}
+4.定义调用类，内部有命令list成员变量，
+	定义add命令方法和executeAll命令方法
+	class Invoker{
+		private List<Order> orderList = new ArrayList<>();
+		public void addOrder(Order order) {
+			orderList.add(order);
+		}
+		public void executeOrderList() {
+			for(Order o:orderList) {
+				o.execute();
+			}
+			orderList.clear();
+		}
+	}	
+5.客户端通过使用调用类来执行命令
+	public static void main(String[] args) {
+		Product product = new Product();
+		Invoker invoker = new Invoker();
+		invoker.addOrder(new SellOrder(product));
+		invoker.addOrder(new BuyOrder(product));
+		invoker.executeOrderList();
+	}			

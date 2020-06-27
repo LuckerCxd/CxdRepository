@@ -1,0 +1,65 @@
+Junit测试方法
+
+	1.在被测类所在的包，进行同级建包，包名为test
+	2.test包下建类，类名为：被测类Test
+	3.类下建测试方法，方法名为：test被测类中的方法名
+
+
+	使用@Test注解，使它可以独立运行，不借助main
+	void返回类型，空参，建议使用Assert.assertEquals(89, result)
+	结果为绿则成功，为红则测试失败
+-----------------------------------------------------------------------
+	可以使用@Before,@After修饰其他方法，
+	在@Test修饰的方法执行
+		前执行@Before修饰的方法：资源申请或是其他先行操作
+		后执行@Test修饰的方法
+		最后执行@After修饰的方法：关闭资源或是其他收尾操作
+		
+1.在被测类所在的包，进行同级建包，包名为test
+
+	Day_8
+	Day_8Test
+
+2.test包下建类，类名为：被测类Test
+
+	Day_8
+		Calculate.java
+	Day_8Test
+		CalculateTest.java
+
+3.类下建测试方法，方法名为：test被测类中的方法名
+
+	使用@Test注解，使它可以独立运行，不借助main
+	void返回类型，空参，建议使用Assert.assertEquals(89, result)
+	结果为绿则成功，为红则测试失败	
+
+	@Before
+	public void init() {
+		System.out.println("start");
+	}
+	@Test
+	public void testAdd() {
+		Calculate calculate = new Calculate();
+		System.out.println("add test");
+		int result = calculate.add(1, 2);
+		Assert.assertEquals(3, result);
+	}
+	@Test
+	public void testSud() {
+		Calculate calculate = new Calculate();
+		System.out.println("sub test");
+		int result = calculate.sub(1, 2);
+		Assert.assertEquals(3, result);
+	}
+	@After
+	public void finish() {
+		System.out.println("end");
+	}
+4.运行结果	
+
+	start
+	add test
+	end
+	start
+	sub test
+	end

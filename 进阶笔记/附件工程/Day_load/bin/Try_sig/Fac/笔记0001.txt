@@ -1,0 +1,111 @@
+抽象工厂方法：使用于生产多个独立产品
+	1.定义产品类一接口，定义此产品类通用方法
+	2.定义具体类实现接口
+	3.定义产品类二接口，定义此产品类通用方法
+	4.定义具体类实现接口
+	5.定义抽象工厂类，定义所有子类工厂需要的方法（全设置为抽象方法）
+	6.实现子类工厂，重写父类抽象工厂类的所有方法(接收字符串，返回指定的具体类 if if if..)
+	7.定义工厂生成器类，定义方法(接收字符串，返回指定的具体工厂类 if if if..)
+	8.客户端使用工厂生成器类，使用抽象工厂类生产出具体工厂，进而使用抽象产品接口生产出具体产品
+	
+1.定义产品类一接口，定义此产品类通用方法
+	public interface Clothes {
+		public abstract void tell();
+	}
+
+2.定义具体类实现接口
+	class Rectangle implements Shape{
+		@Override
+		public void tell() {
+			System.out.println("rectangle");
+			
+		}
+	}
+
+	class Square implements Shape{
+		@Override
+		public void tell() {
+			System.out.println("square");
+			
+		}
+	}
+
+3.定义产品类二接口，定义此产品类通用方法	
+	public interface Shape {
+		public abstract void tell();
+	}
+
+4.定义具体类实现接口
+	class Shirt implements Clothes{
+		@Override
+		public void tell() {
+			System.out.println("shirt");
+		}
+	}
+	
+	class Shoes implements Clothes{
+		@Override
+		public void tell() {
+			System.out.println("shoes");
+		}
+	}	
+	
+5.定义抽象工厂类，定义所有子类工厂需要的方法（全设置为抽象方法）
+	abstract class AbstractFactory{
+		public abstract Shape getShape(String shapeName);
+		public abstract Clothes getClothes(String clothesName);
+	}	
+
+6.实现子类工厂，重写父类抽象工厂类的所有方法(接收字符串，返回指定的具体类 if if if..)
+	class ClothesFactory extends AbstractFactory{
+		@Override
+		public Shape getShape(String shapeName) {
+			return null;
+		}
+		
+		@Override
+		public Clothes getClothes(String clothesName) {
+			if(clothesName.equalsIgnoreCase("shirt"))
+				return new Shirt();
+			if(clothesName.equalsIgnoreCase("shoes"))
+				return new Shoes();
+			return null;
+		}
+		
+	}
+	
+	class ShapeFactory extends AbstractFactory{
+		@Override
+		public Shape getShape(String shapeName) {
+			if(shapeName.equalsIgnoreCase("rectangle")) 
+				return new Rectangle();
+			if(shapeName.equalsIgnoreCase("square")) 
+				return new Square();	
+			return null;
+		}
+		
+		@Override
+		public Clothes getClothes(String clothesName) {
+			return null;
+		}
+	}
+7.定义工厂生成器类，定义方法(接收字符串，返回指定的具体工厂类 if if if..)
+	class FactoryProducer{
+		public static AbstractFactory getFactory(String factoryName) {
+			if(factoryName.equalsIgnoreCase("shape"))
+				return new ShapeFactory();
+			if(factoryName.equalsIgnoreCase("clothes"))
+				return new ClothesFactory();
+			return null;
+		}
+	}	
+
+8.客户端使用工厂生成器类，使用抽象工厂类生产出具体工厂，进而使用抽象产品接口生产出具体产品	
+	public static void main(String[] args) {
+			AbstractFactory factory = FactoryProducer.getFactory("shape");
+			Shape shape = factory.getShape("rectangle");
+			shape.tell();
+			factory = FactoryProducer.getFactory("clothes");
+			Clothes clothes = factory.getClothes("shoes");
+			clothes.tell();
+		}	

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE persons SYSTEM "Person.dtd">
+<persons>
+	<person number  ="ss">
+		<id>001</id>
+		<name id = "first">lixiao</name>
+		<sex>female</sex>
+	</person>
+	<person number  ="s1">
+		<id>001</id>
+		<name>chenxiao</name>
+		<sex>female</sex>
+	</person>
+</persons>
+

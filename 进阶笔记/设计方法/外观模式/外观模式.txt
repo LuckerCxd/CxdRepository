@@ -1,0 +1,55 @@
+外观模式：
+	定义系统的入口，仅需要一个引路人 
+1.定义抽象接口和组件通用方法
+2.定义具体类实现抽象接口
+3.定义外观类，内部有所有具体类成员变量，
+	定义方法，用于使用各个具体类的相关方法
+4.客户端通过实例化外观类，对整个系统进行同一化操作
+
+1.定义抽象接口和组件通用方法
+	public interface Component {
+		public abstract void start();
+	}
+2.定义具体类实现抽象接口
+	class KeyBoard implements Component{
+		@Override
+		public void start() {
+			System.out.println("KeyBoard has started");
+		}
+	}
+	class Mouse implements Component{
+		@Override
+		public void start() {
+			System.out.println("Mouse has started");
+		}
+	}
+	class Screen implements Component{
+		@Override
+		public void start() {
+			System.out.println("Screen has started");
+		}
+	}
+3.定义外观类，内部有所有具体类成员变量，
+	定义方法，用于使用各个具体类的相关方法
+	class AllComponent {
+		private Component mouse;
+		private Component keyboard;
+		private Component screen;
+		public AllComponent() {
+			this.mouse = new Mouse();
+			this.keyboard = new KeyBoard();
+			this.screen = new Screen();
+		}
+		public void StartAll(){
+			mouse.start();
+			keyboard.start();
+			screen.start();
+		}
+		
+	}
+4.客户端通过实例化外观类，对整个系统进行同一化操作
+	public static void main(String[] args) {
+		AllComponent allComponent = new AllComponent();
+		allComponent.StartAll();
+	}	
+	

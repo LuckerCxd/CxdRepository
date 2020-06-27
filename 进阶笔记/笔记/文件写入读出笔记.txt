@@ -1,0 +1,82 @@
+1.文件的输入追加至文件中：
+	使用buffer： 键盘输入 / 文件输入
+	InputStreamReader ： 字节 -> 字符 ，
+	如果不使用buffer,那InputStreamReader使用read 用的是 char[](原本的InputStream子类 使用的是 byte[])
+	InputStreamReader ： 是字节流与字符流之间的桥梁，能将字节流输出为字符流，并且能为字节流指定字符集，可输出一个个的字符
+	使用buffer,就加一层外装，拥有readline方法
+	写入也是使用buffer来写入进去
+	
+	1.键盘输入
+	使用buffer的转化成字符流：
+		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(this.file,true));
+		String eof = bufferedReader.readLine();
+		while(! eof.equals("EOF")) {  
+		//设置EOF行 作为结束的标志
+			bufferedWriter.write(eof);
+			bufferedWriter.newLine();
+			eof = bufferedReader.readLine();
+		}
+		bufferedReader.close();
+		bufferedWriter.close();
+	
+	源码：
+					InputStreamReader
+		 public int read(char cbuf[], int offset, int length) throws IOException {
+	        return sd.read(cbuf, offset, length);
+	    }
+	    			BufferedReader
+	    public String readLine() throws IOException {
+	        return readLine(false);
+	    }
+	    			FileWriter
+	    public FileWriter(File file, boolean append) throws IOException {
+	        super(new FileOutputStream(file, append));
+	    }			
+	 
+	 2.文件输入： 
+	 	1.使用Buffer的转换成字符流：
+	 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(this.file)));
+			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(".\\newRWtext.txt",true));
+
+			String eof = bufferedReader.readLine();
+			while(eof != null) {
+				bufferedWriter.write(eof);
+				bufferedWriter.newLine();
+				eof = bufferedReader.readLine();
+			}
+			bufferedReader.close();
+			bufferedWriter.close();
+    	
+    	2.不使用buffer的字节流：
+    		FileInputStream fileInputStream = new FileInputStream(this.file);
+			FileOutputStream fileOutputStream = new FileOutputStream(new File(".\\neRWtext.txt"));
+			byte[] data = new byte[1024];
+			int bCount = 0;
+			int bSize = 0;
+			while ( (bCount = fileInputStream.read(data)) != -1 ) {
+				fileOutputStream.write(data);
+				bSize += bCount;
+			}
+			fileInputStream.close();
+			fileOutputStream.close();
+    
+
+
+附加：流的自动关闭：（将流的创建放入try内）
+	try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(this.file)));
+			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(".\\neRWtext.txt",true))){ 
+			if(!this.file.exists()){
+				this.file.createNewFile();	
+			}
+
+			String eof = bufferedReader.readLine();
+			while(eof != null) {
+				bufferedWriter.write(eof);
+				bufferedWriter.newLine();
+				eof = bufferedReader.readLine();
+			}
+			System.out.println("已完成写入");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}

@@ -1,0 +1,50 @@
+比较器：
+	1.本类实现Comparable接口，重写compareTo()方法
+		
+		@Override
+		public int compareTo(Ddog o) {
+			return this.name.compareTo(o.name);
+		}
+		
+	2.其他类实现Comparator接口，重写 compare()方法
+		
+		class AgeCompator implements Comparator<Ddog>{
+			@Override
+			public int compare(Ddog o1, Ddog o2) {
+				Integer o1age = o1.getAge();
+				Integer o2age = o2.getAge();
+				return o1age.compareTo(o2age);
+				
+			}
+		}
+	
+调用：
+	Arrays.sort(lotOfDogs,new AgeCompator());
+	Arrays.sort(lotOfDogs);
+
+区别：
+	如果只使用一种比较方法，就在本类实现Comparable接口，重写compareTo()方法
+	如果要实现多种比较方法，就应该在其他类实现Comparator接口，重写 compare()方法
+
+细节：
+	int,double,long 等基本类型的包装类实例 都有compareTo/compare 方法，String实例也是这样
+	因此在重写本类 或是 其他类的 compareTo/compare 方法时，可以使用这些包装类实例方法来简化代码
+	例如：
+		
+		class AgeCompator implements Comparator<Ddog>{
+			@Override
+			public int compare(Ddog o1, Ddog o2) {
+				Integer o1age = o1.getAge();
+				Integer o2age = o2.getAge();
+				return o1age.compareTo(o2age);
+				
+			}
+	
+		
+		@Override
+		public int compareTo(Ddog o) {
+			return this.name.compareTo(o.name);
+		}
+
+	
+	

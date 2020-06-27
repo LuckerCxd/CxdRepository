@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript">
+				window.location.href="https://blog.csdn.net/qq_35713752?viewmode=contents";  //1
+				window.history.back(-1); //2  页面返回
+				self.location='https://blog.csdn.net/qq_35713752?viewmode=contents'; //3 
+				top.location='https://blog.csdn.net/qq_35713752?viewmode=contents';  //4
+		</script>
+	</head>
+</html>

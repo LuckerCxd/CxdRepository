@@ -1,0 +1,48 @@
+某类对象.getClass() 			获取class对象 
+某类对象.getSuperClass() 	获取超类对象 
+
+class对象.getName() 			获取当前class对象的名称(带包名)
+	getSimpleName() 		获取当前class对象的名称(不带包名)
+	例如：
+		@Override
+		public String toString() {
+			return getClass().getName()+"  salary :"+String.valueOf(salary);
+		}
+
+final域成员，只能被赋值一次，未必一定要初始化赋值，允许空final,二次赋值不被允许
+	例如：
+		public final int salary ;
+		public employee() {
+			salary = 0;
+		}
+		----not permitted---------
+		public employee(int x) {
+			salary = x;
+			salary = 5000;
+		}
+
+final域函数，不能被子类覆盖  
+		（覆盖的条件为：保证子类和超类的兼容性，返回类型也得一致。子类和超类的同名函数就被当做是覆盖，要满足条件）
+final 不能用来修饰构造器  （constructor 只能由public private protected修饰）
+private , static方法默认均为final方法
+例如：
+
+	class  Employee{
+	public final void sayHello() {
+		System.out.println("hello, good morning,i am employee");
+	}
+	----not permitted---------
+	class Manager extends Employee{
+	public void sayHello() {
+		System.out.println("hi");	
+	}
+}
+
+final修饰的类不能被继承，因此所有方法自然不能被覆盖,但里面的变量未默认设置final
+例如：
+	public Employee(int x) {
+		salary = x;
+		superAbility = 8;
+		superAbility = 9;
+	}
+	

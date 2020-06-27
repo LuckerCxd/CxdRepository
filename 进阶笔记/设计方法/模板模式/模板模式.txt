@@ -1,0 +1,46 @@
+模板模式：
+	有多个子类共有的方法，且逻辑相同时，可以考虑模板模式
+	并且重要的、复杂的方法，可以考虑作为模板方法
+	为防止恶意操作，一般模板方法都加上 final 关键词
+	
+1.定义抽象类，内有抽象通用方法，和final模板方法，
+	final模板方法内可以是抽象通用方法
+2.定义具体类继承抽象类，重写抽象方法
+3.客户端通过抽象类，使用其模板方法
+
+1.定义抽象类，内有抽象通用方法，和final模板方法，
+	final模板方法内可以是抽象通用方法
+	abstract class House{
+		public abstract void enter();
+		public abstract void quiz();
+		public final void pass() {
+			enter();
+			quiz();
+		}
+	}
+2.定义具体类继承抽象类，重写抽象方法
+	class Hotel extends House{
+		@Override
+		public void enter() {
+			System.out.println("他来啦，那个男人来酒店啦");
+		}
+		@Override
+		public void quiz() {
+			System.out.println("他走啦，静悄悄地走出酒店了");
+		}
+	}
+	class Factory extends House{
+		@Override
+		public void enter() {
+			System.out.println("他又去工厂上班了");
+		}
+		@Override
+		public void quiz() {
+			System.out.println("他终于从工厂里出来了");
+		}
+	}
+3.客户端通过抽象类，使用其模板方法
+	public static void main(String[] args) {
+		House house = new Hotel();
+		house.pass();
+	}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- bean的三种装配 -->
+    <!-- 第一种bean -->
+    <bean id="UserService" class="cn.cxd.beans.UserServiceImpl">
+        <property name="username" value="李白"></property>
+        <property name="password" value="123546"></property>
+    </bean>
+
+    <!-- 第二种bean(静态工厂create依靠factory-method) -->
+    <bean id="UserService2" class="cn.cxd.factorys.UserServiceStaticFactory" factory-method="createUserService">
+        <property name="username" value="杜甫"></property>
+        <property name="password" value="123546"></property>
+    </bean>
+
+    <!-- 第三种bean(工厂实例化create依靠factoryBean,factoryMethod)-->
+    <bean id="UserServiceInstanceFactory" class="cn.cxd.factorys.UserServiceInstanceFactory"></bean>
+    <bean id="UserService3" factory-bean="UserServiceInstanceFactory" factory-method="createUserService">
+        <property name="username" value="杜甫"></property>
+        <property name="password" value="123546"></property>
+    </bean>
+
+    <!-- bean的常见scope 单例singleton 多例prototype-->
+    <bean id="UserService4" class="cn.cxd.beans.UserServiceImpl" scope="singleton">
+        <property name="username" value="李清照"></property>
+        <property name="password" value="123546"></property>
+    </bean>
+
+    <bean id="UserService5" class="cn.cxd.beans.UserServiceImpl" scope="prototype">
+        <property name="username" value="辛弃疾"></property>
+        <property name="password" value="123546"></property>
+    </bean>
+
+
+
+</beans>
+
+

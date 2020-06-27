@@ -1,0 +1,54 @@
+Cloneable接口 : 仅作为一个标志接口，只有implement了这个接口的，才能重写Object类的clone()方法
+
+分类：
+	1.浅复制:如果是引用，会出现改变 克隆内容 而 改变了 源内容 的现象，
+		如果是 基本类型 或是 完全封装(外界不能get内容的) 那是实现完全独立的
+		要点：继承Cloneable接口，重写clone()[直接return super.clone() ]
+		
+		@Override
+		protected Object clone() throws CloneNotSupportedException {
+			return super.clone();
+		}
+		
+	2.深复制：对于非基本类型 或是 未完全封装的 ，要实现深复制
+		要点: 对于 所有内部未完全封装的类(包括类中的其他类),也要继承Cloneable接口，并重写Clone()
+			先super.clone() 完成后 再 对里面的其他已重写了Clone的 克隆内容 进行 源内容的精确再  clone()
+		@Override
+		protected Object clone() throws CloneNotSupportedException {
+			Dog_D4 temp  = (Dog_D4) super.clone();
+			temp.birthday = (DateBy) getBirthday().clone();
+			return temp;
+		}
+	
+Serializable接口：仅作为一个标志接口，只有implement了这个接口的，才能被序列化
+	使用 ObjectInputStream 和 ObjectOutputStream ，它们包含反序列化和序列化对象的方法
+	1.序列化：
+		原型：public final void writeObject(Object x) throws IOException
+		
+		
+		ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("D:\\Java\\testSerialize.txt"));
+		objectOutputStream.writeObject(d1);
+	
+	
+	2.反序列化：throws ClassNotFoundException 
+		原型：public final Object readObject() throws IOException, ClassNotFoundException
+	
+	
+		ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("D:\\Java\\testSerialize.txt"));
+		d2 = (Dog_D4)objectInputStream.readObject();
+
+	一般来说，所有类域都要继承Serializable接口，才能使整个目标类允许  完整序列化
+	如果某个类域不想要被序列化就要在  整个目标类成员  加上 transient 修饰，之后就会在序列化时跳过(这个成员类也就不必继承Serializabel接口)
+
+	例如：	
+		
+		class Dog_D4 implements Cloneable,Serializable{
+			private String name;
+			private int age;
+			private double kg;
+			private transient DateBy birthday;
+			}
+	
+
+
+

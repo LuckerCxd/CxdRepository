@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="JS/jquery-3.3.1.min.js"></script>
+<style type="text/css">
+
+input{
+	width : 100px;
+	height : 40px;
+}
+
+
+
+
+</style>
+</head>
+<body>
+
+
+<input type="text" disabled="disabled" value="不可用1">
+<input type="text" disabled="disabled" value="不可用2">
+<input type="text"  value="可用1">
+<input type="text"  value="可用2">
+
+<input type="checkbox"  name = "cxk">唱
+<input type="checkbox" name = "cxk">跳
+<input type="checkbox"   name = "cxk">Rap
+<input type="checkbox"  name = "cxk">篮球
+
+<select multiple="multiple">
+<option>唱</option>
+<option>跳</option>
+<option>Rap</option>
+
+
+</select>
+
+
+<input type="button" id = "length" value="长度">
+</body>
+<script type="text/javascript" >
+
+
+$(function () {
+	//可用元素选择器
+	//$("input[type='text']:enabled").val("aaa");
+	//不可用元素选择器
+	//$("input[type='text']:disabled").val("aaa");
+	
+	//选中选择器
+	//$("#length").click(function () {
+		//alert($("input[type='checkbox']:checked").length);
+	//})
+	
+	//选中选择器
+	$("#length").click(function () {
+		alert($("select option:selected").length);
+	})
+})
+
+
+</script>
+</html>

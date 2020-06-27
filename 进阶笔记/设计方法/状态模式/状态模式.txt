@@ -1,0 +1,52 @@
+状态模式：
+	在行为受状态约束的时候使用状态模式，而且状态不超过 5 个
+1.定义状态抽象接口，有抽象通用执行函数。
+2.定义产品类，内有状态类成员变量和获取设置状态类的方法
+3.定义具体状态类实现抽象接口，重写执行函数，
+	接收产品类实例参数，设置其状态信息，执行其特定方法
+4.客户端通过产品类和状态类，实现特定状态下的产品方法
+
+1.定义状态抽象接口，有抽象通用执行函数
+	public interface State {
+		public abstract void doAction(Product product);
+	}
+2.定义产品类，内有状态类成员变量和获取设置状态类的方法
+	class Product{
+		private State state;
+		private String name;
+		private float sale;
+		public Product() {
+			name = "笔记本";
+			sale = 11;
+		}
+		public State getState() {
+			return state;
+		}
+		public void setState(State state) {
+			this.state = state;
+		}
+	}
+3.定义具体状态类实现抽象接口，重写执行函数，
+	接收产品类实例参数，设置其状态信息，执行其特定方法
+	class StartSell implements State{
+		@Override
+		public void doAction(Product product) {
+			System.out.println("it start sell");
+			product.setState(this);
+			System.out.println(product.getState());	
+		}
+	}
+	class SellOut implements State{
+		@Override
+		public void doAction(Product product) {
+			System.out.println("it Sell out");
+			product.setState(this);
+			System.out.println(product.getState());
+		}
+	}
+4.客户端通过产品类和状态类，实现特定状态下的产品方法	
+	public static void main(String[] args) {
+		Product product = new Product();
+		StartSell startSell = new StartSell();
+		startSell.doAction(product);
+	}

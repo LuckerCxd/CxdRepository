@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src = "JS/jquery-3.3.1.min.js"></script>
+<style type="text/css">
+
+
+#square{
+	width : 100px;
+	height : 100px;
+	border : 1px solid red;
+}
+
+</style>
+</head>
+
+
+
+
+<body>
+
+<div id = "square" class  = "mini eff" ></div>
+<br/>
+<input type = "button" value = "显示" id = "showB">
+<input type = "button" value = "隐藏" id = "hideB">
+<input type = "button" value = "切换" id = "toglB">
+
+
+</body>
+
+<script type="text/javascript">
+
+$(function () {
+	$("#toglB").click(function () {
+		//$("#square").show("slow","swing");
+		$("#square").fadeToggle("slow","swing");
+	});
+	$("#showB").click(function () {
+		//$("#square").show("slow","swing");
+		$("#square").fadeIn("slow","swing");
+	});
+	$("#hideB").click(function () {
+		//$("#square").show("slow","swing");
+		$("#square").fadeOut("3000","swing",function(){
+			alert("div 隐藏法");
+		});
+	});
+})
+
+
+</script>
+</html>

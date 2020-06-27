@@ -1,0 +1,134 @@
+import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.List;
+
+public class Try_all_program {
+	public static void main(String[] args) {
+		ArrayList<Dog>dogs = new ArrayList<Dog>(10);
+		Dog temp = null;
+		//初始化
+		for(int i = 0;i<10;i++) {
+			temp = new Dog();
+			dogs.add(temp);
+		}
+		System.out.println("former:"+dogs);
+		
+		//遍历1   java.lang.IndexOutOfBoundsException: Index: 5, Size: 5  
+	/*	for(int i =0,max = dogs.size();i<max;i++) {
+			dogs.remove(dogs.get(i));
+		}
+		System.out.println(dogs);*/
+		
+		//遍历2 
+		/*for(int i =0;i<dogs.size();i++) {
+			dogs.remove(dogs.get(i));
+		}
+		System.out.println(dogs);
+		*/
+		
+		//遍历3  java.util.ConcurrentModificationException
+		/*for(Dog temp1: dogs) {
+			dogs.remove(dogs.get(0));
+		}
+		System.out.println(dogs);*/
+		
+		
+		
+		/**
+		 * 原因：For each 使用的是Itr.next(),
+		 * 而 ArraylistInstance.remove() 仅改变了modCount ，改变后modCount != expectedModCount
+		 * 而Itr.remove()调用ArraylistInstance.remove()并赋值了 expectedModCount = modCount;
+		 * 所以在remove时，不应该使用foreach而应该使用Itr_hasNext()_next()_remove()来使用
+		 * 
+		 * 如果非要使用foreach->查看遍历5
+		 * 
+		 * 
+		 *  public E next() {
+	            checkForComodification();
+	            int i = cursor;
+	            if (i >= size)
+	                throw new NoSuchElementException();
+	            Object[] elementData = ArrayList.this.elementData;
+	            if (i >= elementData.length)
+	                throw new ConcurrentModificationException();
+	            cursor = i + 1;
+	            return (E) elementData[lastRet = i];
+	        }
+		 * 
+		 * 
+		 * 
+		   final void checkForComodification() {
+            	if (modCount != expectedModCount)
+                	throw new ConcurrentModificationException();
+        	}
+        	
+        	
+           ArraylistInstance.remove()
+		 * public E remove(int index) {
+	            rangeCheck(index);
+	            checkForComodification();
+	            E result = parent.remove(parentOffset + index);
+	            this.modCount = parent.modCount;
+	            this.size--;
+	            return result;
+        	}
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 	ItrInstance.remove()
+		 * 
+             public void remove() {
+	            if (lastRet < 0)
+	                throw new IllegalStateException();
+	            checkForComodification();
+	
+	            try {
+	                ArrayList.this.remove(lastRet);
+	                cursor = lastRet;
+	                lastRet = -1;
+	                expectedModCount = modCount;
+	            } catch (IndexOutOfBoundsException ex) {
+	                throw new ConcurrentModificationException();
+	            }
+	        }
+		 * 
+		 * 
+		 */
+		
+		//遍历4   很明显这样才可以删除
+		/*Iterator< Dog> iterator  = dogs.iterator();
+		
+		while(iterator.hasNext()) {
+			Dog iDog = iterator.next();
+			iterator.remove();
+		}
+		System.out.println(dogs);
+		*/
+		
+		
+		//遍历5  如果非要使用foreach那么就应该使用另一个替代物来装，最后再对源进行操作
+		ArrayList<Dog>substitute = new ArrayList<Dog>(10);
+		for(Dog temp1: dogs) {
+//					substitute.add(dogs.get(0));
+			substitute.add(temp1);
+		}
+		dogs.removeAll(substitute);
+		System.out.println("last:"+dogs);
+		
+		
+		
+
+		
+	}
+	
+	
+
+}
+
+class Dog{
+	public Dog() {
+		
+	}
+}

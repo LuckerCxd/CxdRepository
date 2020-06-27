@@ -1,0 +1,63 @@
+抽象类不能被实例化，但是具有构造器供子类继承，子类创建实例时，会先使用抽象类的构造器函数
+	例如：
+		public animal() {
+			System.out.println("abstract constructor");
+		}
+		
+		public people() {
+			System.out.println("people constructor");
+		}
+
+抽象类可以不具备抽象方法 <---->区别于接口里是abstract Methods
+body里一旦有abstract 修饰的方法，就一定要将类声明为abstract 类
+	而且abstract Methods不能用static修饰，static修饰就应该可以用类名调用，但抽象类没有主体，也就不该用static修饰
+而子类也就应该覆盖所有的abstract 方法，否则子类还是抽象类
+
+	例如：
+		abstract class animal{
+			private  int tea = 5;
+			private String like = "I like Red Tea";
+			public animal() {
+				System.out.println("abstract constructor");
+			}
+			public void eat() {
+				System.out.println("eat");
+			}
+			@Override
+			public String toString() {
+				// TODO Auto-generated method stub
+				return getClass().getName()+"   tea num = "+tea+"  "+like;
+			}
+		}
+
+	例如：
+		public abstract void sayHello();
+		//声明abstract 方法
+		@Override
+		public void sayHello() {
+			System.out.println("Call me back to drink tea");
+		}
+	
+static 代码块：
+this代表当前对象，static于类加载的时候存在优先于实例对象的产生，static调用非静态时并未产生对象,因此static不能用this
+当类的构造器被调用时，static代码块会加载，作用是初始化类，只加载一次(也就是说不一定new某一个类,static块才被使用)	
+	例如：
+		abstract class animal{
+			private static int tea ;
+			private static String like;
+			static {
+				tea = 5;
+				like = "i like rea tea";
+				System.out.println("func : initial class");
+			}
+		}
+	
+	例如：
+	========not permitted==============
+		private int tea ;
+		private static String like;
+		static {
+			this.tea = 5;
+			like = "i like rea tea";
+			System.out.println("func : initial class");
+		}

@@ -1,0 +1,115 @@
+反射---->获取变量，构造器，方法,获取类对象
+	1.变量Field(实例或是静态变量) [获取，get,set]
+	2.构造器Constructor[获取，new]
+	3.方法Method
+	4.类对象
+	
+1.变量 Field：
+	1.获取
+		1.class.getField("类中的成员变量名称"); (public 指定Field)
+		2.class.getFields(); (public Fields)
+		3.class.getDeclaredFields();(所有无关权限 Fields)
+		4.class.getDeclaredField("类中的成员变量名称");(所有无关权限 Fields)
+	2.基于获取后的get,set(obj 为实例)
+		field.get(Object obj)
+		field.set(Object obj,Object value)
+演示：
+	public static void main(String[] args) throws Exception {
+		Class class1 = Calculate.class;
+		Calculate obj = new Calculate();
+		Field field = class1.getDeclaredField("name");
+		System.out.println(field.get(obj));
+		field.set(obj, "abc");
+		System.out.println(obj);
+	}
+		
+2.构造器Constructor:
+	1.获取
+		1.class.getConstructor(参数类s); (public 指定Constructor)
+		2.class.getConstructors(); (public Constructors)
+		3.class.getDeclaredConstructor(参数类s);(所有无关权限 Constructor)
+		4.class.getDeclaredConstructors()(所有无关权限 Constructors)
+	2.基于获取后的newInstance
+		constructor.newInstance(具体参数);
+	3.附加：如果是无参构造器:  class.newInstance();
+演示：
+	public static void main(String[] args) throws Exception {
+		Class class1 = Calculate.class;
+		Constructor constructor = class1.getConstructor(String.class
+			,int.class);
+		Object object = constructor.newInstance("美团",12);
+		System.out.println(object);
+	}
+	
+	public static void main(String[] args) throws Exception {
+		Class class1 = Calculate.class;
+		System.out.println(class1.newInstance());
+	}
+	
+3.方法Method:
+	1.获取
+		1.class.getMethod(方法名String,参数类s); (public 指定Method)
+		2.class.getMethods(); (public Methods)
+		3.class.getDeclaredMethod(方法名String,参数类s);(所有无关权限 Methods)
+		4.class.getDeclaredMethods()(所有无关权限 Methods)
+	2.基于获取后的invoke (obj为实例)
+		method.invoke(obj,具体参数s)
+演示：
+	public static void main(String[] args) throws Exception {
+		Class class1 = Calculate.class;
+		Calculate obj = new Calculate();
+		Method method = class1.getMethod("add", int.class,int.class);
+		System.out.println("result: "+method.invoke(obj, 3,4));
+	}
+4.类对象
+	1.获取 (同一个类获取的类对象是相同的一个)
+		1.Class.forName(全类名String);   多用于使用配置文件
+		2.类名.class();
+		3.对象.getClass();
+演示：
+	1.Class.forName(全类名String);   多用于使用配置文件	
+		Class class1 = Class.forName("Day_8.Calculate");
+	2.类名.class();	
+		Class class2 = Day_8.Calculate.class;
+	3.对象.getClass();
+		Calculate calculate = new Calculate();
+		Class class3 = calculate.getClass();
+		
+		System.out.println(class1 == class2 && class2 == class3);
+		结果：true
+		
+附件：	
+public class Calculate {
+	private int a=5,b=3;
+	private String name="helloWorld";
+	public String ya = "a";
+	public String ua = "a";
+	public String ia = "a";
+	public static int age = 10;
+	
+	public int add(int a,int b) {
+		return a+b;
+	}
+	public int sub(int a,int b) {
+		return a-b;
+	}
+	private String info() {
+		return "it private func";
+	}
+	public Calculate(String name,int priority) {
+		this.name = name;
+		System.out.println(name+" is a priority "+priority+" calculator");
+	}
+	public Calculate(String name,String priority) {
+		this(name,Integer.parseInt(priority));
+	}
+	
+	public Calculate() {
+		super();
+	}
+	@Override
+	public String toString() {
+		return "Calculate [a=" + a + ", b=" + b + ", name=" 
+			+ name + ", ya=" + ya + ", ua=" + ua + ", ia=" + ia + "]";
+	}
+}	

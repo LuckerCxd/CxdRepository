@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="366b77c0-aed3-499d-a594-af20e0f87707" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="D:/Maven/apache-maven-3.6.2-bin/apache-maven-3.6.2" />
+        <option name="userSettingsFile" value="D:\Maven\apache-maven-3.6.2-bin\apache-maven-3.6.2\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+        <option name="vmOptionsForImporter" value="-Xmx768m" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1b4QN5HfcShPHHiUNxpaPe2d5hv" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15625" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.project.maven.importing" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\IDEAProjects\bos\src\main\resource" />
+      <recent name="D:\IDEAProjects\bos\src\main" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\IDEAProjects\bos\src\main\resources" />
+      <recent name="D:\IDEAProjects\bos\src\main" />
+      <recent name="D:\IDEAProjects\bos\src\main\webapp\WEB-INF" />
+      <recent name="D:\IDEAProjects\bos\src\main\webapp" />
+      <recent name="D:\IDEAProjects\bos\src\main\resource" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Maven.bos [tomcat7:redeploy]">
+    <configuration default="true" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="tomcat7:run" />
+              </list>
+            </option>
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <configuration name="bos [tomcat7:deploy]" type="MavenRunConfiguration" factoryName="Maven" nameIsGenerated="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="tomcat7:deploy" />
+              </list>
+            </option>
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <configuration name="bos [tomcat7:redeploy]" type="MavenRunConfiguration" factoryName="Maven" nameIsGenerated="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="tomcat7:redeploy" />
+              </list>
+            </option>
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <configuration name="bos [tomcat7:run]" type="MavenRunConfiguration" factoryName="Maven" nameIsGenerated="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="tomcat7:run" />
+              </list>
+            </option>
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Maven.bos [tomcat7:run]" />
+      <item itemvalue="Maven.bos [tomcat7:redeploy]" />
+      <item itemvalue="Maven.bos [tomcat7:deploy]" />
+    </list>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="366b77c0-aed3-499d-a594-af20e0f87707" name="Default Changelist" comment="" />
+      <created>1587888842116</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1587888842116</updated>
+      <workItem from="1587888848993" duration="6692000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="418" y="64" key="#Project_Structure" timestamp="1587894344632">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="418" y="64" key="#Project_Structure/0.0.1536.864@0.0.1536.864" timestamp="1587894344632" />
+    <state x="199" y="86" width="1089" height="778" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587889041232">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="199" y="86" width="1089" height="778" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.864@0.0.1536.864" timestamp="1587889041232" />
+    <state x="667" y="122" key="#com.intellij.ide.util.MemberChooser" timestamp="1587892052711">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="667" y="122" key="#com.intellij.ide.util.MemberChooser/0.0.1536.864@0.0.1536.864" timestamp="1587892052711" />
+    <state width="1213" height="194" key="GridCell.Tab.0.bottom" timestamp="1587895066597">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state width="1213" height="194" key="GridCell.Tab.0.bottom/0.0.1536.864@0.0.1536.864" timestamp="1587895066597" />
+    <state width="1213" height="194" key="GridCell.Tab.0.center" timestamp="1587895066597">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state width="1213" height="194" key="GridCell.Tab.0.center/0.0.1536.864@0.0.1536.864" timestamp="1587895066597" />
+    <state width="1213" height="194" key="GridCell.Tab.0.left" timestamp="1587895066597">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state width="1213" height="194" key="GridCell.Tab.0.left/0.0.1536.864@0.0.1536.864" timestamp="1587895066597" />
+    <state width="1213" height="194" key="GridCell.Tab.0.right" timestamp="1587895066597">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state width="1213" height="194" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1587895066597" />
+    <state width="1213" height="241" key="GridCell.Tab.1.bottom" timestamp="1587895061910">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state width="1213" height="241" key="GridCell.Tab.1.bottom/0.0.1536.864@0.0.1536.864" timestamp="1587895061910" />
+    <state width="1213" height="241" key="GridCell.Tab.1.center" timestamp="1587895061909">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state width="1213" height="241" key="GridCell.Tab.1.center/0.0.1536.864@0.0.1536.864" timestamp="1587895061909" />
+    <state width="1213" height="241" key="GridCell.Tab.1.left" timestamp="1587895061907">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state width="1213" height="241" key="GridCell.Tab.1.left/0.0.1536.864@0.0.1536.864" timestamp="1587895061907" />
+    <state width="1213" height="241" key="GridCell.Tab.1.right" timestamp="1587895061910">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state width="1213" height="241" key="GridCell.Tab.1.right/0.0.1536.864@0.0.1536.864" timestamp="1587895061910" />
+    <state x="159" y="42" key="Maven.ArtifactSearchDialog" timestamp="1587892094440">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="159" y="42" key="Maven.ArtifactSearchDialog/0.0.1536.864@0.0.1536.864" timestamp="1587892094440" />
+    <state x="342" y="0" key="SettingsEditor" timestamp="1587895033928">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="342" y="0" key="SettingsEditor/0.0.1536.864@0.0.1536.864" timestamp="1587895033928" />
+  </component>
+</project>

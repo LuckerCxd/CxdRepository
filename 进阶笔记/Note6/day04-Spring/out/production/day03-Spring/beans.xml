@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+">
+    <bean id="userService" class="cn.cxd.springAopXmlConfig.service.UserService"></bean>
+    <bean id="myAdvice" class="cn.cxd.springAopXmlConfig.aspect.MyAdvice"></bean>
+    <bean id="myMethodBeforeAdvice" class="cn.cxd.springAopXmlConfig.aspect.MyMethodBeforeAdvice"></bean>
+    <bean id="myMethodAfterReturning" class="cn.cxd.springAopXmlConfig.aspect.MyMethodAfterReturning"></bean>
+    <bean id="proxyOrCglib" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target" ref="userService"></property>
+        <property name="interfaces">
+            <list>
+                <value>cn.cxd.springAopXmlConfig.service.IUserService</value>
+            </list>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>myMethodBeforeAdvice</value>
+                <value>myAdvice</value>
+                <value>myMethodAfterReturning</value>
+            </list>
+        </property>
+
+        <property name="optimize" value="false"></property>
+
+    </bean>
+</beans>
+
+

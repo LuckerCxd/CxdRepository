@@ -1,0 +1,43 @@
+享元模式
+	适用于需要缓冲池的场景
+	
+1.定义抽象接口
+2.定义具体类，设置出唯一的标识符，并用于构造器	
+3.定义工厂类，有hashMap<id,接口>成员变量,
+	并设置get接口Name()方法
+4.客户端通过对工厂类的操作达成缓冲池的作用
+
+1.定义抽象接口
+	public interface Machine {
+		public abstract void tell() ;
+	}
+2.定义具体类，设置出唯一的标识符，并用于构造器
+	class MachineDog implements Machine{
+		private String name;
+		public MachineDog(String name) {
+			this.name = name;
+		}
+		@Override
+		public void tell() {
+			System.out.println("Machine dog here : "+name);
+		}
+	}
+3.定义工厂类，有hashMap<id,接口>成员变量,
+	并设置get接口Name()方法
+	class MachineFactory{
+		private HashMap<String, Machine> machineMap = new HashMap<>();
+		public Machine getMachine(String name) {
+			Machine machine = (MachineDog)machineMap.get(name);
+			if(machine == null) {
+				machine = new MachineDog(name);
+				machineMap.put(name, machine);
+			}
+			return machine;
+		}
+	}	
+4.客户端通过对工厂类的操作达成缓冲池的作用
+	public static void main(String[] args) {
+		MachineFactory factory = new MachineFactory();
+		Machine machine = factory.getMachine("hello");
+		machine.tell();
+	}	

@@ -1,0 +1,9 @@
+
+ServletInputStream inputStream = request.getInputStream();
+		
+StringBuffer sBuffer = new StringBuffer();
+byte[] bs = new byte[4096];
+while(inputStream.read(bs) != -1) {
+	sBuffer.append(new String(bs));
+}
+System.out.println(sBuffer.toString());

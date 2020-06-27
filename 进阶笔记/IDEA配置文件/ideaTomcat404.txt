@@ -1,0 +1,2 @@
+editConfigurations 小锤子图标边上 -》 deployment选择war -> 调整下面的ApplicationContext->
+	-》 Server 填写URL即可

@@ -1,0 +1,39 @@
+package mythreadfactory;
+
+import java.util.concurrent.ThreadFactory;
+
+public class MyThreadFactory implements ThreadFactory {
+
+	public Thread newThread(Runnable r) {
+		Thread thread = new Thread(r);
+		thread.setName("定制池中的线程对象的名称" + Math.random());
+		return thread;
+	}
+}
+
+
+
+------------------------------------------------------------------------
+
+package test;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import mythreadfactory.MyThreadFactory;
+
+public class Run {
+	public static void main(String[] args) {
+		MyThreadFactory threadFactory = new MyThreadFactory();
+		ExecutorService executorService = Executors
+				.newCachedThreadPool(threadFactory);
+		executorService.execute(new Runnable() {
+			public void run() {
+				System.out.println("╬мн┌н╦лл" + System.currentTimeMillis() + " "
+						+ Thread.currentThread().getName());
+			}
+		});
+	}
+}
+
+：使用executorService.execute时会将这个runnable传递到自定义ThreadFactory的newThread执行，
+之后再去执行这个runnable的run

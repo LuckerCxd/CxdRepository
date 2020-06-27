@@ -1,0 +1,40 @@
+1. Ctrl+{/}  可以跑到大括号的开头与结尾
+2. Ctrl+F12  可以显示当前文件的结构
+3. Ctrl+F7  可以选中当前的词
+4. Alt+Insert  可以生成构造器/Getter/Setter等
+5. Ctrl+Alt+V  可以引入变量
+6. Ctrl+Alt+T  可以把代码包在一个块内，例如：try/catch。
+7. Ctrl+Alt+L  格式化代码
+8. Ctrl+R  替换文本。
+9. Alt+Shift+Up/Down  上/下移一行。
+10. Ctrl+X  删除行。
+11. Ctrl+D  复制行
+12. Ctrl+/或Ctrl+Shift+/  注释（//或者/**/）
+13. Ctrl+H  显示类结构图（类的继承层次）。
+14. Ctrl+Alt+left/right  返回至上次浏览的位置
+15. Alt+left/right  切换代码文件视图。
+16. F2 或 Shift+F2  高亮错误或警告快速定位。
+17. Ctrl+O  重写方法。
+18. Ctrl+U  转到父类
+19. Alt+Up/Down  在方法间快速移动定位。
+20. Ctrl+B/Ctrl+Click  快速打开光标处的类或方法（跳转到定义处）。
+21. Ctrl+Up/Down  不动光标下移动文档
+22. Ctrl+Backspace  按单词删除。
+23. Ctrl+”+/-”  当前方法展开、折叠。
+24. Ctrl+Shift+”+/-”  全部展开、折叠。
+25. Shift+Enter  向下插入新行。
+26. Ctrl+Enter  向上插入新行。
+27. Ctrl+Shift+F10  运行。
+28. Shift+F6  重构 – 重命名
+29. Ctrl+J  自动代码（例如：serr）
+30. F12  把焦点从编辑器移到最近使用的工30具窗口。
+31. Shift+Esc  不仅可以把焦点移到编辑器上，且可隐藏当前（或最后活动的）工具窗口。
+32. ctrl+alt+B  查找接口的实现类
+33. F11  setBookMark
+34. alt+1...9 : 窗口，1是project
+35. Ctrl+F4  : 关闭当前窗口
+36. Ctrl+Shift+C  : 复制路径
+37. Ctrl+W  ： 选中当前词/行
+38. Ctrl+Alt+O  ： 自动优化导包
+39. Ctrl+I  :实现接口的抽象方法
+40. Ctrl+Shift+Alt+C : 复制当前类的全类名

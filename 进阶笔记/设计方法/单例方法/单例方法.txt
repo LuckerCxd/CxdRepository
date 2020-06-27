@@ -1,0 +1,33 @@
+单例模式：
+	1.饥饿无锁式线程安全型
+	2.懒惰双重检测带锁线程安全型
+
+1.饥饿无锁式线程安全型
+
+//	∵依赖于Java对静态成员的初始化，基于 classloader 机制避免了多线程的同步问题
+
+	public class OnlyOne {
+		private static  OnlyOne instance = new OnlyOne();
+		private OnlyOne() {};
+		public static OnlyOne getInstance() {
+			return instance;
+			}
+	}
+
+2.懒惰双重检测带锁线程安全型	
+
+	public class OnlyOne {
+		private static  OnlyOne instance;
+		private OnlyOne() {};
+		public static OnlyOne getInstance() {
+			if(instance == null) {
+				synchronized (OnlyOne.class) {
+					if(instance == null)
+						instance = new OnlyOne();
+				}
+			}
+			return instance;
+		}
+	}	
+	
+	

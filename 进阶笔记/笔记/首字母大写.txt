@@ -1,0 +1,6 @@
+public static String parseToKey(String fieldName) {
+		char bigFirst = (char)(fieldName.charAt(0) - 32);
+		String another = fieldName.substring(1, fieldName.length());
+		String upFirstfieldName = bigFirst+another;
+		return upFirstfieldName;
+	}

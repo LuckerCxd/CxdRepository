@@ -1,0 +1,3 @@
+Iterator可用来遍历Set和List集合，但是ListIterator只能用来遍历List。
+Iterator对集合只能是前向遍历，ListIterator既可以前向也可以后向。
+ListIterator实现了Iterator接口，并包含其他的功能，比如：增加元素，修改元素等等。

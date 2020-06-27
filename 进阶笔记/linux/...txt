@@ -1,0 +1,163 @@
+1.安装ifconfig : sudo yum install net-tools
+2.网卡没启动： ifup ens33
+3.修改开机自动启动网卡 ：vi /etc/sysconfig/network-scripts/ifcfg-eth0 把里面的 ONBOOT 设为 yes 即可
+4.修改ali的源：
+	1、安装wget
+	yum install -y wget
+	2、下载CentOS 7的repo文件
+	wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+	或者
+	curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+	3、更新镜像源
+	清除缓存：yum clean all
+	生成缓存：yum makecache
+
+	更改配置文件（很重要）
+	1、备份CentOS 7系统自带yum源配置文件/etc/yum.repos.d/CentOS-Base.repo命令：
+	mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+	mv /etc/yum.repos.d/CentOS-Base.repo.backup /etc/yum.repos.d/CentOS-Base.repo
+
+	参考：https://yq.aliyun.com/articles/704987
+
+5.关闭防火墙：centos7
+	systemctl stop firewalld.service
+	systemctl disable firewalld.service
+	
+	systemctl status firewalld.service
+	systemctl restart network.service
+6.将网络设置为静态网络：GATEWAY末尾为2
+	vi /etc/sysconfig/network-scripts/ifcfg-ensXXXX
+	BOOTPROTO=static
+	ONBOOT=yes
+	IPADDR=10.10.10.102  
+	NETMASK=255.255.255.0
+	GATEWAY=10.10.10.2
+	DNS1=114.114.114.114
+
+	service network restart
+7.安装vim
+yum -y install vim*
+
+vi ~/.vimrc
+set nu         
+set showmode    
+set ruler       
+set autoindent  
+syntax on      
+colorscheme murphy
+
+8.安装zsh 高亮
+yum install zsh git 
+sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+
+exit
+#安装zsh高亮和自动提示
+cd ~/.oh-my-zsh/custom/plugins
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
+git clone https://github.com/zsh-users/zsh-autosuggestions.git
+sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' ~/.zshrc
+echo "source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ~/.zshrc
+zsh 
+
+9.安装lrzsz 
+	yum -y install lrzsz
+	rz 
+	sz
+	
+10.比如要删除当前文件夹下所有的.png文件,运行以下命令:
+	find . -name "*.png" | xargs rm -rf
+
+11.修改时区
+  timedatectl set-timezone Asia/Shanghai    #其他时区以此类推
+ 
+12.zsh:no matches found 问题解决
+解决方法： 
+~/.zshrc 文件加入：
+
+setopt no_nomatch
+
+12.安装vsftpd 
+yum install vsftpd 
+
+修改
+/etc/vsftpd/vsftpd.conf
+listen=YES
+#
+# This directive enables listening on IPv6 sockets. By default, listening
+# on the IPv6 "any" address (::) will accept connections from both IPv6
+# and IPv4 clients. It is not necessary to listen on *both* IPv4 and IPv6
+# sockets. If you want that (perhaps because you want to listen on specific
+# addresses) then you must run two copies of vsftpd with two configuration
+# files.
+# Make sure, that one of the listen options is commented !!
+listen_ipv6=NO
+
+pam_service_name=vsftpd
+userlist_enable=YES
+tcp_wrappers=YES
+anonymous_enable=NO
+chroot_local_user=YES
+allow_writeable_chroot=YES
+
+
+
+systemctl status  vsftpd.service
+systemctl stop  vsftpd.service
+systemctl start  vsftpd.service
+
+setenforce 0  
+后才可用windows登录 
+windows 需要关闭所有的防火墙
+13.安装telnet
+
+yum -y install telnet-server xinetd telnet
+
+新建或修改：
+/etc/xinetd.d/telnet
+service telnet 
+{ 
+disable = yes 
+flags = REUSE 
+socket_type = stream 
+wait = no 
+user = root 
+server = /usr/sbin/in.telnetd 
+log_on_failure += USERID 
+} 
+
+systemctl status  xinetd.service 
+systemctl stop  xinetd.service 
+systemctl start  xinetd.service 
+netstat -tnl | grep 23   
+
+
+14.安装nslookup 解析域名
+要想安装 nslookup, 直接安装 bind-utils 即可
+yum install bind-utils
+
+15.ftp不能切换到自己的/home目录以外 /etc/vsftpd/vsftpd.con
+selinux = disable
+chroot_local_user=YES
+allow_writeable_chroot=YES
+
+
+16.倒引号：
+ tar -zcvf  ~/`date +%Y-%m-%d\ %H:%M:%S`.tar.gz /var/ftp
+ 
+ 
+ tar -zcvf xxx -C /usr/local :会自己新建解压时产生的文件夹，也就是是上一层
+
+定时任务 /etc/crontab
+  1 #! /bin/bash
+  2 if [ -z "`rpm -qa | grep crontab`" ]; then
+  3          yum install -y crontabs
+  4          chkconfig –level 35 crond on
+  5 fi
+  6 systemctl start crond
+  7 echo '*/1 * * * * a201725010402 echo "201725010402_`date +\%Y-\%m-\%d\ \%H:\%M:\%S`" >> /tmp/output.txt' >> /e    tc/crontab
+  8 systemctl restart crond
+
+替换 sed -i
+sed -i '22c 201725010402 ChenXiaoDong 17CS4' /usr/local/nginx/html/index.html
+
+

@@ -1,0 +1,41 @@
+工厂方法：
+	1.定义出抽象的接口，定义通用方法名
+	2.定义具体类继承抽象接口，实现各自的方法
+	3.定义工厂类，定义方法(接收字符串，返回指定的具体类 if if if..)
+	4.客户端调用工厂类实例函数，进而使用接口来调用函数
+	
+public interface Shape {
+	public abstract void tell();
+}
+	
+class Rectangle implements Shape{
+	@Override
+	public void tell() {
+		System.out.println("rectangle");
+		
+	}
+}
+
+class Square implements Shape{
+	@Override
+	public void tell() {
+		System.out.println("square");
+		
+	}
+}
+
+class ShapeFactory{
+	public Shape getShape(String shapeName) {
+		if(shapeName.equalsIgnoreCase("rectangle")) 
+			return new Rectangle();
+		if(shapeName.equalsIgnoreCase("square")) 
+			return new Square();	
+		return null;
+	}
+}
+
+public static void main(String[] args) {
+	ShapeFactory factory = new ShapeFactory();
+	Shape shape = factory.getShape("rectangle");
+	shape.tell();
+}

@@ -1,0 +1,109 @@
+equals 区别于 == ，在object类中，equals的实现是使用 == ，但是在很多类中重写equals
+因此要比较两个对象是否指向同一个引用，使用 == ，而equals 应该由定义出新的判断相等的行为
+	obj.equals源码:
+		public boolean equals(Object obj) {
+        return (this == obj);
+    	}
+    str.equals源码：(比较的是串中的内容)
+    	public boolean equals(Object anObject) {
+	        if (this == anObject) {
+	            return true;
+	        }
+	        if (anObject instanceof String) {
+	            String anotherString = (String)anObject;
+	            int n = value.length;
+	            if (n == anotherString.value.length) {
+	                char v1[] = value;
+	                char v2[] = anotherString.value;
+	                int i = 0;
+	                while (n-- != 0) {
+	                    if (v1[i] != v2[i])
+	                        return false;
+	                    i++;
+	                }
+	                return true;
+	            }
+	        }
+	        return false;
+	    }
+	 Integer.equals源码：（比较包装的数值）
+	 	public boolean equals(Object obj) {
+	        if (obj instanceof Integer) {
+	            return value == ((Integer)obj).intValue();
+	        }
+	        return false;
+    	}
+    	
+equals 的比较范例：
+	0. super.equal(obj)
+	1. if(this == obj)  return true;
+	2. if(obj == null)	return false;
+	3. if(! obj instanceof xxx) return false;
+	4. xxx temp = (xxx)obj    return this ...temp
+
+第三步：if(! (obj instanceof className) ) className 而不是 this.getClass()
+	如果子类的判断相等的要求是定义为    独立的子类判断 ，那么就应该使用 this.getClass()
+	例如：
+		if(this.getClass() != obj.getClass())	return false;
+
+	例如：
+		@Override
+		public boolean equals(Object obj) {
+			super.equals(obj);
+			if(obj == null)
+				return false;
+			if(this == obj)
+				return true;
+			if(!(obj instanceof D2_Employee))
+				return false;
+			D2_Employee tEmployee = (D2_Employee)obj;
+			return ID.equals(tEmployee.ID) && name.equals(tEmployee.name) && salary ==tEmployee.salary;
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			super.equals(obj);
+			if(this == obj)
+				return true;
+			if(obj == null)
+				return false;
+			if(!(obj instanceof D2_Manager))
+				return false;
+			D2_Manager temp = (D2_Manager)obj;
+			return bonus == temp.bonus;
+			
+		}
+		
+		
+在使用到散列类型时，覆盖了equal,就也要重写hashcode()
+规则：当equal比较结果为相等时，hashcode内容一致，而当equal比较结果不等时，hashcode内容可以一致或是不一致
+->:equal的比较内容 要比 hashcode的 多，也就是说equal可以是全成员比较，而hashcode可以是equal里的某成员内容
+	例如：
+		@Override
+		public boolean equals(Object obj) {
+			super.equals(obj);
+			if(obj == null)
+				return false;
+			if(this == obj)
+				return true;
+			if(!(obj instanceof D2_Employee))
+				return false;
+			D2_Employee tEmployee = (D2_Employee)obj;
+			return ID.equals(tEmployee.ID) && name.equals(tEmployee.name) && salary ==tEmployee.salary;
+		}
+		
+		@Override
+		public int hashCode() {
+			return ID.hashCode();
+		}
+
+Class.forName("xx")   返回的是Class 参数应该是  “包名.类名” 中间不是..javaName
+Class.newInstance() 返回的是object 只能调用无参构造(要么是系统默认的，也就是自己不能写构造函数;要么就要自己写无参构造函数)  
+	例如：
+		Object object = Class.forName("Day_2.D2_Employee").newInstance();
+		System.out.println(((D2_Employee)object).getName());
+ 
+ 
+ 
+ 
+ 

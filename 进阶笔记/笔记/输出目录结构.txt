@@ -1,0 +1,45 @@
+1.
+public void readFile(String dirPath) {
+            // 建立当前目录中文件的File对象
+            File file = new File(dirPath);
+            // 取得代表目录中所有文件的File对象数组
+            File[] list = file.listFiles();
+            // 遍历file数组
+            for (int i = 0; i < list.length; i++) {
+                    if (list.isDirectory()) {
+                            System.out.println(createPrintStr(list.getName(), fileLevel));
+                            fileLevel ++;
+                            // 递归子目录
+                            readFile(list.getPath());
+                            fileLevel --;
+                    } else {
+                            System.out.println(createPrintStr(list.getName(), fileLevel));
+                    }
+            }
+    }
+
+
+
+2.
+
+//递归使用获取到文件
+	public static TreeItem<String> createSubOfRootTree(AbstractFile root){	
+		 //添加的名称可进一步设置
+		 TreeItem<String>treeItem = new TreeItem<String>(root.getLocation());
+         Collection<AbstractFile> values = root.getSubMap().values();
+          
+         
+         // 添加图标
+         for (AbstractFile abstractFile : values) {
+        	if(!FileManage.isFile(abstractFile)) {
+        		treeItem.setExpanded(true);
+				treeItem.getChildren().add(createSubOfRootTree(abstractFile));
+				
+			}else {
+				TreeItem<String> subTreeItem = new TreeItem<String>(abstractFile.getLocation());
+	        	treeItem.getChildren().add(subTreeItem);
+			}
+         }
+         return treeItem;
+	}
+	

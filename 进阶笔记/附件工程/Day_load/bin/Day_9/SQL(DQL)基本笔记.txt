@@ -1,0 +1,26 @@
+DQL(Query):对数据库的表中数据进行查询
+	1.排序查询
+	2.聚合查询
+	
+	
+	查询所有：
+		select * from 表名;
+	1.排序查询：
+		select * from 表名 order by 排序字段1  排序方式1 , 排序字段2  排序方式2...;	
+			
+		排序方式：
+			desc 降序   asc 升序
+			仅当前一个排序字段值一致时，才会采用下一个的排序字段来排序,否则忽略后面的排序字段
+		举例：		
+			SELECT * FROM stu ORDER BY NAME ASC,ADDTIME ASC;
+			
+	2.聚合查询，对表中的一列作为对象进行count,max,min,avg(),sum()等查询
+		select count(列名)/max(列名)/min(列名),avg(列名)/sum(列名) from 表名;	
+			说明：列中为null的值，不被参与聚合，可以使用 ifnull(列名，用于替换null的值)来避开null值
+			举例：
+				SELECT COUNT(id) FROM stu;
+				SELECT MAX(chinese) FROM stu;
+				SELECT MIN(IFNULL(chinese,0)) FROM stu;
+				SELECT SUM(IFNULL(chinese,0)) FROM stu;
+				SELECT AVG(IFNULL(chinese,0)) FROM stu;
+				

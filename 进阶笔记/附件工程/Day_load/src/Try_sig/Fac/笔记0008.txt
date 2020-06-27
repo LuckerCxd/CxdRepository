@@ -1,0 +1,60 @@
+装饰器
+	使用通用接口，进行子类拓展
+1.定义抽象接口，定义拓展和原本类的通用方法
+2.定义具体原本类继承抽象接口，并重写抽象方法
+3.定义抽象装饰器类继承抽象接口，内部设接口成员变量
+并在构造器中进行初始化原本类，并定义拓展类的通用抽象方法(可以没有)
+4.定义具体装饰器类继承抽象父类，重写构造器和抽象方法
+5.客户端使用抽象接口，传入具体原本类，在装饰器类下调用函数
+
+1.定义抽象接口，定义拓展和原本类的通用方法
+	public interface Picture {
+		public abstract void display();
+	}
+2.定义具体原本类继承抽象接口，并重写抽象方法
+	class ScenePicture implements Picture{
+		@Override
+		public void display() {
+			System.out.println("beautiful scenery picture");
+		}
+	}
+	class CartoonPicture implements Picture{
+		@Override
+		public void display() {
+			System.out.println("cute cartoon picture");
+		}
+	}
+3.定义抽象装饰器类继承抽象接口，内部设成员变量
+并在构造器中进行初始化原本类，并定义拓展类的通用抽象方法(可以没有)
+	abstract class EffectedDecorate implements Picture{
+		protected Picture originalPicture;
+		public EffectedDecorate(Picture originalPicture) {
+			this.originalPicture = originalPicture;
+		}
+	}
+4.定义具体装饰器类继承抽象父类，重写构造器和抽象方法	
+	class WhiteningDecorate extends EffectedDecorate{
+		public WhiteningDecorate(Picture originalPicture) {
+			super(originalPicture);
+		}
+		@Override
+		public void display() {
+			originalPicture.display();
+			System.out.println("whiten it");
+		}
+	}
+	class BlackenDecorate extends EffectedDecorate{
+		public BlackenDecorate(Picture originalPicture) {
+			super(originalPicture);
+		}
+		@Override
+		public void display() {
+			originalPicture.display();
+			System.out.println("blacken it");
+		}
+	}
+5.客户端使用抽象接口，传入具体原本类，在装饰器类下调用函数
+	public static void main(String[] args) {
+		Picture blacker = new BlackenDecorate(new CartoonPicture());
+		blacker.display();
+	}	
